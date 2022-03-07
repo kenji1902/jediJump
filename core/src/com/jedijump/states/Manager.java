@@ -11,7 +11,9 @@ public class Manager {
     private World world;
     private OrthographicCamera camera;
     private Stack<State> states;
-    public Manager(){
+    public Manager(World world, OrthographicCamera camera){
+        this.world = world;
+        this.camera = camera;
         states = new Stack<State>();
     }
     public void push(State state){
@@ -42,7 +44,11 @@ public class Manager {
         }
     }
 
+    public World getWorld() {
+        return world;
+    }
 
-
-
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 }
