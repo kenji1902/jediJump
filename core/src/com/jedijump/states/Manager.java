@@ -7,11 +7,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import java.util.Stack;
 
 
-public abstract class Manager {
+public class Manager {
     private World world;
     private OrthographicCamera camera;
     private Stack<State> states;
-    Manager(){
+    public Manager(){
         states = new Stack<State>();
     }
     public void push(State state){
