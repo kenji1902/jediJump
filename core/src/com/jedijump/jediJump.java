@@ -35,5 +35,8 @@ public class jediJump extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
+		mng.disposeAll();
 	}
+
+
 }

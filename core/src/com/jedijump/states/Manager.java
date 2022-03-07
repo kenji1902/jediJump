@@ -32,6 +32,16 @@ public class Manager {
         states.peek().render(sprite);
     }
 
+    public void dispose() {
+        states.peek().dispose();
+    }
+
+    public void disposeAll(){
+        for (State s: states) {
+            s.dispose();
+        }
+    }
+
 
 
 

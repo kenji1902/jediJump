@@ -17,4 +17,8 @@ public class PlayState extends State{
     public void render(SpriteBatch sprite) {
 
     }
+
+    public void dispose(){
+
+    }
 }

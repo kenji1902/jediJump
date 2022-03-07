@@ -9,4 +9,5 @@ public abstract class State {
     }
     public abstract void update(float delta);
     public abstract void render(SpriteBatch sprite);
+    public abstract void dispose();
 }
