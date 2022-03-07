@@ -1,6 +1,7 @@
 package com.jedijump.entity;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.jedijump.states.Manager;
 
 public class character extends entity{
@@ -10,6 +11,7 @@ public class character extends entity{
 
     @Override
     public void create() {
+        BodyDef def = new BodyDef();
 
     }
 
