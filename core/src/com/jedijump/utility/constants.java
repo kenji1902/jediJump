@@ -22,4 +22,7 @@ public class constants {
     // PLATFORM STATES
     public static final int PLATFORM_STATIC = 0;
     public static final int PLATFORM_BREAK = 1;
+
+    // BIRD
+    public static final float BIRD_SPEED = 1;
 }
