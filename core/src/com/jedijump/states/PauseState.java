@@ -2,9 +2,9 @@ package com.jedijump.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class PostState extends State{
+public class PauseState extends State{
 
-    public PostState(Manager manager){
+    public PauseState(Manager manager){
         super(manager);
     }
 
