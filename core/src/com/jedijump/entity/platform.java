@@ -42,7 +42,7 @@ public class platform extends entity{
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = density;
         fixtureDef.shape = shape;
-        fixtureDef.friction = constants.JEDISAUR_FRICTION;
+        fixtureDef.friction = 0;
 
         body.createFixture(fixtureDef).setUserData("platform");
         shape.dispose();

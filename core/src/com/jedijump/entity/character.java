@@ -48,7 +48,7 @@ public class character extends entity{
         body.createFixture(fixtureDef).setUserData("body");
 
         // Foot of the Character
-        shape.setAsBox(this.size.x,this.size.y / 4,new Vector2(0,this.position.x - this.size.y),0);
+        shape.setAsBox(this.size.x/1.2f,this.size.y / 4,new Vector2(0,this.position.x - this.size.y),0);
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
         body.createFixture(fixtureDef).setUserData("foot");
@@ -91,7 +91,7 @@ public class character extends entity{
             isDoubleJump = true;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_AIR && isDoubleJump){
-            body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y,false);
+            body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y*0.4f,false);
             isDoubleJump = false;
         }
 

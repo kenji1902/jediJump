@@ -15,6 +15,7 @@ public class PlayState extends State{
 
         character.create(new Vector2(0,0),new Vector2(32,32),1);
         plt.create(new Vector2(0,-36),new Vector2(80,32),0);
+        plt.create(new Vector2(-20,82),new Vector2(80,32),0);
     }
 
     @Override
