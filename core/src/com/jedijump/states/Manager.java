@@ -2,16 +2,19 @@ package com.jedijump.states;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Stack;
 
 
-public abstract class Manager {
+public class Manager {
     private World world;
     private OrthographicCamera camera;
     private Stack<State> states;
-    Manager(){
+    public Manager(World world, OrthographicCamera camera){
+        this.world = world;
+        this.camera = camera;
         states = new Stack<State>();
     }
     public void push(State state){
@@ -34,5 +37,11 @@ public abstract class Manager {
 
 
 
+    public World getWorld() {
+        return world;
+    }
 
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 }

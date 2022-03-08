@@ -11,7 +11,7 @@ public class animation {
     private int currFrame;
     private boolean isFlipped;
 
-    animation(TextureRegion texture, int frameCount, float cycleTime){
+    public animation(TextureRegion texture, int frameCount, float cycleTime){
         frames = new Array<TextureRegion>();
         int frameWidth = texture.getRegionWidth() / frameCount;
         for(int i = 0; i < frameCount; i++)
@@ -29,7 +29,6 @@ public class animation {
     }
 
     public void update(float delta){
-        System.out.println("Walking");
         currFrameTime += delta;
         if(currFrameTime > maxFrameTime){
             currFrame++;
