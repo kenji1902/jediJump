@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
 import com.jedijump.states.Manager;
+import com.jedijump.states.MenuState;
 import com.jedijump.states.PlayState;
 import com.jedijump.utility.constants;
 
@@ -25,7 +26,7 @@ public class jediJump extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		manage = new Manager();
-		manage.push(new PlayState(manage));
+		manage.push(new MenuState(manage));
 	}
 
 	@Override

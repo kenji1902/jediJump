@@ -18,7 +18,6 @@ public class MenuState extends State{
     Rectangle shape;
     Texture background, item;
     TextureRegion backgroundRegion, logo, mainMenu;
-    ShapeRenderer sr;
     OrthographicCamera camera;
     Box2DDebugRenderer b2dr;
 
@@ -36,13 +35,10 @@ public class MenuState extends State{
         logo = new TextureRegion(item, 0, 352, 274, 142);
 
         shape = new Rectangle(102,222,117,33);
-//        //102 / constants.PPM, 222 / constants.PPM, (int)(117 / constants.SCALE/ constants.PPM),(int)(33/constants.SCALE/ constants.PPM)
-//        sr = new ShapeRenderer();
     }
 
     @Override
     public void update(float delta) {
-        b2dr.render(manager.getWorld(), camera.combined.scl(constants.PPM));
         Input(shape);
     }
 
@@ -57,23 +53,14 @@ public class MenuState extends State{
         sprite.enableBlending();
         sprite.begin();
         sprite.draw(logo, 160 - 274 / 2 , 480 - 10 - 142);
-        //* constants.PPM - (logo.getRegionWidth()/2)  * constants.PPM - (logo.getRegionHeight()/2)
         sprite.draw(mainMenu, 10, 200 - 110 / 2, 300, 110 );
         sprite.end();
-//        sr.begin(ShapeRenderer.ShapeType.Filled);
-//        sr.setColor(Color.GREEN);
-//        sr.rect(shape.x, shape.y, shape.width, shape.height);
-//        sr.end();
-
-
     }
-
     private void Input(Rectangle rect){
-
         if(Gdx.input.isTouched()) {
             if (Gdx.input.getX() >= rect.x && Gdx.input.getY() >= rect.y && Gdx.input.getX() < (rect.x + rect.width)  && Gdx.input.getY() <= (rect.y + rect.height)) {
                 System.out.println("you clicked here at: " + Gdx.input.getX() + ", " + Gdx.input.getY());
-                //manager.pop();
+                manager.set(new PlayState(manager));
             }
         }
     }
