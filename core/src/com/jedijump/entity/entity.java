@@ -18,4 +18,5 @@ public abstract class entity {
        public abstract void create(Vector2 position, Vector2 size, float density);
        public abstract void update(float delta);
        public abstract void render(SpriteBatch sprite);
+
 }

@@ -58,7 +58,7 @@ public class character extends entity{
         shape.dispose();
 
         texture = new animation(new TextureRegion(new Texture(Gdx.files.internal("stand.png"))), 1 ,0.5f);
-
+        maxPosY = body.getPosition().y;
     }
 
     @Override
@@ -69,10 +69,16 @@ public class character extends entity{
         Input(delta);
 
     }
+
+    private float maxPosY;
     private void cameraUpdate(){
+
+        if(maxPosY < body.getPosition().y)
+            maxPosY = body.getPosition().y;
+
         Vector3 position = manager.getCamera().position;
-        position.x = body.getPosition().x * constants.PPM;
-        position.y = body.getPosition().y * constants.PPM;
+        position.x = this.position.x * constants.PPM;
+        position.y = maxPosY * constants.PPM;
         manager.getCamera().position.set(position);
         manager.getCamera().update();
     }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -12,11 +13,17 @@ import com.jedijump.states.Manager;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
+import java.util.Random;
+
 public class platform extends entity{
-    animation texture;
+    private animation texture;
+    private Random rand;
+    private int platformState;
+    private boolean isDestroyed = false;
 
     public platform(Manager manager) {
         super(manager);
+        rand = new Random();
     }
 
     @Override
@@ -28,7 +35,7 @@ public class platform extends entity{
         this.position.y /= constants.PPM;
 
         BodyDef def = new BodyDef();
-        def.type = BodyDef.BodyType.StaticBody;
+        def.type = BodyDef.BodyType.KinematicBody;
         def.position.set(this.position);
         def.fixedRotation = true;
         body = manager.getWorld().createBody(def);
@@ -47,23 +54,56 @@ public class platform extends entity{
         body.createFixture(fixtureDef).setUserData("platform");
         shape.dispose();
 
-//        texture = new animation(new TextureRegion(new Texture(Gdx.files.internal("stand.png"))), 1 ,0.5f);
+        platformState = rand.nextInt(2);
+        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        if(platformState == constants.PLATFORM_STATIC)
+            texture = new animation(platformTexture, 64, 160 ,64,16,1,0.5f,true);
+        else
+            texture = new animation(platformTexture, 64, 160 ,64,64,4,0.5f,true);
     }
 
     @Override
     public void update(float delta) {
-//        texture.update(delta);
-
+        if(!isDestroyed) {
+            updateAnimation(delta);
+        }
     }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-        sprite = spriteBatch;
-//        sprite.setProjectionMatrix(manager.getCamera().combined);
-        sprite.begin();
-//        sprite.draw(texture.getFrame(),
-//                body.getPosition().x * constants.PPM - ((float)texture.getFrame().getRegionWidth()/2),
-//                body.getPosition().y * constants.PPM - ((float)texture.getFrame().getRegionHeight()/2));
-        sprite.end();
+        if(!isDestroyed) {
+            sprite = spriteBatch;
+            sprite.begin();
+                sprite.draw(texture.getFrame(),
+                        body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),
+                        body.getPosition().y * constants.PPM - ((float) texture.getFrame().getRegionHeight() / 2));
+            sprite.end();
+        }
+    }
+
+    private void updateAnimation(float delta){
+        if(platformState == constants.PLATFORM_BREAK
+                && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND
+                && body == manager.getCl().getPlatform()
+                && texture.getCurrFrame() < texture.getFrameCount()-1
+            ) {
+            texture.update(delta);
+            if(texture.getCurrFrame() == texture.getFrameCount()-1){
+                isDestroyed = true;
+                texture.dispose();
+                manager.getWorld().destroyBody(body);
+            }
+        }
+        if(platformState == constants.PLATFORM_STATIC)
+            texture.update(delta);
+
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    public Body getBody(){
+        return body;
     }
 }

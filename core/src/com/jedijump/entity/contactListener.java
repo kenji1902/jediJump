@@ -5,6 +5,7 @@ import com.jedijump.utility.constants;
 
 public class contactListener implements ContactListener {
     private int playerState = 0;
+    private Body platform;
     @Override
     public void beginContact(Contact contact) {
         Fixture entityA = contact.getFixtureA();
@@ -37,9 +38,18 @@ public class contactListener implements ContactListener {
            (entityB.getUserData() != null && entityB.getUserData().equals("foot"))){
             playerState = state;
         }
+        if((entityA.getUserData() != null && entityA.getUserData().equals("platform")))
+            platform = entityA.getBody();
+        else if(entityB.getUserData() != null && entityB.getUserData().equals("platform"))
+            platform = entityB.getBody();
+
     }
 
     public int getPlayerState() {
         return playerState;
+    }
+
+    public Body getPlatform() {
+        return platform;
     }
 }
