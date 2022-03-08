@@ -4,7 +4,7 @@ public class constants {
     public static final int PPM = 32;
     public static final float SCALE = 2.0f;
     public static final float JEDISAUR_VELOCITY_X = 11;
-    public static final float JEDISAUR_VELOCITY_Y = 100;
+    public static final float JEDISAUR_VELOCITY_Y = 1000;
     public static final float JEDISAUR_FRICTION = 0.5f;
 
     // WINDOW
@@ -15,4 +15,9 @@ public class constants {
     // STATES
     public static final int MENU_STATE = 0;
     public static final int PLAY_STATE = 1;
+
+    // PLAYER STATES
+    public static final int JEDISAUR_ON_GROUND = 10;
+    public static final int JEDISAUR_ON_AIR = 11;
+
 }

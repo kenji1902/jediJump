@@ -12,7 +12,7 @@ public abstract class entity {
        protected Vector2 size;
        protected SpriteBatch sprite;
 
-       entity(Manager manager){
+       public entity(Manager manager){
            this.manager = manager;
        }
        public abstract void create(Vector2 position, Vector2 size, float density);

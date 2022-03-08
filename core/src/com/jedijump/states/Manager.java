@@ -3,18 +3,28 @@ package com.jedijump.states;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jedijump.entity.contactListener;
+import com.jedijump.utility.constants;
 
 import java.util.Stack;
 
 
 public class Manager {
-    private World world;
-    private OrthographicCamera camera;
-    private Stack<State> states;
-    public Manager(World world, OrthographicCamera camera){
-        this.world = world;
-        this.camera = camera;
+    private final World world;
+    private final OrthographicCamera camera;
+    private final Stack<State> states;
+    private contactListener cl;
+    public Manager(){
+        cl = new contactListener();
+
+        world = new World(new Vector2(0,-20),false);
+        world.setContactListener(cl);
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, constants.SCREENWIDTH,constants.SCREENHEIGHT);
+
         states = new Stack<State>();
     }
     public void push(State state){
@@ -43,5 +53,9 @@ public class Manager {
 
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public contactListener getCl() {
+        return cl;
     }
 }
