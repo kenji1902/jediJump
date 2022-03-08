@@ -62,6 +62,11 @@ public class MenuState extends State{
                 System.out.println("you clicked here at: " + Gdx.input.getX() + ", " + Gdx.input.getY());
                 manager.set(new PlayState(manager));
             }
+            //i tried para lng ma access yung helpState
+//            else if (Gdx.input.getX() >= rect.x && Gdx.input.getY() >= rect.y && Gdx.input.getX() < (rect.x + rect.width)  && Gdx.input.getY() >= (rect.y + rect.height)) {
+//                System.out.println("you clicked here at: " + Gdx.input.getX() + ", " + Gdx.input.getY());
+//                manager.set(new HelpState(manager));
+//            }
         }
     }
 
