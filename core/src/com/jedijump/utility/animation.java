@@ -11,7 +11,7 @@ public class animation {
     private int currFrame;
     private boolean isFlipped;
 
-    animation(TextureRegion texture, int frameCount, float cycleTime){
+    public animation(TextureRegion texture, int frameCount, float cycleTime){
         frames = new Array<TextureRegion>();
         int frameWidth = texture.getRegionWidth() / frameCount;
         for(int i = 0; i < frameCount; i++)
@@ -27,9 +27,46 @@ public class animation {
         currFrame = 0;
         isFlipped = false;
     }
+    public animation(TextureRegion texture, int x, int y, int textureWidth,int textureHeight, int frameCount, float cycleTime, boolean isGoingDown){
+        frames = new Array<TextureRegion>();
+        int frameWidth = textureWidth / frameCount;
+        int frameHeight = textureHeight;
+        if(isGoingDown){
+            frameWidth = textureWidth;
+            frameHeight = textureHeight / frameCount;
+        }
+
+        for(int i = 0; i < frameCount; i++) {
+            int xOrigin = (i * frameWidth) + x;
+            int yOrigin = y;
+            if (isGoingDown) {
+                xOrigin = x;
+                yOrigin = (i * frameHeight) + y;
+            }
+            frames.add(new TextureRegion(
+                    texture /* texture reference */,
+                    xOrigin /* x-origin */,
+                    yOrigin /* y-origin */,
+                    frameWidth /* width */,
+                    frameHeight /* height */
+            ));
+        }
+        this.frameCount = frameCount;
+        maxFrameTime = cycleTime / frameCount;
+        currFrame = 0;
+        isFlipped = false;
+
+    }
+
+    public int getFrameCount() {
+        return frameCount;
+    }
+
+    public int getCurrFrame() {
+        return currFrame;
+    }
 
     public void update(float delta){
-        System.out.println("Walking");
         currFrameTime += delta;
         if(currFrameTime > maxFrameTime){
             currFrame++;
@@ -44,6 +81,9 @@ public class animation {
         return  frames.get(currFrame);
     }
 
+    public void dispose(){
+        frames = null;
+    }
     public void flip(){
         for(TextureRegion region : frames)
             region.flip(true, false);

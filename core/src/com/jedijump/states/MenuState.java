@@ -17,4 +17,9 @@ public class MenuState extends State{
     public void render(SpriteBatch sprite) {
 
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }
