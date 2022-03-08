@@ -44,8 +44,6 @@ public class MenuState extends State{
 
     @Override
     public void render(SpriteBatch sprite) {
-        OrthographicCamera camera = manager.getCamera();
-
         sprite.disableBlending();
         sprite.begin();
 
@@ -54,10 +52,9 @@ public class MenuState extends State{
 
         sprite.enableBlending();
         sprite.begin();
-        sprite.draw(logo, camera.position.x - (logo.getRegionWidth() / 2) , camera.position.y + 220 - 10 - (logo.getRegionWidth()/2));
-        sprite.draw(mainMenu, 10, 200 - 110 / 2, 300, 110 );
+        sprite.draw(logo, 160 - logo.getRegionWidth() / 2 , 480 - 10 - 142);
+        sprite.draw(mainMenu, 10, 200 - mainMenu.getRegionHeight() / 2);
         sprite.end();
-
     }
     private void Input(Rectangle rect){
         if(Gdx.input.isTouched()) {
