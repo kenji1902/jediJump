@@ -3,10 +3,12 @@ package com.jedijump.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.jedijump.utility.*;
 
@@ -17,9 +19,15 @@ public class MenuState extends State{
     Texture background, item;
     TextureRegion backgroundRegion, logo, mainMenu;
     ShapeRenderer sr;
+    OrthographicCamera camera;
+    Box2DDebugRenderer b2dr;
 
     public MenuState(Manager manager) {
         super(manager);
+
+        camera = new OrthographicCamera();
+        b2dr = new Box2DDebugRenderer();
+
         background = new Texture(Gdx.files.internal("background.png"));
         backgroundRegion = new TextureRegion(background, 0, 0, 280, 450);
 
@@ -27,18 +35,19 @@ public class MenuState extends State{
         mainMenu = new TextureRegion(item, 0, 224, 300, 110);
         logo = new TextureRegion(item, 0, 352, 274, 142);
 
-        shape = new Rectangle(102 / constants.PPM, 222 / constants.PPM, (int)(117 / constants.SCALE/ constants.PPM),(int)(33/constants.SCALE/ constants.PPM));
-        sr = new ShapeRenderer();
+        shape = new Rectangle(102,222,117,33);
+//        //102 / constants.PPM, 222 / constants.PPM, (int)(117 / constants.SCALE/ constants.PPM),(int)(33/constants.SCALE/ constants.PPM)
+//        sr = new ShapeRenderer();
     }
 
     @Override
     public void update(float delta) {
+        b2dr.render(manager.getWorld(), camera.combined.scl(constants.PPM));
         Input(shape);
     }
 
     @Override
     public void render(SpriteBatch sprite) {
-
         sprite.disableBlending();
         sprite.begin();
 
@@ -47,13 +56,14 @@ public class MenuState extends State{
 
         sprite.enableBlending();
         sprite.begin();
-        sprite.draw(logo, 160 - 274 / 2, 480 - 10 - 142, 274, 142);
+        sprite.draw(logo, 160 - 274 / 2 , 480 - 10 - 142);
+        //* constants.PPM - (logo.getRegionWidth()/2)  * constants.PPM - (logo.getRegionHeight()/2)
         sprite.draw(mainMenu, 10, 200 - 110 / 2, 300, 110 );
         sprite.end();
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(Color.GREEN);
-        sr.rect(shape.x, shape.y, shape.width, shape.height);
-        sr.end();
+//        sr.begin(ShapeRenderer.ShapeType.Filled);
+//        sr.setColor(Color.GREEN);
+//        sr.rect(shape.x, shape.y, shape.width, shape.height);
+//        sr.end();
 
 
     }

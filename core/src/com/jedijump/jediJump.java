@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.jedijump.states.Manager;
@@ -19,6 +20,7 @@ public class jediJump extends ApplicationAdapter {
 	Manager mng;
 	MenuState menu;
 	World world;
+	Box2DDebugRenderer b2dr;
 	OrthographicCamera camera;
 	private SpriteBatch batch;
 
@@ -28,6 +30,7 @@ public class jediJump extends ApplicationAdapter {
 		world = new World(new Vector2(0,-20), false);
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+		b2dr = new Box2DDebugRenderer();
 		mng = new Manager(world, camera);
 		mng.push(new MenuState(mng));
 
@@ -38,9 +41,12 @@ public class jediJump extends ApplicationAdapter {
 	@Override
 	public void render () {
 		ScreenUtils.clear(1, 1, 0, 1);
-		camera.combined.scl(constants.PPM);
+
+		b2dr.render(world, camera.combined.scl(constants.PPM));
 		mng.update(Gdx.graphics.getDeltaTime());
 		mng.render(batch);
+
+
 
 
 	}
@@ -50,6 +56,7 @@ public class jediJump extends ApplicationAdapter {
 		batch.dispose();
 		img.dispose();
 		mng.disposeAll();
+		b2dr.dispose();
 	}
 
 
