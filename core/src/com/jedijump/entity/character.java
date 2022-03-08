@@ -82,6 +82,8 @@ public class character extends entity{
         manager.getCamera().position.set(position);
         manager.getCamera().update();
     }
+
+    private boolean isDoubleJump = false;
     private void Input(float delta){
         int horizontalForce = 0;
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
@@ -90,8 +92,13 @@ public class character extends entity{
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             horizontalForce += 1;
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && manager.getCl().playerState == constants.JEDISAUR_ON_GROUND){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND){
             body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y,false);
+            isDoubleJump = true;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_AIR && isDoubleJump){
+            body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y,false);
+            isDoubleJump = false;
         }
 
 

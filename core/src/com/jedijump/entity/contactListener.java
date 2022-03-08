@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.jedijump.utility.constants;
 
 public class contactListener implements ContactListener {
-    int playerState = 0;
+    private int playerState = 0;
     @Override
     public void beginContact(Contact contact) {
         Fixture entityA = contact.getFixtureA();
