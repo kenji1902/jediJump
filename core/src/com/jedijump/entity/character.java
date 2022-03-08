@@ -2,6 +2,7 @@ package com.jedijump.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
+import com.jedijump.states.MenuState;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
@@ -67,8 +69,20 @@ public class character extends entity{
         texture.update(delta);
         cameraUpdate();
         Input(delta);
+        deadZone();
+
 
     }
+    private void deadZone(){
+        OrthographicCamera camera = manager.getCamera();
+        float deadZone =  camera.position.y - (camera.viewportHeight/2);
+        float charPos = body.getPosition().y  * constants.PPM - (this.size.y * constants.PPM);
+
+        if(charPos < deadZone){
+            manager.push(new MenuState(manager));
+        }
+    }
+
 
     private float maxPosY;
     private void cameraUpdate(){
@@ -100,8 +114,6 @@ public class character extends entity{
             body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y*0.4f,false);
             isDoubleJump = false;
         }
-
-
        body.setLinearVelocity(horizontalForce * 10,body.getLinearVelocity().y);
     }
 
