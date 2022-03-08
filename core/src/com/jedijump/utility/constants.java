@@ -8,7 +8,7 @@ public class constants {
     public static final float JEDISAUR_FRICTION = 0.5f;
 
     // WINDOW
-    public static final int SCREENWIDTH = 200;
+    public static final int SCREENWIDTH = 320;
     public static final int SCREENHEIGHT = 480;
 
     // STATES
