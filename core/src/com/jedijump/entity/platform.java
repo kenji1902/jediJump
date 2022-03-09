@@ -20,7 +20,6 @@ public class platform extends entity{
     private animation texture;
     private Random rand;
     private int platformState;
-    private boolean isDestroyed = false;
     private boolean isFixed = false;
 
     public platform(Manager manager) {
@@ -91,9 +90,8 @@ public class platform extends entity{
             ) {
             texture.update(delta);
             if(texture.getCurrFrame() == texture.getFrameCount()-1){
-                isDestroyed = true;
                 texture.dispose();
-                manager.getWorld().destroyBody(body);
+                disposeBody();
             }
         }
         if(platformState == constants.PLATFORM_STATIC)
@@ -103,19 +101,14 @@ public class platform extends entity{
         float platformPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
         if (platformPos < deadZone) {
-            isDestroyed = true;
             texture.dispose();
-            manager.getWorld().destroyBody(body);
+            disposeBody();
         }
 
     }
 
     public boolean isDestroyed() {
         return isDestroyed;
-    }
-
-    public Body getBody(){
-        return body;
     }
 
     public void setFixed(boolean fixed) {

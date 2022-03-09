@@ -38,7 +38,7 @@ public class PlayState extends State{
         character.create(new Vector2(0,0),new Vector2(32,32),1);
         plt.setFixed(true);
         plt.create(new Vector2(0,-36),new Vector2(64,16),0);
-       
+
         plt1.create(new Vector2(-20,82),new Vector2(64,16),0);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
         bird.create(new Vector2(30,50),new Vector2(32,32),1);
@@ -97,6 +97,7 @@ public class PlayState extends State{
         plt.render(sprite);
         if(plt1 != null)
             plt1.render(sprite);
+
     }
 
     private void pause(){
@@ -124,7 +125,12 @@ public class PlayState extends State{
 
     @Override
     public void dispose() {
-
+        character.disposeBody();
+        plt.disposeBody();
+        plt1.disposeBody();
+        baseplt.disposeBody();
+        bird.disposeBody();
+        spr.disposeBody();
     }
 
 

@@ -38,6 +38,7 @@ public class Manager {
         states.pop();
     }
     public void set(State state){
+        dispose();
         states.pop();
         states.push(state);
     }

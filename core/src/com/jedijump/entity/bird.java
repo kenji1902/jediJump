@@ -15,7 +15,6 @@ import com.jedijump.utility.constants;
 
 public class bird extends entity{
     private animation texture;
-    private boolean isDestroyed = false;
     public bird(Manager manager) {
         super(manager);
     }

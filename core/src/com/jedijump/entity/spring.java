@@ -16,7 +16,6 @@ import com.jedijump.utility.constants;
 
 public class spring extends entity{
     animation texture;
-    private boolean isDestroyed = false;
     public spring(Manager manager) {
         super(manager);
     }
@@ -78,9 +77,8 @@ public class spring extends entity{
         float springPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
         if (springPos < deadZone) {
-            isDestroyed = true;
+            disposeBody();
             texture.dispose();
-            manager.getWorld().destroyBody(body);
             System.out.println("DEAD SPRING");
         }
     }
