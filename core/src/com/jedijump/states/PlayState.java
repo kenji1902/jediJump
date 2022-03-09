@@ -45,7 +45,7 @@ public class PlayState extends State{
         plt1.create(new Vector2(-20,82),new Vector2(64,16),0);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
         bird.create(new Vector2(30,50),new Vector2(32,32),1);
-        spr.create(new Vector2(-42,89),new Vector2(18,14),1);
+        spr.create(new Vector2(-20,89),new Vector2(18,14),1);
 
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);

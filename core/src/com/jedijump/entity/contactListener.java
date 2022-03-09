@@ -7,7 +7,9 @@ import javax.swing.text.html.parser.Entity;
 
 public class contactListener implements ContactListener {
     private int playerState = 0;
+    private int springStick = 0;
     private Body platform;
+    private Body springPlatform;
     @Override
     public void beginContact(Contact contact) {
         Fixture entityA = contact.getFixtureA();
@@ -21,6 +23,14 @@ public class contactListener implements ContactListener {
         int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_COIN_HIT);
         if(coinHit != -1)
             playerState = coinHit;
+
+        int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_PLATFORM);
+        if(springFoot != - 1)
+            springStick = springFoot;
+
+        Body tempSpringPlatform = hitPlatform(entityA,entityB,"springFoot");
+        if(tempSpringPlatform != null)
+            springPlatform = tempSpringPlatform;
     }
 
 
@@ -37,6 +47,15 @@ public class contactListener implements ContactListener {
         int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_ON_AIR);
         if(coinHit != -1)
             playerState = coinHit;
+
+        int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_AIR);
+        if(springFoot != - 1)
+            springStick = springFoot;
+
+        Body tempSpringPlatform = hitPlatform(entityA,entityB,"springFoot");
+        if(tempSpringPlatform != null)
+            springPlatform = tempSpringPlatform;
+
     }
 
     @Override
@@ -51,7 +70,7 @@ public class contactListener implements ContactListener {
 
     private void playerContact(Fixture entityA, Fixture entityB, int state){
 
-        Body tempPlatform = hitPlatform(entityA, entityB);
+        Body tempPlatform = hitPlatform(entityA, entityB, "foot");
         if(tempPlatform != null)
             platform = tempPlatform;
 
@@ -73,23 +92,32 @@ public class contactListener implements ContactListener {
         return -1;
     }
 
-    private Body hitPlatform(Fixture entityA, Fixture entityB){
+    private Body hitPlatform(Fixture entityA, Fixture entityB, String obj){
         Body body = null;
         if((entityA.getUserData() != null && entityB.getUserData() != null) &&
-                (entityA.getUserData().equals( "foot") && entityB.getUserData().equals("platform"))
+                (entityA.getUserData().equals( obj) && entityB.getUserData().equals("platform"))
         ){
             body = entityB.getBody();
         }
         else if((entityA.getUserData() != null && entityB.getUserData() != null) &&
-                (entityA.getUserData().equals( "foot") && entityB.getUserData().equals("platform"))
+                (entityB.getUserData().equals( obj) && entityA.getUserData().equals("platform"))
         ){
-            body = entityB.getBody();
+            body = entityA.getBody();
         }
+
         return  body;
     }
 
     public int getPlayerState() {
         return playerState;
+    }
+
+    public int getSpringStick() {
+        return springStick;
+    }
+
+    public Body getSpringPlatform() {
+        return springPlatform;
     }
 
     public Body getPlatform() {

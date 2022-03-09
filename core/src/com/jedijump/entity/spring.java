@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -37,7 +38,7 @@ public class spring extends entity{
         this.size.x = this.size.x / constants.SCALE / constants.PPM;
         this.size.y = this.size.y / constants.SCALE / constants.PPM;
 
-        // Body of the Character
+        // Body of the Spring
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(this.size.x, this.size.y);
 
@@ -47,11 +48,16 @@ public class spring extends entity{
         fixtureDef.friction = constants.JEDISAUR_FRICTION;
         body.createFixture(fixtureDef).setUserData("springBody");
 
-        // Foot of the Character
+        // Head of Spring
         shape.setAsBox(this.size.x/1.2f,this.size.y / 4,new Vector2(0,this.size.y),0);
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
         body.createFixture(fixtureDef).setUserData("springHead");
+
+        shape.setAsBox(this.size.x/1.2f,this.size.y / 2,new Vector2(0,-this.size.y),0);
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = true;
+        body.createFixture(fixtureDef).setUserData("springFoot");
 
         shape.dispose();
 
@@ -67,7 +73,8 @@ public class spring extends entity{
             if(minPosY > body.getPosition().y)
                 minPosY = body.getPosition().y;
             texture.update(delta);
-            body.setTransform(this.position.x, minPosY, 0);
+            //body.setTransform(this.position.x, minPosY, 0);
+            springPlatform();
             deadZone();
         }
     }
@@ -80,6 +87,17 @@ public class spring extends entity{
             disposeBody();
             texture.dispose();
             System.out.println("DEAD SPRING");
+        }
+    }
+    private void springPlatform(){
+        int springState = manager.getCl().getSpringStick();
+        if(springState == constants.SPRING_ON_PLATFORM){
+            Body springPlatform = manager.getCl().getSpringPlatform();
+            body.setLinearVelocity(springPlatform.getLinearVelocity().x,body.getLinearVelocity().y);
+        }
+        else if(springState == constants.SPRING_ON_AIR){
+            //body.setTransform(body.getPosition().x,body.getPosition().y,0);
+            body.setLinearVelocity(0,body.getLinearVelocity().y);
         }
     }
     @Override
