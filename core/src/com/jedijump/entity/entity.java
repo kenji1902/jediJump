@@ -20,8 +20,10 @@ public abstract class entity {
        public abstract void update(float delta);
        public abstract void render(SpriteBatch sprite);
        public void disposeBody(){
-              manager.getWorld().destroyBody(body);
-              isDestroyed = true;
+              if(!isDestroyed) {
+                     manager.getWorld().destroyBody(body);
+                     isDestroyed = true;
+              }
        }
 
 }

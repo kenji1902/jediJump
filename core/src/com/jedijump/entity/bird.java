@@ -85,10 +85,10 @@ public class bird extends entity{
         float deadZone = camera.position.y - (camera.viewportHeight / 2);
         float birdPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
-        if (birdPos < deadZone) {
-            isDestroyed = true;
+        if (birdPos < deadZone && !isDestroyed) {
+            disposeBody();
             texture.dispose();
-            manager.getWorld().destroyBody(body);
+
             System.out.println("DEAD BIRD");
         }
 

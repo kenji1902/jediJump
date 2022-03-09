@@ -82,6 +82,8 @@ public class platform extends entity{
         }
     }
 
+
+
     private void updateAnimation(float delta){
         if(platformState == constants.PLATFORM_BREAK
                 && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND
@@ -100,7 +102,7 @@ public class platform extends entity{
         float deadZone = camera.position.y - (camera.viewportHeight / 2);
         float platformPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
-        if (platformPos < deadZone) {
+        if (platformPos < deadZone && !isDestroyed) {
             texture.dispose();
             disposeBody();
         }

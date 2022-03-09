@@ -26,6 +26,8 @@ public class PlayState extends State{
     Rectangle rect;
     ShapeRenderer sr;
     Vector3 coords;
+    PauseState ps;
+
 
     public PlayState(Manager manager) {
         super(manager);
@@ -38,7 +40,7 @@ public class PlayState extends State{
         character.create(new Vector2(0,0),new Vector2(32,32),1);
         plt.setFixed(true);
         plt.create(new Vector2(0,-36),new Vector2(64,16),0);
-
+        ps = new PauseState(manager);
         plt1.create(new Vector2(-20,82),new Vector2(64,16),0);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
         bird.create(new Vector2(30,50),new Vector2(32,32),1);
@@ -61,6 +63,7 @@ public class PlayState extends State{
 
     @Override
     public void update(float delta) {
+        manager.getWorld().step(1/60f,6,2);
         bird.update(delta);
         spr.update(delta);
         character.update(delta);
@@ -91,6 +94,7 @@ public class PlayState extends State{
         drawobject(sprite);
 
         bounds(rect);
+        ps.render(sprite);
         character.render(sprite);
 
         bird.render(sprite);
@@ -100,7 +104,7 @@ public class PlayState extends State{
 
     }
 
-    private void pause(){
+    public void LevelGenerator(){
 
     }
 
