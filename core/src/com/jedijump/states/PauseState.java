@@ -114,10 +114,6 @@ public class PauseState extends State{
 
     }
 
-    private void pause(){
-
-
-    }
 
     private void drawobject(SpriteBatch batch){
 
@@ -150,6 +146,7 @@ public class PauseState extends State{
 
     @Override
     public void dispose() {
-
+//        item.dispose();
+//        bg.dispose();
     }
 }

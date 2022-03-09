@@ -48,10 +48,12 @@ public class postState extends State {
                 break;
 
             case GAME_RETRY:
+
                 manager.set(new PlayState(manager));
                 break;
 
             case GAME_QUIT:
+                MenuState.menuMusic.stop();
                 manager.set(new MenuState(manager));
                 break;
         }
@@ -62,23 +64,17 @@ public class postState extends State {
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
 
-        bounds(rect);
+        gameOver();
         //System.out.println(state);
 
         drawobject(sprite);
     }
 
     private void bounds(Rectangle rect) {
-        if (Gdx.input.justTouched()) {
-            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (rect.contains(coords.x, coords.y)) {
 
-                manager.push(this);
-                // System.out.println("paused");
-                state = 0;
-                return;
-            }
-        }
+    }
+
+    private void gameOver(){
         if (Gdx.input.justTouched()) {
             manager.getCamera().unproject(retry_coords.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (retry_rect.contains(retry_coords.x, retry_coords.y)) {
@@ -94,9 +90,6 @@ public class postState extends State {
 
             }
         }
-    }
-
-    private void gameOver(){
 
     }
 
@@ -123,5 +116,7 @@ public class postState extends State {
 
     @Override
     public void dispose() {
+        item.dispose();
+        bg.dispose();
     }
 }
