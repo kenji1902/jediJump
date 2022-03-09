@@ -76,9 +76,8 @@ public class platform extends entity{
     }
 
     @Override
-    public void render(SpriteBatch spriteBatch) {
+    public void render(SpriteBatch sprite) {
         if(!isDestroyed) {
-            sprite = spriteBatch;
             sprite.enableBlending();
             sprite.begin();
                 sprite.draw(texture.getFrame(),
@@ -107,9 +106,9 @@ public class platform extends entity{
                 && body == manager.getCl().getPlatform()
                 && texture.getCurrFrame() < texture.getFrameCount()-1
             ) {
-            texture.update(delta);
-            if(texture.getCurrFrame() == texture.getFrameCount()-1){
-                texture.dispose();
+                texture.update(delta);
+            if(texture.getCurrFrame() == texture.getFrameCount()-1 && !isDestroyed) {
+                //texture.dispose();
                 disposeBody();
             }
         }
@@ -120,7 +119,7 @@ public class platform extends entity{
         float platformPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
         if (platformPos < deadZone && !isDestroyed) {
-            texture.dispose();
+            //texture.dispose();
             disposeBody();
         }
 

@@ -93,39 +93,31 @@ public class PlayState extends State{
             sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
         sprite.end();
 
-        for (platform p: platforms) {
 
+
+        for (platform p: platforms) {
             p.render(sprite);
         }
+
         spr.render(sprite);
-
-        drawobject(sprite);
-
-        bounds(rect);
         ps.render(sprite);
         character.render(sprite);
-
         bird.render(sprite);
-
     }
 
     private float MAX = 5;
     private float counter = 0;
     public void LevelGenerator(float deltatime){
         counter += deltatime;
-
         if(counter < MAX){
-
             platform plt = new platform(manager);
             plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
-
             platforms.add(plt);
             y+=100;
         }
         if(counter >= MAX-1){
             counter = MAX;
         }
-
     }
 
     public void birdGenerator(float deltatime){
@@ -141,27 +133,6 @@ public class PlayState extends State{
 //        }
 
     }
-
-    private void bounds(Rectangle rect){
-        if(Gdx.input.isTouched() ){
-            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
-
-            if(rect.contains(coords.x, coords.y)){
-            }
-        }
-    }
-
-    private void drawobject(SpriteBatch batch){
-
-        OrthographicCamera camera = manager.getCamera();
-        rect.y = 150 + camera.position.y;
-
-        batch.enableBlending();
-        batch.begin();
-            batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
-        batch.end();
-    }
-
 
     @Override
     public void dispose() {

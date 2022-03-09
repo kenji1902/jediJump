@@ -31,8 +31,6 @@ public class postState extends State {
         rect = new Rectangle(55, 150 , 64, 64);
         retry_rect = new Rectangle(65, 250, 192,96/2);
         quit_rect = new Rectangle(65, 200, 192,96/2);
-        sr = new ShapeRenderer();
-        sr2 = new ShapeRenderer();
         coords = new Vector3();
         retry_coords = new Vector3();
         quit_coords = new Vector3();
@@ -70,9 +68,6 @@ public class postState extends State {
         drawobject(sprite);
     }
 
-    private void bounds(Rectangle rect) {
-
-    }
 
     private void gameOver(){
         if (Gdx.input.justTouched()) {
@@ -116,7 +111,6 @@ public class postState extends State {
 
     @Override
     public void dispose() {
-        item.dispose();
-        bg.dispose();
+
     }
 }
