@@ -52,6 +52,7 @@ public class PauseState extends State{
     public void update(float delta) {
 
         switch (state){
+
             case GAME_PAUSED:
 
                 //System.out.println("pushed");
@@ -61,6 +62,7 @@ public class PauseState extends State{
                 manager.pop();
                 break;
             case GAME_QUIT:
+                manager.pop();
                 manager.set(new MenuState(manager));
                 break;
         }
@@ -74,7 +76,7 @@ public class PauseState extends State{
         sprite.setProjectionMatrix(manager.getCamera().combined);
 
         bounds(rect);
-        System.out.println(state);
+        //System.out.println(state);
 
         drawobject(sprite);
     }
@@ -82,6 +84,7 @@ public class PauseState extends State{
         if(Gdx.input.justTouched()){
             manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
             if(rect.contains(coords.x, coords.y)){
+
                 manager.push(this);
                // System.out.println("paused");
                 state = 2;
@@ -92,12 +95,14 @@ public class PauseState extends State{
             manager.getCamera().unproject(resume_coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
             if(resume_rect.contains(resume_coords.x, resume_coords.y)){
                 state = GAME_RUNNING;
+                return;
             }
         }
         if(Gdx.input.justTouched()){
             manager.getCamera().unproject(quit_coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
             if(quit_rect.contains(quit_coords.x, quit_coords.y)){
                 state = GAME_QUIT;
+                return;
 
             }
         }

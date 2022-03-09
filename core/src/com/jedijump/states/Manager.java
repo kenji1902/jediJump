@@ -35,6 +35,7 @@ public class Manager {
         states.push(state);
     }
     public void pop(){
+        dispose();
         states.pop();
     }
     public void set(State state){
@@ -44,12 +45,13 @@ public class Manager {
     }
     public void update(float delta){
         b2dr.render(world,camera.combined.scl(constants.PPM));
-        world.step(1/60f,6,2);
         states.peek().update(delta);
     }
 
     public void render(SpriteBatch sprite){
+
         states.peek().render(sprite);
+        System.out.println(states.peek());
     }
     public void dispose(){
         states.peek().dispose();

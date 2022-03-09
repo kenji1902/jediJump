@@ -80,7 +80,7 @@ public class character extends entity{
         float charPos = body.getPosition().y  * constants.PPM - (this.size.y * constants.PPM);
 
         if(charPos < deadZone){
-            manager.set(new MenuState(manager));
+            System.out.println("dead");
         }
         if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
             System.out.println("Dead");

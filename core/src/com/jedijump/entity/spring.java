@@ -76,7 +76,7 @@ public class spring extends entity{
         float deadZone = camera.position.y - (camera.viewportHeight / 2);
         float springPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
-        if (springPos < deadZone) {
+        if (springPos < deadZone && !isDestroyed) {
             disposeBody();
             texture.dispose();
             System.out.println("DEAD SPRING");
