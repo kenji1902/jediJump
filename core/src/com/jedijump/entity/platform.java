@@ -1,6 +1,7 @@
 package com.jedijump.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,13 +14,15 @@ import com.jedijump.states.Manager;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class platform extends entity{
     private animation texture;
     private Random rand;
     private int platformState;
-    private boolean isDestroyed = false;
+    private boolean isFixed = false;
+
 
     public platform(Manager manager) {
         super(manager);
@@ -54,7 +57,7 @@ public class platform extends entity{
         body.createFixture(fixtureDef).setUserData("platform");
         shape.dispose();
 
-        platformState = rand.nextInt(2);
+        platformState = isFixed? 0 : rand.nextInt(2);
         TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
         if(platformState == constants.PLATFORM_STATIC)
             texture = new animation(platformTexture, 64, 160 ,64,16,1,0.5f,true);
@@ -81,6 +84,8 @@ public class platform extends entity{
         }
     }
 
+
+
     private void updateAnimation(float delta){
         if(platformState == constants.PLATFORM_BREAK
                 && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND
@@ -89,13 +94,20 @@ public class platform extends entity{
             ) {
             texture.update(delta);
             if(texture.getCurrFrame() == texture.getFrameCount()-1){
-                isDestroyed = true;
                 texture.dispose();
-                manager.getWorld().destroyBody(body);
+                disposeBody();
             }
         }
         if(platformState == constants.PLATFORM_STATIC)
             texture.update(delta);
+        OrthographicCamera camera = manager.getCamera();
+        float deadZone = camera.position.y - (camera.viewportHeight / 2);
+        float platformPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
+
+        if (platformPos < deadZone && !isDestroyed) {
+            texture.dispose();
+            disposeBody();
+        }
 
     }
 
@@ -103,7 +115,7 @@ public class platform extends entity{
         return isDestroyed;
     }
 
-    public Body getBody(){
-        return body;
+    public void setFixed(boolean fixed) {
+        isFixed = fixed;
     }
 }
