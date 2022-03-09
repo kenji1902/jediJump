@@ -10,13 +10,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
+import com.jedijump.states.MenuState;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
-public class bird extends entity{
-    private animation texture;
+public class spring extends entity{
+    animation texture;
     private boolean isDestroyed = false;
-    public bird(Manager manager) {
+    public spring(Manager manager) {
         super(manager);
     }
 
@@ -29,7 +30,7 @@ public class bird extends entity{
         this.position.y /= constants.PPM;
 
         BodyDef def = new BodyDef();
-        def.type = BodyDef.BodyType.KinematicBody;
+        def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(this.position);
         def.fixedRotation = true;
         body = manager.getWorld().createBody(def);
@@ -44,55 +45,44 @@ public class bird extends entity{
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = density;
         fixtureDef.shape = shape;
-        fixtureDef.isSensor = true;
         fixtureDef.friction = constants.JEDISAUR_FRICTION;
-        body.createFixture(fixtureDef).setUserData("bird");
+        body.createFixture(fixtureDef).setUserData("springBody");
+
+        // Foot of the Character
+        shape.setAsBox(this.size.x/1.2f,this.size.y / 4,new Vector2(0,this.size.y),0);
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = true;
+        body.createFixture(fixtureDef).setUserData("springHead");
 
         shape.dispose();
 
-        TextureRegion birdTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
-        texture =  new animation(birdTexture, 0, 160 ,64,32,2,0.5f,false);
-        //birdPosx = body.getPosition().x;
-        System.out.println(birdPosx);
+        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        texture = new animation(platformTexture, 134, 17 ,18,14,1,0.5f,true);
+
     }
 
     @Override
     public void update(float delta) {
         if(!isDestroyed) {
-            birdMovement(delta);
+            float minPosY = body.getPosition().y;
+            if(minPosY > body.getPosition().y)
+                minPosY = body.getPosition().y;
             texture.update(delta);
+            body.setTransform(this.position.x, minPosY, 0);
             deadZone();
         }
     }
-
-    private float birdPosx = 0;
-    private int direction = 1;
-    private void birdMovement(float delta){
-
-        birdPosx += body.getLinearVelocity().x;
-        body.setLinearVelocity(constants.BIRD_SPEED * direction,0);
-
-        if(body.getPosition().x + size.x > constants.BOUNDARY ){
-            texture.flip();
-            direction = -1;
-        }else if(body.getPosition().x - size.x < -constants.BOUNDARY) {
-            texture.flip();
-            direction = 1;
-        }
-    }
-
     private void deadZone() {
         OrthographicCamera camera = manager.getCamera();
         float deadZone = camera.position.y - (camera.viewportHeight / 2);
-        float birdPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
+        float springPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
-        if (birdPos < deadZone) {
+        if (springPos < deadZone) {
             isDestroyed = true;
             texture.dispose();
             manager.getWorld().destroyBody(body);
-            System.out.println("DEAD BIRD");
+            System.out.println("DEAD SPRING");
         }
-
     }
     @Override
     public void render(SpriteBatch sprite) {
@@ -100,8 +90,7 @@ public class bird extends entity{
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),
-                    body.getPosition().y * constants.PPM - ((float) texture.getFrame().getRegionHeight() / 2)
-            );
+                    body.getPosition().y * constants.PPM - ((float) texture.getFrame().getRegionHeight() / 2));
             sprite.end();
         }
     }

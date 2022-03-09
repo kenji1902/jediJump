@@ -50,7 +50,7 @@ public class character extends entity{
         body.createFixture(fixtureDef).setUserData("body");
 
         // Foot of the Character
-        shape.setAsBox(this.size.x/1.2f,this.size.y / 4,new Vector2(0,this.position.x - this.size.y),0);
+        shape.setAsBox(this.size.x/1.2f,this.size.y / 4,new Vector2( 0,-this.size.y),0);
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
         body.createFixture(fixtureDef).setUserData("foot");
@@ -61,6 +61,7 @@ public class character extends entity{
 
         texture = new animation(new TextureRegion(new Texture(Gdx.files.internal("stand.png"))), 1 ,0.5f);
         maxPosY = body.getPosition().y;
+
     }
 
     @Override
@@ -70,7 +71,7 @@ public class character extends entity{
         cameraUpdate();
         Input(delta);
         deadZone();
-
+        springBoost(delta);
 
     }
     private void deadZone(){
@@ -80,6 +81,9 @@ public class character extends entity{
 
         if(charPos < deadZone){
             manager.push(new MenuState(manager));
+        }
+        if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
+            System.out.println("Dead");
         }
     }
 
@@ -98,14 +102,44 @@ public class character extends entity{
     }
 
     private boolean isDoubleJump = false;
+    private boolean onPush = false;
     private void Input(float delta){
+
+        //Control
         int horizontalForce = 0;
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             horizontalForce -= 1;
+            onPush = false;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             horizontalForce += 1;
+            onPush = false;
         }
+
+        //Force Field
+        //Right Field
+        if( body.getPosition().x + size.x > constants.BOUNDARY - constants.FORCEFIELD){
+            if(!Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+                body.applyForceToCenter(-constants.FORCEPUSH * constants.JEDISAUR_VELOCITY_X, 0, false);
+
+            if(body.getPosition().x + size.x > constants.BOUNDARY )
+                body.setLinearVelocity(0, body.getLinearVelocity().y);
+
+            onPush = true;
+
+        }
+        //Left Field
+        if( body.getPosition().x - size.x < -constants.BOUNDARY + constants.FORCEFIELD) {
+            if(!Gdx.input.isKeyPressed(Input.Keys.LEFT))
+                body.applyForceToCenter(constants.FORCEPUSH * constants.JEDISAUR_VELOCITY_X, 0, false);
+
+            if(body.getPosition().x - size.x < -constants.BOUNDARY )
+                body.setLinearVelocity(0, body.getLinearVelocity().y);
+
+            onPush = true;
+        }
+
+        // Jump and Double Jump
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND){
             body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y,false);
             isDoubleJump = true;
@@ -114,7 +148,23 @@ public class character extends entity{
             body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y*0.4f,false);
             isDoubleJump = false;
         }
-        body.setLinearVelocity(horizontalForce * 10,body.getLinearVelocity().y);
+
+        if(!onPush)
+            body.setLinearVelocity(horizontalForce * constants.JEDISAUR_VELOCITY_X,  body.getLinearVelocity().y);
+
+    }
+
+
+    private void springBoost(float delta){
+
+        int  playerState = manager.getCl().getPlayerState();
+        if(playerState == constants.JEDISAUR_SPRING_HIT){
+            System.out.println(playerState);
+
+            body.applyLinearImpulse(new Vector2(0,constants.JEDISAUR_JUMP_BOOST),body.getPosition(),false);
+        }
+
+
     }
 
     @Override

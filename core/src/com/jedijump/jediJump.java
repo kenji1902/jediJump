@@ -31,7 +31,7 @@ public class jediJump extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0, 0, 0);
+		ScreenUtils.clear(1, 1, 1, 0);
 		float delta = Gdx.graphics.getDeltaTime();
 		manage.update(delta);
 		manage.render(batch);
