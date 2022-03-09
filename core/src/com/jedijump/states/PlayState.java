@@ -141,8 +141,8 @@ public class PlayState extends State{
     @Override
     public void dispose() {
         character.disposeBody();
-        plt.disposeBody();
-        plt1.disposeBody();
+//        plt.disposeBody();
+//        plt1.disposeBody();
         baseplt.disposeBody();
         bird.disposeBody();
         spr.disposeBody();
