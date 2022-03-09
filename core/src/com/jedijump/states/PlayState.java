@@ -72,7 +72,7 @@ public class PlayState extends State{
         LevelGenerator(delta);
 
 
-        //bird.update(delta);
+        bird.update(delta);
         //birdGenerator(delta);
         spr.update(delta);
         character.update(delta);
