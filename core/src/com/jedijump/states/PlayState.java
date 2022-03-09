@@ -27,6 +27,7 @@ public class PlayState extends State{
     ShapeRenderer sr;
     Vector3 coords;
 
+
     public PlayState(Manager manager) {
         super(manager);
         character = new character(manager);
@@ -79,18 +80,18 @@ public class PlayState extends State{
     @Override
     public void render(SpriteBatch sprite) {
         manager.getCamera().update();
-        sprite.setProjectionMatrix(manager.getCamera().combined);
-        spr.render(sprite);
+//        sprite.setProjectionMatrix(manager.getCamera().combined);
+//        spr.render(sprite);
+//
+//        sr.setProjectionMatrix(manager.getCamera().combined);
+//        sr.begin(ShapeRenderer.ShapeType.Filled);
+//            sr.rect(rect.x, rect.y, rect.width, rect.height);
+//            sr.setColor(Color.GREEN);
+//        sr.end();
 
-        sr.setProjectionMatrix(manager.getCamera().combined);
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-            sr.rect(rect.x, rect.y, rect.width, rect.height);
-            sr.setColor(Color.GREEN);
-        sr.end();
-
-        drawobject(sprite);
-
-        bounds(rect);
+//        drawobject(sprite);
+//
+//        bounds(rect);
         character.render(sprite);
 
         bird.render(sprite);
@@ -104,23 +105,23 @@ public class PlayState extends State{
 
     }
 
-    private void bounds(Rectangle rect){
-        if(Gdx.input.isTouched() ){
-            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
-
-            if(rect.contains(coords.x, coords.y)){
-            }
-        }
-    }
-
-    private void drawobject(SpriteBatch batch){
-
-        OrthographicCamera camera = manager.getCamera();
-        rect.y = 150 + camera.position.y;
-        batch.begin();
-            batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
-        batch.end();
-    }
+//    private void bounds(Rectangle rect){
+//        if(Gdx.input.isTouched() ){
+//            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
+//
+//            if(rect.contains(coords.x, coords.y)){
+//            }
+//        }
+//    }
+//
+//    private void drawobject(SpriteBatch batch){
+//
+//        OrthographicCamera camera = manager.getCamera();
+//        rect.y = 150 + camera.position.y;
+//        batch.begin();
+//            batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
+//        batch.end();
+//    }
 
 
     @Override
