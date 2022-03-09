@@ -2,6 +2,7 @@ package com.jedijump.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,12 +15,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
 import com.jedijump.states.MenuState;
-import com.jedijump.states.postState;
+import com.jedijump.states.PauseState;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
 public class character extends entity{
     animation texture;
+
 
     public character(Manager manager) {
         super(manager);
@@ -32,6 +34,8 @@ public class character extends entity{
 
         this.position.x /= constants.PPM;
         this.position.y /= constants.PPM;
+
+
 
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
@@ -81,8 +85,9 @@ public class character extends entity{
         float charPos = body.getPosition().y  * constants.PPM - (this.size.y * constants.PPM);
 
         if(charPos < deadZone){
-            System.out.println("dead");
-            manager.set(new postState(manager));
+            camera.setToOrtho(false);
+
+           manager.set(new MenuState(manager));
         }
         if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
             System.out.println("Dead");
@@ -167,9 +172,9 @@ public class character extends entity{
         if(!isDestroyed) {
             sprite.setProjectionMatrix(manager.getCamera().combined);
             sprite.begin();
-//            sprite.draw(texture.getFrame(),
-//                    body.getPosition().x * constants.PPM - ((float)texture.getFrame().getRegionWidth()/2),
-//                    body.getPosition().y * constants.PPM - ((float)texture.getFrame().getRegionHeight()/2));
+            sprite.draw(texture.getFrame(),
+                    body.getPosition().x * constants.PPM - ((float)texture.getFrame().getRegionWidth()/2),
+                    body.getPosition().y * constants.PPM - ((float)texture.getFrame().getRegionHeight()/2));
             sprite.end();
         }
     }

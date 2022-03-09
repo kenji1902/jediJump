@@ -52,7 +52,7 @@ public class platform extends entity{
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = density;
         fixtureDef.shape = shape;
-        fixtureDef.friction = 0;
+        fixtureDef.friction = 5;
 
         body.createFixture(fixtureDef).setUserData("platform");
         shape.dispose();
@@ -76,6 +76,7 @@ public class platform extends entity{
     public void render(SpriteBatch spriteBatch) {
         if(!isDestroyed) {
             sprite = spriteBatch;
+            sprite.enableBlending();
             sprite.begin();
                 sprite.draw(texture.getFrame(),
                         body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),

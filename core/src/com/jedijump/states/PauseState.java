@@ -14,6 +14,8 @@ import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
 import com.jedijump.utility.constants;
 
+import java.awt.*;
+
 public class PauseState extends State{
     static final int GAME_READY = 0;
     static final int GAME_RUNNING = 1;
@@ -62,6 +64,7 @@ public class PauseState extends State{
                 manager.pop();
                 break;
             case GAME_QUIT:
+                MenuState.menuMusic.stop();
                 manager.pop();
                 manager.set(new MenuState(manager));
                 break;
