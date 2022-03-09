@@ -7,14 +7,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.jedijump.entity.bird;
 import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
 import com.jedijump.entity.spring;
 import com.jedijump.utility.constants;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class PlayState extends State{
     character character;
@@ -27,7 +32,7 @@ public class PlayState extends State{
     ShapeRenderer sr;
     Vector3 coords;
     PauseState ps;
-
+    ArrayList<platform> platforms = new ArrayList<>();
 
     public PlayState(Manager manager) {
         super(manager);
@@ -38,10 +43,10 @@ public class PlayState extends State{
         bird = new bird(manager);
         spr = new spring(manager);
         character.create(new Vector2(0,0),new Vector2(32,32),1);
-        plt.setFixed(true);
-        plt.create(new Vector2(0,-36),new Vector2(64,16),0);
+        //plt.setFixed(true);
+        //plt.create(new Vector2(0,-36),new Vector2(64,16),0);
         ps = new PauseState(manager);
-        plt1.create(new Vector2(-20,82),new Vector2(64,16),0);
+        //plt1.create(new Vector2(-20,82),new Vector2(64,16),0);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
         bird.create(new Vector2(30,50),new Vector2(32,32),1);
         spr.create(new Vector2(-42,89),new Vector2(18,14),1);
@@ -56,6 +61,9 @@ public class PlayState extends State{
                 64, 64);
         sr = new ShapeRenderer();
         coords = new Vector3();
+        platform plt = new platform(manager);
+        plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2), constants.SCREENHEIGHT/2), new Vector2(64,16), 0);
+        platforms.add(plt);
 
 
 
@@ -63,16 +71,18 @@ public class PlayState extends State{
 
     @Override
     public void update(float delta) {
+
         manager.getWorld().step(1/60f,6,2);
+        platforms.get(0).update(delta);
         bird.update(delta);
         spr.update(delta);
         character.update(delta);
-        plt.update(delta);
+        //plt.update(delta);
 //        System.out.println(rect.x +" " + rect.y + " " + rect.width + " " + rect.height);
 //        System.out.println(pause.getRegionX() + " " + pause.getRegionY());
 
 
-        plt1.update(delta);
+        //plt1.update(delta);
 //        if(plt1 != null && plt1.isDestroyed()){
 //            System.out.println("Destroyed");
 //            plt1 = null;
@@ -84,6 +94,7 @@ public class PlayState extends State{
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
         spr.render(sprite);
+        platforms.get(0).render(sprite);
 
         sr.setProjectionMatrix(manager.getCamera().combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -98,9 +109,9 @@ public class PlayState extends State{
         character.render(sprite);
 
         bird.render(sprite);
-        plt.render(sprite);
-        if(plt1 != null)
-            plt1.render(sprite);
+        //plt.render(sprite);
+       // if(plt1 != null)
+            //plt1.render(sprite);
 
     }
 
@@ -135,6 +146,9 @@ public class PlayState extends State{
         baseplt.disposeBody();
         bird.disposeBody();
         spr.disposeBody();
+        for (platform plt: platforms) {
+            plt.disposeBody();
+        }
     }
 
 

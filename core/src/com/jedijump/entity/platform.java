@@ -14,6 +14,7 @@ import com.jedijump.states.Manager;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class platform extends entity{
@@ -21,6 +22,7 @@ public class platform extends entity{
     private Random rand;
     private int platformState;
     private boolean isFixed = false;
+
 
     public platform(Manager manager) {
         super(manager);
