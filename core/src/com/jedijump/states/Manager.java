@@ -51,7 +51,6 @@ public class Manager {
     public void render(SpriteBatch sprite){
 
         states.peek().render(sprite);
-        System.out.println(states.peek());
     }
     public void dispose(){
         states.peek().dispose();
