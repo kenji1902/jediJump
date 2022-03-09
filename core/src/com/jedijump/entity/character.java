@@ -128,4 +128,6 @@ public class character extends entity{
 //                    body.getPosition().y * constants.PPM - ((float)texture.getFrame().getRegionHeight()/2));
         sprite.end();
     }
+
+
 }

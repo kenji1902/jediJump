@@ -44,6 +44,7 @@ public class Manager {
     }
     public void set(State state){
         System.out.println(state + "has been set");
+        dispose();
         states.pop();
         states.push(state);
 
