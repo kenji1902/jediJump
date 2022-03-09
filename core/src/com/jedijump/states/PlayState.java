@@ -34,7 +34,7 @@ public class PlayState extends State{
     PauseState ps;
     Array<platform> platforms;
     Array<bird> birds;
-    int y = -70;
+    int y = -120;
 
     public PlayState(Manager manager) {
         super(manager);
@@ -70,6 +70,9 @@ public class PlayState extends State{
         manager.getWorld().step(1/60f,6,2);
 
         LevelGenerator(delta);
+        for (platform p: platforms) {
+            p.update(delta);
+        }
 
 
         bird.update(delta);

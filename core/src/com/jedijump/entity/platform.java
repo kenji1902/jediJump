@@ -78,6 +78,7 @@ public class platform extends entity{
     public void render(SpriteBatch spriteBatch) {
         if(!isDestroyed) {
             sprite = spriteBatch;
+            sprite.enableBlending();
             sprite.begin();
                 sprite.draw(texture.getFrame(),
                         body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),

@@ -107,7 +107,7 @@ public class character extends entity{
         }
         if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
             System.out.println("Dead");
-            manager.set(new postState(manager));
+           // manager.set(new postState(manager));
         }
     }
     private float maxPosY;

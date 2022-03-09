@@ -41,6 +41,6 @@ public class constants {
     public static final float BIRD_SPEED = 5;
 
     // PLATFORM
-    public static final float PLATFORM_SPEED = 2;
+    public static final float PLATFORM_SPEED = 3;
 
 }
