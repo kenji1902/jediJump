@@ -33,21 +33,14 @@ public class Manager {
     }
     public void push(State state){
         states.push(state);
-        System.out.println(state + " has been pushed!");
-//        for (State s: states) {
-//            System.out.println(s);
-//        }
     }
     public void pop(){
         states.pop();
-        System.out.println(states + " has been popped!");
     }
     public void set(State state){
-        System.out.println(state + "has been set");
         dispose();
         states.pop();
         states.push(state);
-
     }
     public void update(float delta){
         b2dr.render(world,camera.combined.scl(constants.PPM));
