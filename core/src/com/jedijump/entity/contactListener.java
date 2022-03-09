@@ -15,9 +15,12 @@ public class contactListener implements ContactListener {
 
         playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
         int springHit = compareEntity(entityA,entityB,"springHead","foot",constants.JEDISAUR_SPRING_HIT);
-        if(springHit != - 1)
+        if(springHit != -1)
             playerState = springHit;
 
+        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_COIN_HIT);
+        if(coinHit != -1)
+            playerState = coinHit;
     }
 
 
@@ -30,6 +33,10 @@ public class contactListener implements ContactListener {
         int springHit = compareEntity(entityA,entityB,"springHead","foot",constants.JEDISAUR_ON_AIR);
         if(springHit != - 1)
             playerState = springHit;
+
+        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_ON_AIR);
+        if(coinHit != -1)
+            playerState = coinHit;
     }
 
     @Override

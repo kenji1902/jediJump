@@ -24,12 +24,14 @@ public class constants {
     public static final int JEDISAUR_ON_AIR = 1;
     public static final int JEDISAUR_BIRD_HIT = 2;
     public static final int JEDISAUR_SPRING_HIT = 4;
+    public static final int JEDISAUR_COIN_HIT = 5;
 
     // PLATFORM STATES
     public static final int PLATFORM_STATIC = 0;
     public static final int PLATFORM_BREAK = 1;
 
-
+    // COIN
+    public static final int COIN_SCORE = 10;
 
     // BIRD
     public static final float BIRD_SPEED = 5;
