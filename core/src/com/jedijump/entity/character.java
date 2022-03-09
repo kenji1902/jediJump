@@ -2,6 +2,7 @@ package com.jedijump.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +22,7 @@ import com.jedijump.utility.constants;
 public class character extends entity{
     animation texture;
 
+
     public character(Manager manager) {
         super(manager);
     }
@@ -32,6 +34,8 @@ public class character extends entity{
 
         this.position.x /= constants.PPM;
         this.position.y /= constants.PPM;
+
+
 
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
@@ -82,6 +86,7 @@ public class character extends entity{
 
         if(charPos < deadZone){
             camera.setToOrtho(false);
+
            manager.set(new MenuState(manager));
         }
         if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){

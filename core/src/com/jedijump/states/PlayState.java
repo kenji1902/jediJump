@@ -80,7 +80,7 @@ public class PlayState extends State{
         OrthographicCamera camera = manager.getCamera();
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
-        spr.render(sprite);
+
 
         sprite.disableBlending();
         sprite.begin();
@@ -91,7 +91,7 @@ public class PlayState extends State{
             System.out.println(platforms.size);
             p.render(sprite);
         }
-
+        spr.render(sprite);
 
         drawobject(sprite);
 
