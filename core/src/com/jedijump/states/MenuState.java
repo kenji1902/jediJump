@@ -52,8 +52,8 @@ public class MenuState extends State{
 
         sprite.enableBlending();
         sprite.begin();
-        sprite.draw(logo, 160 - 274 / 2 , 480 - 10 - 142);
-        sprite.draw(mainMenu, 10, 200 - 110 / 2, 300, 110 );
+        sprite.draw(logo, 160 - logo.getRegionWidth() / 2 , 480 - 10 - 142);
+        sprite.draw(mainMenu, 10, 200 - mainMenu.getRegionHeight() / 2);
         sprite.end();
     }
     private void Input(Rectangle rect){
