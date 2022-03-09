@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import com.jedijump.entity.bird;
 import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
@@ -32,7 +33,8 @@ public class PlayState extends State{
     ShapeRenderer sr;
     Vector3 coords;
     PauseState ps;
-    ArrayList<platform> platforms = new ArrayList<>();
+    Array<platform> platforms;
+    int y;
 
     public PlayState(Manager manager) {
         super(manager);
@@ -61,9 +63,9 @@ public class PlayState extends State{
                 64, 64);
         sr = new ShapeRenderer();
         coords = new Vector3();
-        platform plt = new platform(manager);
-        plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2), constants.SCREENHEIGHT/2), new Vector2(64,16), 0);
-        platforms.add(plt);
+        platforms = new Array<>();
+        LevelGenerator();
+
 
 
 
@@ -73,7 +75,10 @@ public class PlayState extends State{
     public void update(float delta) {
 
         manager.getWorld().step(1/60f,6,2);
+
         platforms.get(0).update(delta);
+
+
         bird.update(delta);
         spr.update(delta);
         character.update(delta);
@@ -94,7 +99,12 @@ public class PlayState extends State{
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
         spr.render(sprite);
-        platforms.get(0).render(sprite);
+        LevelGenerator();
+        for (platform p: platforms) {
+            p.render(sprite);
+            //platforms.get((int)p).render(sprite);
+        }
+
 
         sr.setProjectionMatrix(manager.getCamera().combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -116,6 +126,12 @@ public class PlayState extends State{
     }
 
     public void LevelGenerator(){
+        OrthographicCamera camera = manager.getCamera();
+        platform plt = new platform(manager);
+
+        y+=32;
+        plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
+        platforms.add(plt);
 
     }
 
@@ -141,14 +157,14 @@ public class PlayState extends State{
     @Override
     public void dispose() {
         character.disposeBody();
-        plt.disposeBody();
-        plt1.disposeBody();
+//        plt.disposeBody();
+//        plt1.disposeBody();
         baseplt.disposeBody();
         bird.disposeBody();
         spr.disposeBody();
-        for (platform plt: platforms) {
-            plt.disposeBody();
-        }
+//        for (platform plt: platforms) {
+//            plt.disposeBody();
+//        }
     }
 
 
