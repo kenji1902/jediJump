@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
 import com.jedijump.states.MenuState;
+import com.jedijump.states.postState;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
@@ -81,6 +82,7 @@ public class character extends entity{
 
         if(charPos < deadZone){
             System.out.println("dead");
+            manager.set(new postState(manager));
         }
         if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
             System.out.println("Dead");
