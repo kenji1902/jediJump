@@ -2,7 +2,6 @@ package com.jedijump.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,15 +14,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
 import com.jedijump.states.MenuState;
-import com.jedijump.states.PauseState;
-import com.jedijump.states.postState;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
 public class character extends entity{
-    animation texture;
-
-
+    animation side;
+    animation jump;
+    animation stand;
     public character(Manager manager) {
         super(manager);
     }
@@ -35,8 +32,6 @@ public class character extends entity{
 
         this.position.x /= constants.PPM;
         this.position.y /= constants.PPM;
-
-
 
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
@@ -66,19 +61,39 @@ public class character extends entity{
 
 
         shape.dispose();
+        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
 
-        texture = new animation(new TextureRegion(new Texture(Gdx.files.internal("stand.png"))), 1 ,0.5f);
+        side = new animation(platformTexture,32,128,64,32,2,0.5f,false);
+        jump = new animation(platformTexture,96,128,64,32,2,0.5f,false);
+        stand = new animation(platformTexture,0,128,32,32,1,0.5f,false);
+
         maxPosY = body.getPosition().y;
     }
     @Override
     public void update(float delta) {
         if(!isDestroyed) {
-            texture.update(delta);
+            if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR && ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))))
+                side.update(delta);
+            else if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR)
+                stand.update(delta);
+            else
+                jump.update(delta);
+
+
             cameraUpdate();
             Input(delta);
             deadZone();
+            characterPlatform();
             springBoost(delta);
         }
+    }
+    private void characterPlatform(){
+        int playerState = manager.getCl().getPlayerState();
+        Body platform = manager.getCl().getPlatform();
+        if(playerState == constants.JEDISAUR_ON_GROUND && platform != null ){
+            body.setLinearVelocity(body.getLinearVelocity().x + platform.getLinearVelocity().x,body.getLinearVelocity().y);
+        }
+
     }
     private void deadZone(){
         OrthographicCamera camera = manager.getCamera();
@@ -86,13 +101,10 @@ public class character extends entity{
         float charPos = body.getPosition().y  * constants.PPM - (this.size.y * constants.PPM);
 
         if(charPos < deadZone){
-            camera.setToOrtho(false);
-
-           manager.set(new postState(manager));
+            System.out.println("dead");
         }
         if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
             System.out.println("Dead");
-            manager.set(new postState(manager));
         }
     }
     private float maxPosY;
@@ -109,6 +121,7 @@ public class character extends entity{
     }
     private boolean isDoubleJump = false;
     private boolean onPush = false;
+    private boolean isLeft = false;
     private void Input(float delta){
 
         //Control
@@ -116,10 +129,20 @@ public class character extends entity{
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             horizontalForce -= 1;
             onPush = false;
+            if(!isLeft) {
+                side.flip();
+                stand.flip();
+                isLeft = true;
+            }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             horizontalForce += 1;
             onPush = false;
+            if(isLeft) {
+                side.flip();
+                stand.flip();
+                isLeft = false;
+            }
         }
 
         //Force Field
@@ -174,9 +197,20 @@ public class character extends entity{
         if(!isDestroyed) {
             sprite.setProjectionMatrix(manager.getCamera().combined);
             sprite.begin();
-            sprite.draw(texture.getFrame(),
-                    body.getPosition().x * constants.PPM - ((float)texture.getFrame().getRegionWidth()/2),
-                    body.getPosition().y * constants.PPM - ((float)texture.getFrame().getRegionHeight()/2));
+;
+            if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR && ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))))
+                sprite.draw(side.getFrame(),
+                        body.getPosition().x * constants.PPM - ((float)side.getFrame().getRegionWidth()/2),
+                        body.getPosition().y * constants.PPM - ((float)side.getFrame().getRegionHeight()/2));
+            else if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR)
+                sprite.draw(stand.getFrame(),
+                        body.getPosition().x * constants.PPM - ((float)stand.getFrame().getRegionWidth()/2),
+                        body.getPosition().y * constants.PPM - ((float)stand.getFrame().getRegionHeight()/2));
+            else
+                sprite.draw(jump.getFrame(),
+                        body.getPosition().x * constants.PPM - ((float)jump.getFrame().getRegionWidth()/2),
+                        body.getPosition().y * constants.PPM - ((float)jump.getFrame().getRegionHeight()/2));
+
             sprite.end();
         }
     }

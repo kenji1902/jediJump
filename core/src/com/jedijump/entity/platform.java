@@ -14,7 +14,6 @@ import com.jedijump.states.Manager;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class platform extends entity{
@@ -22,8 +21,7 @@ public class platform extends entity{
     private Random rand;
     private int platformState;
     private boolean isFixed = false;
-
-
+    private boolean isMoving = false;
     public platform(Manager manager) {
         super(manager);
         rand = new Random();
@@ -52,7 +50,7 @@ public class platform extends entity{
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = density;
         fixtureDef.shape = shape;
-        fixtureDef.friction = 5;
+        fixtureDef.friction = 0;
 
         body.createFixture(fixtureDef).setUserData("platform");
         shape.dispose();
@@ -63,12 +61,16 @@ public class platform extends entity{
             texture = new animation(platformTexture, 64, 160 ,64,16,1,0.5f,true);
         else
             texture = new animation(platformTexture, 64, 160 ,64,64,4,0.5f,true);
+
+        isMoving = rand.nextBoolean();
     }
 
     @Override
     public void update(float delta) {
         if(!isDestroyed) {
             updateAnimation(delta);
+            if(isMoving)
+                platformMovement(delta);
         }
     }
 
@@ -76,7 +78,6 @@ public class platform extends entity{
     public void render(SpriteBatch spriteBatch) {
         if(!isDestroyed) {
             sprite = spriteBatch;
-            sprite.enableBlending();
             sprite.begin();
                 sprite.draw(texture.getFrame(),
                         body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),
@@ -85,6 +86,17 @@ public class platform extends entity{
         }
     }
 
+    private int direction = 1;
+    private void platformMovement(float delta){
+
+        body.setLinearVelocity(constants.PLATFORM_SPEED * direction,0);
+
+        if(body.getPosition().x + size.x > constants.BOUNDARY - constants.FORCEFIELD ){
+            direction = -1;
+        }else if(body.getPosition().x - size.x < -constants.BOUNDARY + constants.FORCEFIELD) {
+            direction = 1;
+        }
+    }
 
 
     private void updateAnimation(float delta){
