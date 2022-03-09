@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.audio.Sound;
 import java.awt.*;
 
 public class HelpState extends State {
@@ -15,6 +16,7 @@ public class HelpState extends State {
     Texture item, help;
     TextureRegion helpRegion, arrow;
     Vector3 touchPoint;
+    Sound clickSound;
 
     int count = 0;
 
@@ -32,6 +34,8 @@ public class HelpState extends State {
 
         item = new Texture(Gdx.files.internal("items.png"));
         arrow = new TextureRegion(item, 0, 64, 64, 64);
+
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
     }
 
     @Override
@@ -40,6 +44,7 @@ public class HelpState extends State {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
             if (nextBounds.contains(touchPoint.x, touchPoint.y)) {
+                clickSound.play();
                 if(count==0){
                     help.dispose();
                     help = new Texture(Gdx.files.internal("help2.png"));
@@ -48,24 +53,25 @@ public class HelpState extends State {
                 }
                 else if (count == 1){
                     help.dispose();
-                    help = new Texture(Gdx.files.internal("help1.png"));
+                    help = new Texture(Gdx.files.internal("help3.png"));
                     helpRegion = new TextureRegion(help, 0, 0, 320, 480);
                     count++;
                 }
                 else if(count==2){
                     help.dispose();
-                    help = new Texture(Gdx.files.internal("help2.png"));
+                    help = new Texture(Gdx.files.internal("help4.png"));
                     helpRegion = new TextureRegion(help, 0, 0, 320, 480);
                     count++;
                 }
                 else if(count==3){
                     help.dispose();
-                    help = new Texture(Gdx.files.internal("help1.png"));
+                    help = new Texture(Gdx.files.internal("help5.png"));
                     helpRegion = new TextureRegion(help, 0, 0, 320, 480);
                     count++;
                 }
                 else if(count==4){
                     help.dispose();
+                    MenuState.menuMusic.stop();
                     manager.set(new MenuState(manager));
                 }
             }
@@ -88,6 +94,7 @@ public class HelpState extends State {
     @Override
     public void dispose() {
         help.dispose();
+
     }
 
 }
