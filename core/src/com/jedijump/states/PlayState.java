@@ -30,7 +30,6 @@ public class PlayState extends State{
     Texture item, bg;
     TextureRegion pause, bgRegion;
     Rectangle rect;
-    ShapeRenderer sr;
     Vector3 coords;
     PauseState ps;
     Array<platform> platforms;
@@ -45,10 +44,7 @@ public class PlayState extends State{
         bird = new bird(manager);
         spr = new spring(manager);
         character.create(new Vector2(0,0),new Vector2(32,32),1);
-        //plt.setFixed(true);
-        //plt.create(new Vector2(0,-36),new Vector2(64,16),0);
         ps = new PauseState(manager);
-        //plt1.create(new Vector2(-20,82),new Vector2(64,16),0);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
         bird.create(new Vector2(30,50),new Vector2(32,32),1);
         spr.create(new Vector2(-42,89),new Vector2(18,14),1);
@@ -61,16 +57,8 @@ public class PlayState extends State{
         rect = new Rectangle(55,
                  150 ,
                 64, 64);
-        sr = new ShapeRenderer();
         coords = new Vector3();
         platforms = new Array<>();
-
-        //LevelGenerator();
-        //plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   10), new Vector2(64,16), 0);
-        //platforms.add(plt);
-
-
-
 
     }
 
@@ -85,35 +73,25 @@ public class PlayState extends State{
         bird.update(delta);
         spr.update(delta);
         character.update(delta);
-        //plt.update(delta);
-//        System.out.println(rect.x +" " + rect.y + " " + rect.width + " " + rect.height);
-//        System.out.println(pause.getRegionX() + " " + pause.getRegionY());
-
-
-        //plt1.update(delta);
-//        if(plt1 != null && plt1.isDestroyed()){
-//            System.out.println("Destroyed");
-//            plt1 = null;
-//        }
     }
 
     @Override
     public void render(SpriteBatch sprite) {
+        OrthographicCamera camera = manager.getCamera();
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
         spr.render(sprite);
 
+        sprite.disableBlending();
+        sprite.begin();
+            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+        sprite.end();
+
         for (platform p: platforms) {
+            System.out.println(platforms.size);
             p.render(sprite);
-            //platforms.get((int)p).render(sprite);
         }
 
-
-        sr.setProjectionMatrix(manager.getCamera().combined);
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-            sr.rect(rect.x, rect.y, rect.width, rect.height);
-            sr.setColor(Color.GREEN);
-        sr.end();
 
         drawobject(sprite);
 
@@ -122,16 +100,11 @@ public class PlayState extends State{
         character.render(sprite);
 
         bird.render(sprite);
-        //plt.render(sprite);
-       // if(plt1 != null)
-            //plt1.render(sprite);
-
     }
 
     private float MAX = 5;
     private float counter = 0;
     public void LevelGenerator(float deltatime){
-        OrthographicCamera camera = manager.getCamera();
         counter += deltatime;
 
         if(counter < MAX){
@@ -161,6 +134,8 @@ public class PlayState extends State{
 
         OrthographicCamera camera = manager.getCamera();
         rect.y = 150 + camera.position.y;
+
+        batch.enableBlending();
         batch.begin();
             batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
         batch.end();
@@ -170,8 +145,6 @@ public class PlayState extends State{
     @Override
     public void dispose() {
         character.disposeBody();
-//        plt.disposeBody();
-//        plt1.disposeBody();
         baseplt.disposeBody();
         bird.disposeBody();
         spr.disposeBody();
