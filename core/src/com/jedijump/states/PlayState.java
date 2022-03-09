@@ -94,7 +94,7 @@ public class PlayState extends State{
         sprite.end();
 
         for (platform p: platforms) {
-            System.out.println(platforms.size);
+
             p.render(sprite);
         }
         spr.render(sprite);
@@ -115,7 +115,7 @@ public class PlayState extends State{
         counter += deltatime;
 
         if(counter < MAX){
-            System.out.println(counter);
+
             platform plt = new platform(manager);
             plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
 

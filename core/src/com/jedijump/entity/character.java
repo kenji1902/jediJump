@@ -189,7 +189,7 @@ public class character extends entity{
 
         int  playerState = manager.getCl().getPlayerState();
         if(playerState == constants.JEDISAUR_SPRING_HIT){
-            System.out.println(playerState);
+
 
             body.applyLinearImpulse(new Vector2(0,constants.JEDISAUR_JUMP_BOOST),body.getPosition(),false);
         }
