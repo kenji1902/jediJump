@@ -34,7 +34,7 @@ public class PlayState extends State{
     Vector3 coords;
     PauseState ps;
     Array<platform> platforms;
-    int y;
+    int y = -70;
 
     public PlayState(Manager manager) {
         super(manager);
@@ -64,7 +64,10 @@ public class PlayState extends State{
         sr = new ShapeRenderer();
         coords = new Vector3();
         platforms = new Array<>();
-        LevelGenerator();
+
+        //LevelGenerator();
+        //plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   10), new Vector2(64,16), 0);
+        //platforms.add(plt);
 
 
 
@@ -76,7 +79,7 @@ public class PlayState extends State{
 
         manager.getWorld().step(1/60f,6,2);
 
-        platforms.get(0).update(delta);
+        LevelGenerator(delta);
 
 
         bird.update(delta);
@@ -99,7 +102,7 @@ public class PlayState extends State{
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
         spr.render(sprite);
-        LevelGenerator();
+
         for (platform p: platforms) {
             p.render(sprite);
             //platforms.get((int)p).render(sprite);
@@ -125,13 +128,23 @@ public class PlayState extends State{
 
     }
 
-    public void LevelGenerator(){
+    private float MAX = 5;
+    private float counter = 0;
+    public void LevelGenerator(float deltatime){
         OrthographicCamera camera = manager.getCamera();
-        platform plt = new platform(manager);
+        counter += deltatime;
 
-        y+=32;
-        plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
-        platforms.add(plt);
+        if(counter < MAX){
+            System.out.println(counter);
+            platform plt = new platform(manager);
+            plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
+
+            platforms.add(plt);
+            y+=100;
+        }
+        if(counter >= MAX-1){
+            counter = MAX;
+        }
 
     }
 
@@ -162,9 +175,9 @@ public class PlayState extends State{
         baseplt.disposeBody();
         bird.disposeBody();
         spr.disposeBody();
-//        for (platform plt: platforms) {
-//            plt.disposeBody();
-//        }
+        for (platform plt: platforms) {
+            plt.disposeBody();
+        }
     }
 
 
