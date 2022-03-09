@@ -33,6 +33,7 @@ public class PlayState extends State{
     Vector3 coords;
     PauseState ps;
     Array<platform> platforms;
+    Array<bird> birds;
     int y = -70;
 
     public PlayState(Manager manager) {
@@ -59,6 +60,7 @@ public class PlayState extends State{
                 64, 64);
         coords = new Vector3();
         platforms = new Array<>();
+        //birds = new Array<>();
 
     }
 
@@ -70,7 +72,8 @@ public class PlayState extends State{
         LevelGenerator(delta);
 
 
-        bird.update(delta);
+        //bird.update(delta);
+        //birdGenerator(delta);
         spr.update(delta);
         character.update(delta);
     }
@@ -100,6 +103,7 @@ public class PlayState extends State{
         character.render(sprite);
 
         bird.render(sprite);
+
     }
 
     private float MAX = 5;
@@ -118,6 +122,20 @@ public class PlayState extends State{
         if(counter >= MAX-1){
             counter = MAX;
         }
+
+    }
+
+    public void birdGenerator(float deltatime){
+//        counter += deltatime;
+//        if(counter < MAX){
+//            bird = new bird(manager);
+//            bird.create(new Vector2(0,MathUtils.random(-constants.SCREENHEIGHT/2, constants.SCREENHEIGHT/2)), new Vector2(64,32), 0);
+//            birds.add(bird);
+//            bird.update(deltatime);
+//        }
+//        if(counter >= MAX-1){
+//            counter = MAX;
+//        }
 
     }
 
