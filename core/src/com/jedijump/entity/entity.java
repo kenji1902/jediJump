@@ -25,6 +25,22 @@ public abstract class entity {
               if(!isDestroyed) {
                      manager.getWorld().destroyBody(body);
                      isDestroyed = true;
+
+                     try {
+                            manager.deletedPlatform.push((platform) this);
+                     }catch (ClassCastException ignored){}
+                     try {
+                            manager.deletedSprings.push((spring) this);
+                     }catch (ClassCastException ignored){}
+                     try {
+                            manager.deletedDebris.push((debri) this);
+                     }catch (ClassCastException ignored){}
+                     try {
+                            manager.deletedCoins.push((coin) this);
+                     }catch (ClassCastException ignored){}
+                     try {
+                            manager.deletedBird.push((bird) this);
+                     }catch (ClassCastException ignored){}
               }
        }
        public boolean isGenerated(){

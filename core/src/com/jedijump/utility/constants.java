@@ -7,6 +7,9 @@ public class constants {
     public static final float JEDISAUR_VELOCITY_Y = 1000;
     public static final float JEDISAUR_FRICTION = 0.5f;
     public static final float JEDISAUR_JUMP_BOOST = 20f;
+    // DEBUG
+    public static final boolean DEBUG_MODE = false;
+    public static final float ZOOM = 3.3f;
 
     // WINDOW
     public static final int SCREENWIDTH = 320;
