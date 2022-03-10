@@ -103,12 +103,17 @@ public class character extends entity{
             OrthographicCamera camera = manager.getCamera();
             float deadZone = camera.position.y - (camera.viewportHeight / 2);
             float charPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM );
-            if (charPos < deadZone && !isDestroyed)
+            if (charPos < deadZone && !isDestroyed){
+                System.out.println("DEAD FROM FALLING");
                 disposeBody();
+            }
             if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed)
                 disposeBody();
-            if( isDestroyed)
+            if( isDestroyed){
+                System.out.println("DEAD FROM BIRD");
                 manager.set(new postState(manager));
+            }
+
         }
     }
     private float maxPosY;

@@ -75,10 +75,12 @@ public class PlayState extends State{
         for (platform p: platforms) {
             p.update(delta);
         }
+
+        birdGenerator(delta);
         for(bird b: birds){
             b.update(delta);
         }
-        //birdGenerator(delta);
+
 
         spr.update(delta);
         character.update(delta);
@@ -108,10 +110,6 @@ public class PlayState extends State{
         character.render(sprite);
 
 
-        if(TimeUtils.nanoTime() - birdSpawnTime > 1000000000) {
-            birdGenerator();
-        }
-
         for(bird b: birds){
             b.render(sprite);
         }
@@ -136,14 +134,22 @@ public class PlayState extends State{
         }
 
     }
-    private long birdSpawnTime;
+    private float birdSpawnTime = 5;
     private float birdCounter = 0;
-    public void birdGenerator(){
-        bird = new bird(manager);
-        bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
-        birdSpawnTime = TimeUtils.nanoTime();
-        birds.add(bird);
-        birdY+=500;
+    public void birdGenerator(float deltatime){
+        birdSpawnTime += deltatime;
+
+        if(birdCounter < birdSpawnTime){
+            bird = new bird(manager);
+            bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
+            //birdSpawnTime = TimeUtils.nanoTime();
+            birds.add(bird);
+            birdY+=700;
+        }
+        if(birdCounter >= birdSpawnTime-1){
+            birdCounter = birdSpawnTime;
+        }
+
 
     }
 
@@ -172,10 +178,12 @@ public class PlayState extends State{
     public void dispose() {
         character.disposeBody();
         baseplt.disposeBody();
-        bird.disposeBody();
         spr.disposeBody();
         for (platform plt: platforms) {
             plt.disposeBody();
+        }
+        for (bird b: birds){
+            b.disposeBody();
         }
     }
 
