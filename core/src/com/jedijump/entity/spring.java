@@ -61,7 +61,7 @@ public class spring extends entity{
 
         shape.dispose();
 
-        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        TextureRegion platformTexture = manager.getItems();
         texture = new animation(platformTexture, 134, 17 ,18,14,1,0.5f,true);
         isGenerated = true;
 

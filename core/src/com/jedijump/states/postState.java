@@ -30,8 +30,8 @@ public class postState extends State {
         retry = new TextureRegion(item, 348, 353, 151, 30);
         quit = new TextureRegion(item, 363, 386, 128, 31);
         rect = new Rectangle(55, 150 , 64, 64);
-        retry_rect = new Rectangle(65, 230, 192,96/2);
-        quit_rect = new Rectangle(65, 180, 192,96/2);
+        retry_rect = new Rectangle(65 - 160, 0, 192,96/2);
+        quit_rect = new Rectangle(65 - 160, -50, 192,96/2);
         coords = new Vector3();
         retry_coords = new Vector3();
         quit_coords = new Vector3();
@@ -100,21 +100,20 @@ public class postState extends State {
 
     private void drawobject(SpriteBatch batch){
 
-        OrthographicCamera camera = manager.getCamera();
-        rect.y = 150 + camera.position.y;
-        batch.enableBlending();
-        batch.begin();
-        batch.draw(retry,  rect.x, rect.y, rect.width, rect.height);
-        batch.draw(quit, rect.x, rect.y, rect.width, rect.height);
-        batch.end();
 
         if(state == 0){
             //camera.setToOrtho(false);
 
             batch.begin();
             batch.draw(bgRegion, manager.getCamera().position.x - 160,manager.getCamera().position.y -240,constants.SCREENWIDTH, constants.SCREENHEIGHT);
+            batch.end();
 
-
+            //batch.enableBlending();
+            batch.begin();
+            retry_rect.y = -10 + manager.getCamera().position.y;
+            quit_rect.y = -60 + manager.getCamera().position.y;
+            batch.draw(retry,  retry_rect.x, retry_rect.y, retry_rect.width, retry_rect.height);
+            batch.draw(quit, quit_rect.x, quit_rect.y, quit_rect.width, quit_rect.height);
             batch.end();
 
 
@@ -124,6 +123,7 @@ public class postState extends State {
 
     @Override
     public void dispose() {
+
 
     }
 }

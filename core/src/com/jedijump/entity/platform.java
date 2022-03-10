@@ -57,7 +57,7 @@ public class platform extends entity{
         shape.dispose();
 
         platformState = isFixed? 0 : MathUtils.random(0,1);
-        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        TextureRegion platformTexture = manager.getItems();
         if(platformState == constants.PLATFORM_STATIC)
             texture = new animation(platformTexture, 64, 160 ,64,16,1,0.5f,true);
         else

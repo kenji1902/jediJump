@@ -49,7 +49,7 @@ public class bird extends entity{
 
         shape.dispose();
 
-        TextureRegion birdTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        TextureRegion birdTexture = manager.getItems();
         texture =  new animation(birdTexture, 0, 160 ,64,32,2,0.5f,false);
         //birdPosx = body.getPosition().x;
         isGenerated = true;

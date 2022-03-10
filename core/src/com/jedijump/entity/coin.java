@@ -48,7 +48,7 @@ public class coin extends entity{
         body.createFixture(fixtureDef).setUserData("coin");
         shape.dispose();
 
-        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        TextureRegion platformTexture = manager.getItems();
         texture = new animation(platformTexture, 128, 32 ,96,32,3,0.5f,false);
         isGenerated = true;
     }

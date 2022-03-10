@@ -31,4 +31,8 @@ public abstract class entity {
               return isGenerated;
        }
 
+       public Body getBody(){
+              return body;
+       }
+
 }

@@ -82,12 +82,12 @@ public class HelpState extends State {
     public void render(SpriteBatch sprite) {
         sprite.disableBlending();
         sprite.begin();
-        sprite.draw(helpRegion,0, 0, 320, 480);
+        sprite.draw(helpRegion,manager.getCamera().position.x - 160, manager.getCamera().position.y - 240, 320, 480);
         sprite.end();
 
         sprite.enableBlending();
         sprite.begin();
-        sprite.draw(arrow, 320 , 0,-64,64);
+        sprite.draw(arrow, nextBounds.x - 95 , nextBounds.y - 240,-64,64);
         sprite.end();
     }
 

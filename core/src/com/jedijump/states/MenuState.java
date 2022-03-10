@@ -18,13 +18,14 @@ import java.awt.*;
 
 public class MenuState extends State{
     Rectangle shape, soundBounds;
-    Texture background, item;
+    TextureRegion background, item;
     TextureRegion backgroundRegion, logo, mainMenu, soundOn,soundOff;
     OrthographicCamera camera;
     Box2DDebugRenderer b2dr;
     static Sound menuMusic;
     Sound clickSound;
     Vector3 touchPoint;
+    ShapeRenderer sr;
 
 
     public MenuState(Manager manager) {
@@ -33,14 +34,15 @@ public class MenuState extends State{
         camera = new OrthographicCamera();
         b2dr = new Box2DDebugRenderer();
 
-        background = new Texture(Gdx.files.internal("background.png"));
+        background = new TextureRegion(new Texture(Gdx.files.internal("background.png")));
         backgroundRegion = new TextureRegion(background, 0, 0, 280, 450);
 
-        item = new Texture(Gdx.files.internal("items.png"));
+        item = manager.getItems();
+
         mainMenu = new TextureRegion(item, 0, 224, 300, 110);
         logo = new TextureRegion(item, 0, 352, 274, 142);
 
-        shape = new Rectangle(102,222,117,33);
+        shape = new Rectangle(0 - 117/2,-10,117,33);
 
         menuMusic = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
 
@@ -48,15 +50,25 @@ public class MenuState extends State{
 
         soundOn = new TextureRegion(item, 64, 0, 64, 64);
         soundOff = new TextureRegion(item, 0, 0, 64, 64);
-        soundBounds = new Rectangle(0, 64, 64, 64);
+        soundBounds = new Rectangle(-155, -160, 64, 64);
         touchPoint = new Vector3();
+        sr = new ShapeRenderer();
 
         menuMusic.loop(0.2f);
     }
 
     @Override
     public void update(float delta) {
+        cameraUpdate();
         Input(shape);
+    }
+
+    private void cameraUpdate(){
+        Vector3 position = manager.getCamera().position;
+        position.x = this.backgroundRegion.getRegionX() ;
+        position.y = backgroundRegion.getRegionY();
+        manager.getCamera().position.set(position);
+        manager.getCamera().update();
     }
 
     public void Input(Rectangle rect){
@@ -92,19 +104,21 @@ public class MenuState extends State{
 
     @Override
     public void render(SpriteBatch sprite) {
-
+        sprite.setProjectionMatrix(manager.getCamera().combined);
         sprite.disableBlending();
         sprite.begin();
 
-        sprite.draw(backgroundRegion,0, 0, 320, 480);
+        sprite.draw(backgroundRegion,manager.getCamera().position.x - 160, manager.getCamera().position.y - 240, 320, 480);
         sprite.end();
 
         sprite.enableBlending();
         sprite.begin();
-        sprite.draw(logo, 160 - 274 / 2 , 480 - 10 - 142);
-        sprite.draw(mainMenu, 10, 200 - 110 / 2, 300, 110 );
-        sprite.draw(Settings.soundEnabled ? soundOn :  soundOff,0,0,64,64);
+
+        sprite.draw(logo, -135 , 80);
+        sprite.draw(mainMenu, shape.x - 90, shape.y - 74);
+        sprite.draw(Settings.soundEnabled ? soundOn :  soundOff,soundBounds.x,soundBounds.y-64,64,64);
         sprite.end();
+
     }
 
     @Override

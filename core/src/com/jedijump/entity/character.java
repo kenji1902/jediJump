@@ -62,7 +62,8 @@ public class character extends entity{
 
 
         shape.dispose();
-        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        TextureRegion platformTexture = manager.getItems();
+                //new TextureRegion(new Texture(Gdx.files.internal("items.png")));
 
         side = new animation(platformTexture,32,128,64,32,2,0.5f,false);
         jump = new animation(platformTexture,96,128,64,32,2,0.5f,false);
