@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,12 +13,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.jedijump.entity.bird;
 import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
 import com.jedijump.entity.spring;
-import com.jedijump.entity.coin;
-import com.jedijump.utility.assets;
 import com.jedijump.utility.constants;
 
 import java.util.ArrayList;
@@ -30,21 +28,15 @@ public class PlayState extends State{
     platform plt, plt1, baseplt;
     bird bird;
     spring spr;
-    coin coin;
     Texture item, bg;
-    TextureRegion pause, bgRegion,scoreRegion;
+    TextureRegion pause, bgRegion;
     Rectangle rect;
     Vector3 coords;
     PauseState ps;
     Array<platform> platforms;
     Array<bird> birds;
     int y = -120;
-
-    long lastScore;
-    String scoreString;
-    BitmapFont font;
-
-    Array<coin> coins;
+    int birdY = 100;
 
     public PlayState(Manager manager) {
         super(manager);
@@ -70,14 +62,7 @@ public class PlayState extends State{
                 64, 64);
         coords = new Vector3();
         platforms = new Array<>();
-        //birds = new Array<>();
-
-        coin = new coin(manager);
-        coin.create(new Vector2(42,89),new Vector2(18,14),1);
-        coins = new Array<>();
-        lastScore = 0;
-        scoreString = "SCORE: 0";
-        font = new BitmapFont(Gdx.files.internal("font.fnt"));
+        birds = new Array<bird>();
 
     }
 
@@ -90,18 +75,15 @@ public class PlayState extends State{
         for (platform p: platforms) {
             p.update(delta);
         }
-        bird.update(delta);
-        //birdGenerator(delta);
+
+        birdGenerator(delta);
+        for(bird b: birds){
+            b.update(delta);
+        }
+
+
         spr.update(delta);
         character.update(delta);
-        coin.update(delta);
-        for (coin c: coins) {
-            c.update(delta);
-        }
-        if(coin.getScore() != lastScore){
-            lastScore = coin.getScore();
-            scoreString = "SCORE: "+ lastScore;
-        }
     }
 
     @Override
@@ -109,8 +91,6 @@ public class PlayState extends State{
         OrthographicCamera camera = manager.getCamera();
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
-
-
 
 
         sprite.disableBlending();
@@ -128,13 +108,11 @@ public class PlayState extends State{
 
         ps.render(sprite);
         character.render(sprite);
-        bird.render(sprite);
 
-        coin.render(sprite);
 
-        sprite.begin();
-        font.draw(sprite,scoreString,-140,150);
-        sprite.end();
+        for(bird b: birds){
+            b.render(sprite);
+        }
 
     }
 
@@ -156,35 +134,23 @@ public class PlayState extends State{
         }
 
     }
-
-    public void coinGenerator(float deltatime){
-        counter += deltatime;
-
-        if(counter < MAX){
-            coin = new coin(manager);
-            coin.create(new Vector2(MathUtils.random(-manager.getCamera().position.y+constants.SCREENWIDTH/2, manager.getCamera().position.y+constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
-
-            coins.add(coin);
-            coin.update(deltatime);
-            y+=100;
-        }
-        if(counter >= MAX-1){
-            counter = MAX;
-        }
-
-    }
-
+    private float birdSpawnTime = 5;
+    private float birdCounter = 0;
     public void birdGenerator(float deltatime){
-//        counter += deltatime;
-//        if(counter < MAX){
-//            bird = new bird(manager);
-//            bird.create(new Vector2(0,MathUtils.random(-constants.SCREENHEIGHT/2, constants.SCREENHEIGHT/2)), new Vector2(64,32), 0);
-//            birds.add(bird);
-//            bird.update(deltatime);
-//        }
-//        if(counter >= MAX-1){
-//            counter = MAX;
-//        }
+        birdSpawnTime += deltatime;
+
+        if(birdCounter < birdSpawnTime){
+            bird = new bird(manager);
+            bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
+            //birdSpawnTime = TimeUtils.nanoTime();
+            birds.add(bird);
+            birdY+=700;
+        }
+        if(birdCounter >= birdSpawnTime-1){
+            birdCounter = birdSpawnTime;
+        }
+
+
     }
 
     private void bounds(Rectangle rect){
@@ -204,7 +170,6 @@ public class PlayState extends State{
         batch.enableBlending();
         batch.begin();
             batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
-
         batch.end();
     }
 
@@ -213,16 +178,13 @@ public class PlayState extends State{
     public void dispose() {
         character.disposeBody();
         baseplt.disposeBody();
-        bird.disposeBody();
         spr.disposeBody();
         for (platform plt: platforms) {
             plt.disposeBody();
         }
-
-        for (coin coin: coins){
-            coin.disposeBody();
+        for (bird b: birds){
+            b.disposeBody();
         }
-
     }
 
 
