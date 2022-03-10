@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
@@ -62,8 +63,8 @@ public class coin extends entity{
     }
 
     private void coinAdd(){
-        int playerState = manager.getCl().getPlayerState();
-        if(playerState == constants.JEDISAUR_COIN_HIT){
+        int playerState = manager.getCl().getCoinState();
+        if(playerState == constants.COIN_HIT){
             score += constants.COIN_SCORE;
             if(!isDestroyed)
                 disposeBody();

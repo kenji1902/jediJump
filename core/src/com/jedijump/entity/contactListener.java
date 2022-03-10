@@ -8,6 +8,7 @@ import javax.swing.text.html.parser.Entity;
 public class contactListener implements ContactListener {
     private int playerState = 0;
     private int springStick = 0;
+    private int coinState = 0;
     private Body platform;
     private Body springPlatform;
     @Override
@@ -15,14 +16,13 @@ public class contactListener implements ContactListener {
         Fixture entityA = contact.getFixtureA();
         Fixture entityB = contact.getFixtureB();
 
-        playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
         int springHit = compareEntity(entityA,entityB,"springHead","foot",constants.JEDISAUR_SPRING_HIT);
         if(springHit != -1)
             playerState = springHit;
 
-        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_COIN_HIT);
+        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.COIN_HIT);
         if(coinHit != -1)
-            playerState = coinHit;
+            coinState = coinHit;
 
         int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_PLATFORM);
         if(springFoot != - 1)
@@ -35,6 +35,10 @@ public class contactListener implements ContactListener {
         int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_BIRD_HIT);
         if(birdState != -1)
             playerState = birdState;
+
+        playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
+        System.out.println(entityA.getUserData() + " " + entityB.getUserData());
+
     }
 
 
@@ -43,14 +47,13 @@ public class contactListener implements ContactListener {
         Fixture entityA = contact.getFixtureA();
         Fixture entityB = contact.getFixtureB();
 
-        playerContact(entityA,entityB,constants.JEDISAUR_ON_AIR);
         int springHit = compareEntity(entityA,entityB,"springHead","foot",constants.JEDISAUR_ON_AIR);
         if(springHit != - 1)
             playerState = springHit;
 
-        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_ON_AIR);
+        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.COIN_OUT);
         if(coinHit != -1)
-            playerState = coinHit;
+            coinState = coinHit;
 
         int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_AIR);
         if(springFoot != - 1)
@@ -63,6 +66,8 @@ public class contactListener implements ContactListener {
         int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_ON_AIR);
         if(birdState != -1)
             playerState = birdState;
+
+        playerContact(entityA,entityB,constants.JEDISAUR_ON_AIR);
 
     }
 
@@ -81,8 +86,6 @@ public class contactListener implements ContactListener {
         Body tempPlatform = hitPlatform(entityA, entityB, "foot");
         if(tempPlatform != null)
             platform = tempPlatform;
-
-
 
         int tempPlayerState = compareEntity(entityA,entityB,"platform","foot",state);
         if(tempPlayerState != -1)
@@ -120,6 +123,10 @@ public class contactListener implements ContactListener {
 
     public int getSpringStick() {
         return springStick;
+    }
+
+    public int getCoinState() {
+        return coinState;
     }
 
     public Body getSpringPlatform() {

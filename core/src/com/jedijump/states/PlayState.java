@@ -24,7 +24,7 @@ public class PlayState extends State{
     debri debri;
     character character;
     platform plt, plt1, baseplt;
-    bird bird;
+    coin coin;
     spring spr;
     Texture item, bg;
     TextureRegion pause, bgRegion;
@@ -42,15 +42,16 @@ public class PlayState extends State{
         plt = new platform(manager);
         plt1 = new platform(manager);
         baseplt = new platform(manager);
-        debri = new debri(manager);
-        bird = new bird(manager);
+//        debri = new debri(manager);
         spr = new spring(manager);
+        coin = new coin(manager);
         character.create(new Vector2(0,0),new Vector2(32,32),1);
         ps = new PauseState(manager);
+        coin.create(new Vector2(-92,-200),new Vector2(32,32),1);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
 //        bird.create(new Vector2(30,50),new Vector2(32,32),1);
         spr.create(new Vector2(-42,89),new Vector2(18,14),1);
-        debri.create(new Vector2(30,240),new Vector2(32,32),3);
+//        debri.create(new Vector2(30,240),new Vector2(32,32),3);
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);
 
@@ -79,9 +80,9 @@ public class PlayState extends State{
         for(bird b: birds){
             b.update(delta);
         }
+        coin.update(delta);
 
-
-        debri.update(delta);
+//        debri.update(delta);
         spr.update(delta);
         character.update(delta);
     }
@@ -91,7 +92,7 @@ public class PlayState extends State{
         OrthographicCamera camera = manager.getCamera();
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
-
+        coin.render(sprite);
 
         sprite.disableBlending();
 //        sprite.begin();
@@ -103,7 +104,7 @@ public class PlayState extends State{
         }
 
         spr.render(sprite);
-        debri.render(sprite);
+//        debri.render(sprite);
         drawobject(sprite);
         bounds(rect);
 
@@ -141,7 +142,7 @@ public class PlayState extends State{
         birdSpawnTime += deltatime;
 
         if(birdCounter < birdSpawnTime){
-            bird = new bird(manager);
+            bird bird= new bird(manager);
             bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
             //birdSpawnTime = TimeUtils.nanoTime();
             birds.add(bird);
@@ -186,7 +187,8 @@ public class PlayState extends State{
         for (bird b: birds){
             b.disposeBody();
         }
-        debri.disposeBody();
+//        debri.disposeBody();
+        coin.disposeBody();
     }
 
 

@@ -24,7 +24,10 @@ public class constants {
     public static final int JEDISAUR_ON_AIR = 1;
     public static final int JEDISAUR_BIRD_HIT = 2;
     public static final int JEDISAUR_SPRING_HIT = 4;
-    public static final int JEDISAUR_COIN_HIT = 5;
+
+    // COIN STATES
+    public static final int COIN_OUT = 0;
+    public static final int COIN_HIT = 1;
 
     // PLATFORM STATES
     public static final int PLATFORM_STATIC = 0;
