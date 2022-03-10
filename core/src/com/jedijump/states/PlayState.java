@@ -41,7 +41,18 @@ public class PlayState extends State{
 
     @Override
     public void dispose() {
+<<<<<<< Updated upstream
 
+=======
+        character.disposeBody();
+        baseplt.disposeBody();
+        bird.disposeBody();
+        spr.disposeBody();
+
+        for (platform plt: platforms) {
+            plt.disposeBody();
+        }
+>>>>>>> Stashed changes
     }
 
 

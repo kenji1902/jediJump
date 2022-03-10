@@ -50,7 +50,7 @@ public class MenuState extends State{
         soundOff = new TextureRegion(item, 0, 0, 64, 64);
         soundBounds = new Rectangle(0, 64, 64, 64);
         touchPoint = new Vector3();
-
+        MenuState.menuMusic.stop();
         menuMusic.loop(0.2f);
     }
 
