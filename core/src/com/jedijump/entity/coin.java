@@ -83,7 +83,6 @@ public class coin extends entity{
     }
 
     public long getScore() {
-        System.out.println("SCORE: "+score);
         return score;
     }
 }

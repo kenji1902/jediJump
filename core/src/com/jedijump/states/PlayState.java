@@ -26,21 +26,23 @@ public class PlayState extends State{
     platform plt, plt1, baseplt;
     bird bird;
     spring spr;
-    coin coin;
+//    coin coin;
     Texture item, bg;
-    TextureRegion pause, bgRegion;
+    TextureRegion pause, bgRegion,scoreRegion;
     Rectangle rect;
     Vector3 coords;
     PauseState ps;
     Array<platform> platforms;
     Array<bird> birds;
-    Array<coin> coins;
     int y = -120;
     int birdY = 100;
 
     long lastScore;
     String scoreString;
     BitmapFont font;
+    int coinY = 50;
+
+    Array<coin> coins;
 
 
     public PlayState(Manager manager) {
@@ -63,15 +65,14 @@ public class PlayState extends State{
         bg = new Texture(Gdx.files.internal("background.png"));
         bgRegion = new TextureRegion(bg, 0, 0, 280, 450);
         rect = new Rectangle(55,
-                 150 ,
+                150 ,
                 64, 64);
         coords = new Vector3();
         platforms = new Array<>();
         birds = new Array<bird>();
 
-        coin = new coin(manager);
-        coin.create(new Vector2(-42,20),new Vector2(18,14),1);
-
+//        coin = new coin(manager);
+//        coin.create(new Vector2(42,89),new Vector2(18,14),1);
         coins = new Array<>();
         lastScore = 0;
         scoreString = "SCORE: 0";
@@ -84,7 +85,7 @@ public class PlayState extends State{
     public void update(float delta) {
 
         manager.getWorld().step(1/60f,6,2);
-//        coinGenerator(delta);
+
         LevelGenerator(delta);
         for (platform p: platforms) {
             p.update(delta);
@@ -95,19 +96,16 @@ public class PlayState extends State{
 //            b.update(delta);
 //        }
 
-
+        coinGenerator(delta);
+        for (coin c: coins) {
+            c.update(delta);
+        }
         spr.update(delta);
         character.update(delta);
-
-        coin.update(delta);
-//        for (coin c: coins) {
-//            c.update(delta);
+//        if(coin.getScore() != lastScore){
+//            lastScore = coin.getScore();
+//            scoreString = "SCORE: "+ lastScore;
 //        }
-
-        if(coin.getScore() != lastScore){
-            lastScore = coin.getScore();
-            scoreString = "SCORE: "+ lastScore;
-        }
 
     }
 
@@ -119,12 +117,12 @@ public class PlayState extends State{
 
 
         sprite.disableBlending();
-        sprite.begin();
-//            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-        sprite.end();
+//        sprite.begin();
+//        sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+//        sprite.end();
 
         for (platform p: platforms) {
-                p.render(sprite);
+            p.render(sprite);
         }
         spr.render(sprite);
 
@@ -139,11 +137,11 @@ public class PlayState extends State{
             b.render(sprite);
         }
 
-        coin.render(sprite);
-
-
+        for(coin c: coins) {
+            c.render(sprite);
+        }
         sprite.begin();
-        font.draw(sprite,scoreString,-150,220+camera.position.y);
+        font.draw(sprite,scoreString,-140,220+camera.position.y);
         sprite.end();
 
 
@@ -151,6 +149,7 @@ public class PlayState extends State{
 
     private float MAX = 5;
     private float counter = 0;
+
     public void LevelGenerator(float deltatime){
         counter += deltatime;
 
@@ -169,53 +168,42 @@ public class PlayState extends State{
     }
     private float birdSpawnTime = 5;
     private float birdCounter = 0;
-    private float coinSpawnTime = 10;
-    private float coinCounter = 0;
-
     public void birdGenerator(float deltatime){
         birdSpawnTime += deltatime;
 
         if(birdCounter < birdSpawnTime){
-            bird = new bird(manager);
-            bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
-            //birdSpawnTime = TimeUtils.nanoTime();
+            bird bird= new bird(manager);
+            bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
+//            birdSpawnTime = TimeUtils.nanoTime();
             birds.add(bird);
             birdY+=700;
         }
         if(birdCounter >= birdSpawnTime-1){
             birdCounter = birdSpawnTime;
         }
+
+
     }
 
+    private float coinSpawnTime = 5;
+    private float coinCounter = 0;
     public void coinGenerator(float deltatime){
-//        counter += deltatime;
-//
-//        if(counter < MAX){
-//            coin = new coin(manager);
-//            coin.create(new Vector2(MathUtils.random(-manager.getCamera().position.y+constants.SCREENWIDTH/2, manager.getCamera().position.y+constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
-//
-//            coins.add(coin);
-//            coin.update(deltatime);
-//            y+=100;
-//        }
-//        if(counter >= MAX-1){
-//            counter = MAX;
-//        }
-
-        coinSpawnTime += deltatime;
+        coinCounter += deltatime;
 
         if(coinCounter < coinSpawnTime){
-            coin = new coin(manager);
-            coin.create(new Vector2(0, birdY), new Vector2(64,32), 0);
+            coin coin= new coin(manager);
+            coin.create(new Vector2(18, coinY), new Vector2(32,32), 0);
             //coinSpawnTime = TimeUtils.nanoTime();
             coins.add(coin);
-            birdY+=700;
+            coinY+=100;
         }
         if(coinCounter >= coinSpawnTime-1){
             coinCounter = coinSpawnTime;
         }
 
+
     }
+
 
 
     private void bounds(Rectangle rect){
@@ -250,10 +238,12 @@ public class PlayState extends State{
         for (bird b: birds){
             b.disposeBody();
         }
-
+//        debri.disposeBody();
+//        coin.disposeBody();
         for (coin coin: coins){
             coin.disposeBody();
         }
+
     }
 
 

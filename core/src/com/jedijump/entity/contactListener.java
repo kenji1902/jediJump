@@ -35,6 +35,12 @@ public class contactListener implements ContactListener {
         int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_BIRD_HIT);
         if(birdState != -1)
             playerState = birdState;
+
+
+        playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
+//        System.out.println(entityA.getUserData() + " " + entityB.getUserData());
+
+
     }
 
 
