@@ -24,7 +24,7 @@ public class PlayState extends State{
     debri debri;
     character character;
     platform plt, plt1, baseplt;
-    coin coin;
+    coin coin ,coin2;
     spring spr;
     Texture item, bg;
     TextureRegion pause, bgRegion;
@@ -45,9 +45,12 @@ public class PlayState extends State{
 //        debri = new debri(manager);
         spr = new spring(manager);
         coin = new coin(manager);
+        coin2 = new coin(manager);
         character.create(new Vector2(0,0),new Vector2(32,32),1);
         ps = new PauseState(manager);
         coin.create(new Vector2(-92,-200),new Vector2(32,32),1);
+        coin2.create(new Vector2(92,-200),new Vector2(32,32),1);
+
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
 //        bird.create(new Vector2(30,50),new Vector2(32,32),1);
         spr.create(new Vector2(-42,89),new Vector2(18,14),1);
@@ -71,19 +74,20 @@ public class PlayState extends State{
 
         manager.getWorld().step(1/60f,6,2);
 
-        LevelGenerator(delta);
-        for (platform p: platforms) {
-            p.update(delta);
-        }
-
-        birdGenerator(delta);
-        for(bird b: birds){
-            b.update(delta);
-        }
+//        LevelGenerator(delta);
+////        for (platform p: platforms) {
+////            p.update(delta);
+////        }
+//
+//        birdGenerator(delta);
+////        for(bird b: birds){
+////            b.update(delta);
+////        }
         coin.update(delta);
-
-//        debri.update(delta);
-        spr.update(delta);
+        coin2.update(delta);
+//
+////        debri.update(delta);
+//        spr.update(delta);
         character.update(delta);
     }
 
@@ -93,28 +97,29 @@ public class PlayState extends State{
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
         coin.render(sprite);
-
-        sprite.disableBlending();
-//        sprite.begin();
-//            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-//        sprite.end();
-
-        for (platform p: platforms) {
-                p.render(sprite);
-        }
-
-        spr.render(sprite);
-//        debri.render(sprite);
-        drawobject(sprite);
-        bounds(rect);
-
-        ps.render(sprite);
+        coin2.render(sprite);
+//
+//        sprite.disableBlending();
+////        sprite.begin();
+////            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+////        sprite.end();
+//
+////        for (platform p: platforms) {
+////                p.render(sprite);
+////        }
+//
+//        spr.render(sprite);
+////        debri.render(sprite);
+//        drawobject(sprite);
+//        bounds(rect);
+//
+//        ps.render(sprite);
         character.render(sprite);
 
 
-        for(bird b: birds){
-            b.render(sprite);
-        }
+//        for(bird b: birds){
+//            b.render(sprite);
+//        }
 
     }
 
@@ -124,7 +129,7 @@ public class PlayState extends State{
         counter += deltatime;
 
         if(counter < MAX){
-
+            System.out.println(counter);
             platform plt = new platform(manager);
             plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
 
@@ -168,7 +173,6 @@ public class PlayState extends State{
 
         OrthographicCamera camera = manager.getCamera();
         rect.y = 150 + camera.position.y;
-
         batch.enableBlending();
         batch.begin();
             batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);

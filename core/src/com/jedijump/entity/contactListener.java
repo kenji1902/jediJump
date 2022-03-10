@@ -11,6 +11,7 @@ public class contactListener implements ContactListener {
     private int coinState = 0;
     private Body platform;
     private Body springPlatform;
+    private Body coin;
     @Override
     public void beginContact(Contact contact) {
         Fixture entityA = contact.getFixtureA();
@@ -23,6 +24,10 @@ public class contactListener implements ContactListener {
         int coinHit = compareEntity(entityA,entityB,"body","coin",constants.COIN_HIT);
         if(coinHit != -1)
             coinState = coinHit;
+
+        Body coinTemp = hitCoin(entityA,entityB,"body");
+        if(coinTemp != null)
+            coin = coinTemp;
 
         int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_PLATFORM);
         if(springFoot != - 1)
@@ -37,7 +42,6 @@ public class contactListener implements ContactListener {
             playerState = birdState;
 
         playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
-        System.out.println(entityA.getUserData() + " " + entityB.getUserData());
 
     }
 
@@ -54,6 +58,9 @@ public class contactListener implements ContactListener {
         int coinHit = compareEntity(entityA,entityB,"body","coin",constants.COIN_OUT);
         if(coinHit != -1)
             coinState = coinHit;
+
+        coin = hitCoin(entityA,entityB,"body");
+
 
         int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_AIR);
         if(springFoot != - 1)
@@ -116,6 +123,21 @@ public class contactListener implements ContactListener {
 
         return  body;
     }
+    private Body hitCoin(Fixture entityA, Fixture entityB, String obj){
+        Body body = null;
+        if((entityA.getUserData() != null && entityB.getUserData() != null) &&
+                (entityA.getUserData().equals( obj) && entityB.getUserData().equals("coin"))
+        ){
+            body = entityB.getBody();
+        }
+        else if((entityA.getUserData() != null && entityB.getUserData() != null) &&
+                (entityB.getUserData().equals( obj) && entityA.getUserData().equals("coin"))
+        ){
+            body = entityA.getBody();
+        }
+
+        return  body;
+    }
 
     public int getPlayerState() {
         return playerState;
@@ -127,6 +149,10 @@ public class contactListener implements ContactListener {
 
     public int getCoinState() {
         return coinState;
+    }
+
+    public Body getCoin() {
+        return coin;
     }
 
     public Body getSpringPlatform() {

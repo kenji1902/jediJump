@@ -64,7 +64,7 @@ public class coin extends entity{
 
     private void coinAdd(){
         int playerState = manager.getCl().getCoinState();
-        if(playerState == constants.COIN_HIT){
+        if(playerState == constants.COIN_HIT && body == manager.getCl().getCoin()){
             score += constants.COIN_SCORE;
             if(!isDestroyed)
                 disposeBody();
