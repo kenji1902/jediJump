@@ -80,6 +80,7 @@ public class PlayState extends State{
         lastScore = 0;
         scoreString = "SCORE: 0";
         font = new BitmapFont(Gdx.files.internal("font.fnt"));
+        manager.setScore(0);
 
 
     }
