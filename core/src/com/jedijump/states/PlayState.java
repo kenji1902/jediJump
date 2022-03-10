@@ -94,9 +94,9 @@ public class PlayState extends State{
 
 
         sprite.disableBlending();
-        sprite.begin();
-            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-        sprite.end();
+//        sprite.begin();
+//            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+//        sprite.end();
 
         for (platform p: platforms) {
                 p.render(sprite);
@@ -139,7 +139,7 @@ public class PlayState extends State{
 
         if(birdCounter < birdSpawnTime){
             bird = new bird(manager);
-            bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
+            bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
             //birdSpawnTime = TimeUtils.nanoTime();
             birds.add(bird);
             birdY+=700;
