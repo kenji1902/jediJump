@@ -77,6 +77,7 @@ public class PlayState extends State{
         lastScore = 0;
         scoreString = "SCORE: 0";
         font = new BitmapFont(Gdx.files.internal("font.fnt"));
+        manager.setScore(0);
 
 
     }
@@ -168,7 +169,7 @@ public class PlayState extends State{
         }
 
     }
-    private float birdSpawnTime = 5;
+    private float birdSpawnTime = 10;
     private float birdCounter = 0;
     public void birdGenerator(float deltatime){
         birdSpawnTime += deltatime;
