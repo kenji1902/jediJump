@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -38,6 +39,13 @@ public class PlayState extends State{
     int y = -120;
     int birdY = 100;
 
+    long lastScore;
+    String scoreString;
+    BitmapFont font;
+    int coinY = 50;
+
+    Array<coin> coins;
+
     public PlayState(Manager manager) {
         super(manager);
         ps = new PauseState(manager);
@@ -68,6 +76,11 @@ public class PlayState extends State{
         debris = new Array<debri>();
         springs = new Array<>();
 
+        coins = new Array<>();
+        lastScore = 0;
+        scoreString = "SCORE: 0";
+        font = new BitmapFont(Gdx.files.internal("font.fnt"));
+
 
     }
 
@@ -94,6 +107,15 @@ public class PlayState extends State{
         debrisGenerator(delta);
         for(debri d: debris){
             d.update(delta);
+        }
+
+        coinGenerator(delta);
+        for (coin c: coins) {
+            c.update(delta);
+        }
+        if(manager.getScore() != lastScore){
+            lastScore = manager.getScore();
+            scoreString = "SCORE: "+ lastScore;
         }
 
 
@@ -135,6 +157,13 @@ public class PlayState extends State{
         for(bird b: birds){
             b.render(sprite);
         }
+
+        for(coin c: coins) {
+            c.render(sprite);
+        }
+        sprite.begin();
+        font.draw(sprite,scoreString,-140,220+camera.position.y);
+        sprite.end();
 
     }
 
@@ -206,6 +235,24 @@ public class PlayState extends State{
 
     }
 
+    private float coinSpawnTime = 5;
+    private float coinCounter = 0;
+    public void coinGenerator(float deltatime){
+        coinCounter += deltatime;
+
+        if(coinCounter < coinSpawnTime){
+            coin coin= new coin(manager);
+            coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH/2)+constants.FORCEFIELD, (constants.SCREENWIDTH/2)-constants.FORCEFIELD), coinY), new Vector2(32,32), 0);
+            //coinSpawnTime = TimeUtils.nanoTime();
+            coins.add(coin);
+            coinY+=MathUtils.random(300,700);
+        }
+        if(coinCounter >= coinSpawnTime-1){
+            coinCounter = coinSpawnTime;
+        }
+
+
+    }
 
 
 
@@ -224,7 +271,11 @@ public class PlayState extends State{
         }
        for(debri d: debris){
            d.disposeBody();
-       }
+        }
+
+        for (coin coin: coins) {
+            coin.disposeBody();
+        }
     }
 
 
