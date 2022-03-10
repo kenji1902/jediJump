@@ -109,7 +109,7 @@ public class character extends entity{
             }
             if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed)
                 disposeBody();
-            if( isDestroyed){
+            if(isDestroyed){
                 System.out.println("DEAD FROM BIRD");
                 manager.set(new postState(manager));
             }
