@@ -49,7 +49,7 @@ public class PlayState extends State{
         character.create(new Vector2(0,0),new Vector2(32,32),1);
         ps = new PauseState(manager);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
-        bird.create(new Vector2(30,50),new Vector2(32,32),1);
+        //bird.create(new Vector2(30,50),new Vector2(32,32),1);
         spr.create(new Vector2(-42,89),new Vector2(18,14),1);
 
         item = new Texture(Gdx.files.internal("items.png"));
@@ -120,9 +120,7 @@ public class PlayState extends State{
     private float counter = 0;
     public void LevelGenerator(float deltatime){
         counter += deltatime;
-
         if(counter < MAX){
-
             platform plt = new platform(manager);
             plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
 

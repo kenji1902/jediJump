@@ -110,8 +110,8 @@ public class postState extends State {
 
             //batch.enableBlending();
             batch.begin();
-            retry_rect.y = -10 + manager.getCamera().position.y;
-            quit_rect.y = -60 + manager.getCamera().position.y;
+            retry_rect.y = 10 + manager.getCamera().position.y;
+            quit_rect.y = -40 + manager.getCamera().position.y;
             batch.draw(retry,  retry_rect.x, retry_rect.y, retry_rect.width, retry_rect.height);
             batch.draw(quit, quit_rect.x, quit_rect.y, quit_rect.width, quit_rect.height);
             batch.end();
