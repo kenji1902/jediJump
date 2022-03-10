@@ -1,6 +1,7 @@
 package com.jedijump.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,12 +30,13 @@ public class postState extends State {
         retry = new TextureRegion(item, 348, 353, 151, 30);
         quit = new TextureRegion(item, 363, 386, 128, 31);
         rect = new Rectangle(55, 150 , 64, 64);
-        retry_rect = new Rectangle(65, 250, 192,96/2);
-        quit_rect = new Rectangle(65, 200, 192,96/2);
+        retry_rect = new Rectangle(65, 230, 192,96/2);
+        quit_rect = new Rectangle(65, 180, 192,96/2);
         coords = new Vector3();
         retry_coords = new Vector3();
         quit_coords = new Vector3();
-
+        sr = new ShapeRenderer();
+        sr2 = new ShapeRenderer();
         bg = new Texture(Gdx.files.internal("postGameBG.png"));
         bgRegion = new TextureRegion(bg, 0, 0, constants.SCREENWIDTH, constants.SCREENHEIGHT);
     }
@@ -66,6 +68,14 @@ public class postState extends State {
         //System.out.println(state);
 
         drawobject(sprite);
+//        sr.begin(ShapeRenderer.ShapeType.Filled);
+//        sr.rect(retry_rect.x, retry_rect.y, retry_rect.width, retry_rect.height);
+//        sr.setColor(Color.GREEN);
+//        sr.end();
+//        sr2.begin(ShapeRenderer.ShapeType.Filled);
+//        sr2.rect(quit_rect.x, quit_rect.y, quit_rect.width, quit_rect.height);
+//        sr2.setColor(Color.RED);
+//        sr2.end();
     }
 
 
@@ -102,8 +112,8 @@ public class postState extends State {
 
             batch.begin();
             batch.draw(bgRegion, 0,0,constants.SCREENWIDTH, constants.SCREENHEIGHT);
-            batch.draw(retry, retry_rect.x + 25, retry_rect.y-10);
-            batch.draw(quit, quit_rect.x + 35, quit_rect.y - 5);
+            batch.draw(retry, retry_rect.x + 25, retry_rect.y-5);
+            batch.draw(quit, quit_rect.x + 35, quit_rect.y );
 
             batch.end();
         }
