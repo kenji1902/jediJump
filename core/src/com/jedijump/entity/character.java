@@ -69,10 +69,11 @@ public class character extends entity{
         stand = new animation(platformTexture,0,128,32,32,1,0.5f,false);
 
         maxPosY = body.getPosition().y;
+        isGenerated = true;
     }
     @Override
     public void update(float delta) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR && ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))))
                 side.update(delta);
             else if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR)
@@ -197,7 +198,7 @@ public class character extends entity{
 
     @Override
     public void render(SpriteBatch sprite) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             sprite.setProjectionMatrix(manager.getCamera().combined);
             sprite.begin();
 ;

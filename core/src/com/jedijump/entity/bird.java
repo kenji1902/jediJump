@@ -52,11 +52,12 @@ public class bird extends entity{
         TextureRegion birdTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
         texture =  new animation(birdTexture, 0, 160 ,64,32,2,0.5f,false);
         //birdPosx = body.getPosition().x;
+        isGenerated = true;
     }
 
     @Override
     public void update(float delta) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             birdMovement(delta);
             texture.update(delta);
             deadZone();
@@ -65,15 +66,16 @@ public class bird extends entity{
 
     private int direction = 1;
     private void birdMovement(float delta){
+        if(!isDestroyed) {
+            body.setLinearVelocity(constants.BIRD_SPEED * direction, 0);
 
-        body.setLinearVelocity(constants.BIRD_SPEED * direction,0);
-
-        if(body.getPosition().x + size.x > constants.BOUNDARY ){
-            texture.flip();
-            direction = -1;
-        }else if(body.getPosition().x - size.x < -constants.BOUNDARY) {
-            texture.flip();
-            direction = 1;
+            if (body.getPosition().x + size.x > constants.BOUNDARY) {
+                texture.flip();
+                direction = -1;
+            } else if (body.getPosition().x - size.x < -constants.BOUNDARY) {
+                texture.flip();
+                direction = 1;
+            }
         }
     }
 
@@ -92,7 +94,7 @@ public class bird extends entity{
     }
     @Override
     public void render(SpriteBatch sprite) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),

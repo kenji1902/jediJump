@@ -63,12 +63,13 @@ public class platform extends entity{
         else
             texture = new animation(platformTexture, 64, 160 ,64,64,4,0.5f,true);
 
-        isMoving =  MathUtils.randomBoolean();;
+        isMoving =  MathUtils.randomBoolean();
+        isGenerated = true;
     }
 
     @Override
     public void update(float delta) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             updateAnimation(delta);
             if(isMoving)
                 platformMovement(delta);
@@ -76,8 +77,9 @@ public class platform extends entity{
     }
 
     @Override
-    public void render(SpriteBatch sprite) {
-        if(!isDestroyed) {
+    public void render(SpriteBatch spriteBatch) {
+        if(!isDestroyed && isGenerated) {
+            sprite = spriteBatch;
             sprite.enableBlending();
             sprite.begin();
                 sprite.draw(texture.getFrame(),
@@ -89,13 +91,14 @@ public class platform extends entity{
 
     private int direction = 1;
     private void platformMovement(float delta){
+        if(!isDestroyed) {
+            body.setLinearVelocity(constants.PLATFORM_SPEED * direction, 0);
 
-        body.setLinearVelocity( constants.PLATFORM_SPEED * direction,0);
-
-        if(body.getPosition().x + size.x > constants.BOUNDARY - constants.FORCEFIELD ){
-            direction = -1;
-        }else if(body.getPosition().x - size.x < -constants.BOUNDARY + constants.FORCEFIELD) {
-            direction = 1;
+            if (body.getPosition().x + size.x > constants.BOUNDARY - constants.FORCEFIELD) {
+                direction = -1;
+            } else if (body.getPosition().x - size.x < -constants.BOUNDARY + constants.FORCEFIELD) {
+                direction = 1;
+            }
         }
     }
 
@@ -106,14 +109,15 @@ public class platform extends entity{
                 && body == manager.getCl().getPlatform()
                 && texture.getCurrFrame() < texture.getFrameCount()-1
             ) {
-                texture.update(delta);
-            if(texture.getCurrFrame() == texture.getFrameCount()-1 && !isDestroyed) {
+            texture.update(delta);
+            if(texture.getCurrFrame() == texture.getFrameCount()-1 && !isDestroyed){
                 texture.dispose();
                 disposeBody();
             }
         }
         if(platformState == constants.PLATFORM_STATIC)
             texture.update(delta);
+
         OrthographicCamera camera = manager.getCamera();
         float deadZone = camera.position.y - (camera.viewportHeight / 2);
         float platformPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
