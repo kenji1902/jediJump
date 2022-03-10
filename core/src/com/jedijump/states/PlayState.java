@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -18,6 +19,7 @@ import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
 import com.jedijump.entity.spring;
 import com.jedijump.entity.coin;
+import com.jedijump.utility.assets;
 import com.jedijump.utility.constants;
 
 import java.util.ArrayList;
@@ -30,13 +32,17 @@ public class PlayState extends State{
     spring spr;
     coin coin;
     Texture item, bg;
-    TextureRegion pause, bgRegion;
+    TextureRegion pause, bgRegion,scoreRegion;
     Rectangle rect;
     Vector3 coords;
     PauseState ps;
     Array<platform> platforms;
     Array<bird> birds;
     int y = -120;
+
+    long lastScore;
+    String scoreString;
+    BitmapFont font;
 
     Array<coin> coins;
 
@@ -69,6 +75,9 @@ public class PlayState extends State{
         coin = new coin(manager);
         coin.create(new Vector2(42,89),new Vector2(18,14),1);
         coins = new Array<>();
+        lastScore = 0;
+        scoreString = "SCORE: 0";
+        font = new BitmapFont(Gdx.files.internal("font.fnt"));
 
     }
 
@@ -89,6 +98,10 @@ public class PlayState extends State{
         for (coin c: coins) {
             c.update(delta);
         }
+        if(coin.getScore() != lastScore){
+            lastScore = coin.getScore();
+            scoreString = "SCORE: "+ lastScore;
+        }
     }
 
     @Override
@@ -96,6 +109,8 @@ public class PlayState extends State{
         OrthographicCamera camera = manager.getCamera();
         manager.getCamera().update();
         sprite.setProjectionMatrix(manager.getCamera().combined);
+
+
 
 
         sprite.disableBlending();
@@ -116,6 +131,11 @@ public class PlayState extends State{
         bird.render(sprite);
 
         coin.render(sprite);
+
+        sprite.begin();
+        font.draw(sprite,scoreString,-140,150);
+        sprite.end();
+
     }
 
     private float MAX = 5;
@@ -184,6 +204,7 @@ public class PlayState extends State{
         batch.enableBlending();
         batch.begin();
             batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
+
         batch.end();
     }
 
