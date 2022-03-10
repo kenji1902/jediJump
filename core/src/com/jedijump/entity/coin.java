@@ -6,15 +6,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
+import jdk.vm.ci.meta.Constant;
 
 public class coin extends entity{
     private animation texture;
-    private long score;
     public coin(Manager manager) {
         super(manager);
     }
@@ -62,9 +63,9 @@ public class coin extends entity{
     }
 
     private void coinAdd(){
-        int playerState = manager.getCl().getPlayerState();
-        if(playerState == constants.JEDISAUR_COIN_HIT){
-            score += constants.COIN_SCORE;
+        int playerState = manager.getCl().getCoinState();
+        if(playerState == constants.COIN_HIT && body == manager.getCl().getCoin()){
+            manager.setScore(manager.getScore()+ constants.COIN_SCORE);
             if(!isDestroyed)
                 disposeBody();
         }
@@ -81,7 +82,4 @@ public class coin extends entity{
         }
     }
 
-    public long getScore() {
-        return score;
-    }
 }

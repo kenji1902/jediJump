@@ -22,6 +22,7 @@ public class Manager {
     private contactListener cl;
     private Box2DDebugRenderer b2dr;
     private TextureRegion items;
+    private int score;
 
 
 
@@ -88,6 +89,13 @@ public class Manager {
         return cl;
     }
 
+    public int getScore() {
 
+        return score;
+    }
 
+    public void setScore(int score) {
+
+        this.score = score;
+    }
 }

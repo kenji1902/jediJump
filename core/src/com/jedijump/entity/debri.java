@@ -51,7 +51,7 @@ public class debri extends entity{
         shape.dispose();
 
         TextureRegion debriTexture = manager.getItems();
-        texture =  new animation(debriTexture, 0, 160 ,32,32,1,1,false);
+        texture =  new animation(debriTexture, 193, 163 ,32,32,1,1,false);
         isGenerated = true;
 
         body.setAngularVelocity(0.1f);

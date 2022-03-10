@@ -24,7 +24,10 @@ public class constants {
     public static final int JEDISAUR_ON_AIR = 1;
     public static final int JEDISAUR_BIRD_HIT = 2;
     public static final int JEDISAUR_SPRING_HIT = 4;
-    public static final int JEDISAUR_COIN_HIT = 5;
+
+    // COIN STATES
+    public static final int COIN_OUT = 0;
+    public static final int COIN_HIT = 1;
 
     // PLATFORM STATES
     public static final int PLATFORM_STATIC = 0;
@@ -38,7 +41,7 @@ public class constants {
     public static final int COIN_SCORE = 10;
 
     // BIRD
-    public static final float BIRD_SPEED = 5;
+    public static final float BIRD_SPEED = 2;
 
     //DEBRI
     public static final float DEBRI_SPEED = 3;
