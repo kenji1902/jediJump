@@ -55,7 +55,7 @@ public class PlayState extends State{
         pause = new TextureRegion(item, 64, 64, 64, 64);
 
         bg = new Texture(Gdx.files.internal("background.png"));
-        bgRegion = new TextureRegion(bg, 0, 0, 280, 450);
+        //bgRegion = new TextureRegion(bg, 0, 0, 280, 450);
         rect = new Rectangle(55,
                  150 ,
                 64, 64);
@@ -94,9 +94,9 @@ public class PlayState extends State{
 
 
         sprite.disableBlending();
-        sprite.begin();
-            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-        sprite.end();
+//        sprite.begin();
+//            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+//        sprite.end();
 
         for (platform p: platforms) {
                 p.render(sprite);
@@ -104,10 +104,13 @@ public class PlayState extends State{
 
         spr.render(sprite);
         debri.render(sprite);
+        drawobject(sprite);
+        bounds(rect);
 
         ps.render(sprite);
         character.render(sprite);
-        
+
+
         for(bird b: birds){
             b.render(sprite);
         }
@@ -135,30 +138,55 @@ public class PlayState extends State{
     private float birdSpawnTime = 5;
     private float birdCounter = 0;
     public void birdGenerator(float deltatime){
-        birdCounter += deltatime;
+        birdSpawnTime += deltatime;
 
         if(birdCounter < birdSpawnTime){
             bird = new bird(manager);
             bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
+            //birdSpawnTime = TimeUtils.nanoTime();
             birds.add(bird);
-            birdY+=500;
+            birdY+=700;
         }
-        if(birdCounter>=birdSpawnTime-1){
+        if(birdCounter >= birdSpawnTime-1){
             birdCounter = birdSpawnTime;
         }
 
 
     }
 
+    private void bounds(Rectangle rect){
+        if(Gdx.input.isTouched() ){
+            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
+
+            if(rect.contains(coords.x, coords.y)){
+            }
+        }
+    }
+
+    private void drawobject(SpriteBatch batch){
+
+        OrthographicCamera camera = manager.getCamera();
+        rect.y = 150 + camera.position.y;
+
+        batch.enableBlending();
+        batch.begin();
+            batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
+        batch.end();
+    }
+
+
     @Override
     public void dispose() {
         character.disposeBody();
         baseplt.disposeBody();
-        bird.disposeBody();
         spr.disposeBody();
         for (platform plt: platforms) {
             plt.disposeBody();
         }
+        for (bird b: birds){
+            b.disposeBody();
+        }
+        debri.disposeBody();
     }
 
 
