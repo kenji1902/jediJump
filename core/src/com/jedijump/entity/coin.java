@@ -12,10 +12,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
+import jdk.vm.ci.meta.Constant;
 
 public class coin extends entity{
     private animation texture;
-    private long score;
     public coin(Manager manager) {
         super(manager);
     }
@@ -65,10 +65,9 @@ public class coin extends entity{
     private void coinAdd(){
         int playerState = manager.getCl().getCoinState();
         if(playerState == constants.COIN_HIT && body == manager.getCl().getCoin()){
-            score += constants.COIN_SCORE;
+            manager.setScore(manager.getScore()+ constants.COIN_SCORE);
             if(!isDestroyed)
                 disposeBody();
-            getScore();
         }
     }
 
@@ -83,7 +82,4 @@ public class coin extends entity{
         }
     }
 
-    public long getScore() {
-        return score;
-    }
 }

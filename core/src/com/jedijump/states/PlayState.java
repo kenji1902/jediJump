@@ -91,21 +91,23 @@ public class PlayState extends State{
             p.update(delta);
         }
 
-//        birdGenerator(delta);
-//        for(bird b: birds){
-//            b.update(delta);
-//        }
+        birdGenerator(delta);
+        for(bird b: birds){
+            b.update(delta);
+        }
 
         coinGenerator(delta);
         for (coin c: coins) {
             c.update(delta);
         }
+        if(manager.getScore() != lastScore){
+            lastScore = manager.getScore();
+            scoreString = "SCORE: "+ lastScore;
+        }
+
         spr.update(delta);
         character.update(delta);
-//        if(coin.getScore() != lastScore){
-//            lastScore = coin.getScore();
-//            scoreString = "SCORE: "+ lastScore;
-//        }
+
 
     }
 
@@ -117,9 +119,9 @@ public class PlayState extends State{
 
 
         sprite.disableBlending();
-//        sprite.begin();
-//        sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-//        sprite.end();
+        sprite.begin();
+        sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+        sprite.end();
 
         for (platform p: platforms) {
             p.render(sprite);
@@ -192,10 +194,10 @@ public class PlayState extends State{
 
         if(coinCounter < coinSpawnTime){
             coin coin= new coin(manager);
-            coin.create(new Vector2(18, coinY), new Vector2(32,32), 0);
+            coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH/2)+constants.FORCEFIELD, (constants.SCREENWIDTH/2)-constants.FORCEFIELD), coinY), new Vector2(32,32), 0);
             //coinSpawnTime = TimeUtils.nanoTime();
             coins.add(coin);
-            coinY+=100;
+            coinY+=MathUtils.random(300,700);
         }
         if(coinCounter >= coinSpawnTime-1){
             coinCounter = coinSpawnTime;
