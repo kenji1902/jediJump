@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -55,14 +56,14 @@ public class platform extends entity{
         body.createFixture(fixtureDef).setUserData("platform");
         shape.dispose();
 
-        platformState = isFixed? 0 : rand.nextInt(2);
+        platformState = isFixed? 0 : MathUtils.random(0,1);
         TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
         if(platformState == constants.PLATFORM_STATIC)
             texture = new animation(platformTexture, 64, 160 ,64,16,1,0.5f,true);
         else
             texture = new animation(platformTexture, 64, 160 ,64,64,4,0.5f,true);
 
-        isMoving = rand.nextBoolean();
+        isMoving =  MathUtils.randomBoolean();;
     }
 
     @Override
@@ -75,9 +76,8 @@ public class platform extends entity{
     }
 
     @Override
-    public void render(SpriteBatch spriteBatch) {
+    public void render(SpriteBatch sprite) {
         if(!isDestroyed) {
-            sprite = spriteBatch;
             sprite.enableBlending();
             sprite.begin();
                 sprite.draw(texture.getFrame(),
@@ -90,7 +90,7 @@ public class platform extends entity{
     private int direction = 1;
     private void platformMovement(float delta){
 
-        body.setLinearVelocity(constants.PLATFORM_SPEED * direction,0);
+        body.setLinearVelocity( constants.PLATFORM_SPEED * direction,0);
 
         if(body.getPosition().x + size.x > constants.BOUNDARY - constants.FORCEFIELD ){
             direction = -1;
@@ -106,8 +106,8 @@ public class platform extends entity{
                 && body == manager.getCl().getPlatform()
                 && texture.getCurrFrame() < texture.getFrameCount()-1
             ) {
-            texture.update(delta);
-            if(texture.getCurrFrame() == texture.getFrameCount()-1){
+                texture.update(delta);
+            if(texture.getCurrFrame() == texture.getFrameCount()-1 && !isDestroyed) {
                 texture.dispose();
                 disposeBody();
             }

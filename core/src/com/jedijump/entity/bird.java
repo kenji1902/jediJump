@@ -52,7 +52,6 @@ public class bird extends entity{
         TextureRegion birdTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
         texture =  new animation(birdTexture, 0, 160 ,64,32,2,0.5f,false);
         //birdPosx = body.getPosition().x;
-        System.out.println(birdPosx);
     }
 
     @Override
@@ -64,11 +63,9 @@ public class bird extends entity{
         }
     }
 
-    private float birdPosx = 0;
     private int direction = 1;
     private void birdMovement(float delta){
 
-        birdPosx += body.getLinearVelocity().x;
         body.setLinearVelocity(constants.BIRD_SPEED * direction,0);
 
         if(body.getPosition().x + size.x > constants.BOUNDARY ){
