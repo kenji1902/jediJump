@@ -14,6 +14,9 @@ import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
 import com.jedijump.utility.constants;
 
+import java.awt.*;
+import java.security.Key;
+
 public class PauseState extends State{
     static final int GAME_READY = 0;
     static final int GAME_RUNNING = 1;
@@ -35,8 +38,8 @@ public class PauseState extends State{
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);
         rect = new Rectangle(55, 150 , 64, 64);
-        resume_rect = new Rectangle(65, 250, 192,96/2);
-        quit_rect = new Rectangle(65, 200, 192,96/2);
+        resume_rect = new Rectangle(-97,  0, 192,96/2);
+        quit_rect = new Rectangle(  -97,   -50, 192,96/2);
         sr = new ShapeRenderer();
         sr2 =new ShapeRenderer();
         coords = new Vector3();
@@ -50,7 +53,8 @@ public class PauseState extends State{
 
     @Override
     public void update(float delta) {
-
+        sr.setProjectionMatrix(manager.getCamera().combined);
+        sr2.setProjectionMatrix(manager.getCamera().combined);
         switch (state){
 
             case GAME_PAUSED:
@@ -62,6 +66,7 @@ public class PauseState extends State{
                 manager.pop();
                 break;
             case GAME_QUIT:
+                MenuState.menuMusic.stop();
                 manager.pop();
                 manager.set(new MenuState(manager));
                 break;
@@ -72,16 +77,17 @@ public class PauseState extends State{
     @Override
     public void render(SpriteBatch sprite) {
 
-        manager.getCamera().update();
-        sprite.setProjectionMatrix(manager.getCamera().combined);
+//        manager.getCamera().update();
+//        sprite.setProjectionMatrix(manager.getCamera().combined);
 
         bounds(rect);
         //System.out.println(state);
 
+
         drawobject(sprite);
     }
     private void bounds(Rectangle rect){
-        if(Gdx.input.justTouched()){
+        if(Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
             if(rect.contains(coords.x, coords.y)){
 
@@ -103,17 +109,8 @@ public class PauseState extends State{
             if(quit_rect.contains(quit_coords.x, quit_coords.y)){
                 state = GAME_QUIT;
                 return;
-
             }
         }
-
-
-
-    }
-
-    private void pause(){
-
-
     }
 
     private void drawobject(SpriteBatch batch){
@@ -125,23 +122,27 @@ public class PauseState extends State{
         batch.end();
 
         if(state == 2){
-            camera.setToOrtho(false);
+            //camera.setToOrtho(false);
 
             batch.begin();
-            batch.draw(bgRegion, 0,0,constants.SCREENWIDTH, constants.SCREENHEIGHT);
-            batch.draw(pauseMenu, resume_rect.x, resume_rect.y-50);
+            resume_rect.y = -50 + manager.getCamera().position.y;
+            quit_rect.y = -100 + manager.getCamera().position.y;
+            batch.draw(bgRegion, manager.getCamera().position.x - 160,manager.getCamera().position.y -240,constants.SCREENWIDTH, camera.viewportHeight);
+            batch.draw(pauseMenu,  resume_rect.x, resume_rect.y - 50);
 
             batch.end();
-//            sr.setProjectionMatrix(manager.getCamera().combined);
+
+
 //            sr.begin(ShapeRenderer.ShapeType.Filled);
 //            sr.rect(resume_rect.x, resume_rect.y, resume_rect.width, resume_rect.height);
 //            sr.setColor(Color.GREEN);
 //            sr.end();
-//            sr2.setProjectionMatrix(manager.getCamera().combined);
+//
 //            sr2.begin(ShapeRenderer.ShapeType.Filled);
 //            sr2.rect(quit_rect.x, quit_rect.y, quit_rect.width, quit_rect.height);
 //            sr2.setColor(Color.RED);
 //            sr2.end();
+
         }
     }
 

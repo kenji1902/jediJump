@@ -1,7 +1,10 @@
 package com.jedijump.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -18,6 +21,9 @@ public class Manager {
     private final Stack<State> states;
     private contactListener cl;
     private Box2DDebugRenderer b2dr;
+    private TextureRegion items;
+
+
 
     public Manager(){
         cl = new contactListener();
@@ -28,6 +34,8 @@ public class Manager {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, constants.SCREENWIDTH,constants.SCREENHEIGHT);
+
+        items = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
 
         states = new Stack<State>();
     }
@@ -46,12 +54,14 @@ public class Manager {
     public void update(float delta){
         b2dr.render(world,camera.combined.scl(constants.PPM));
         states.peek().update(delta);
+        System.out.println(states);
     }
 
     public void render(SpriteBatch sprite){
 
         states.peek().render(sprite);
     }
+
     public void dispose(){
         states.peek().dispose();
     }
@@ -60,6 +70,10 @@ public class Manager {
             s.dispose();
         world.dispose();
 
+    }
+
+    public TextureRegion getItems() {
+        return items;
     }
 
     public World getWorld() {
@@ -73,5 +87,7 @@ public class Manager {
     public contactListener getCl() {
         return cl;
     }
+
+
 
 }

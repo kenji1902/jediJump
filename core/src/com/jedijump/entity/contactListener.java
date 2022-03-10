@@ -31,6 +31,10 @@ public class contactListener implements ContactListener {
         Body tempSpringPlatform = hitPlatform(entityA,entityB,"springFoot");
         if(tempSpringPlatform != null)
             springPlatform = tempSpringPlatform;
+
+        int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_BIRD_HIT);
+        if(birdState != -1)
+            playerState = birdState;
     }
 
 
@@ -56,6 +60,10 @@ public class contactListener implements ContactListener {
         if(tempSpringPlatform != null)
             springPlatform = tempSpringPlatform;
 
+        int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_ON_AIR);
+        if(birdState != -1)
+            playerState = birdState;
+
     }
 
     @Override
@@ -74,9 +82,7 @@ public class contactListener implements ContactListener {
         if(tempPlatform != null)
             platform = tempPlatform;
 
-        int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_BIRD_HIT);
-        if(birdState != -1)
-            playerState = birdState;
+
 
         int tempPlayerState = compareEntity(entityA,entityB,"platform","foot",state);
         if(tempPlayerState != -1)

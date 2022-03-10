@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.jedijump.states.Manager;
 import com.jedijump.states.MenuState;
+import com.jedijump.states.postState;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
@@ -61,17 +62,19 @@ public class character extends entity{
 
 
         shape.dispose();
-        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        TextureRegion platformTexture = manager.getItems();
+                //new TextureRegion(new Texture(Gdx.files.internal("items.png")));
 
         side = new animation(platformTexture,32,128,64,32,2,0.5f,false);
         jump = new animation(platformTexture,96,128,64,32,2,0.5f,false);
         stand = new animation(platformTexture,0,128,32,32,1,0.5f,false);
 
         maxPosY = body.getPosition().y;
+        isGenerated = true;
     }
     @Override
     public void update(float delta) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR && ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))))
                 side.update(delta);
             else if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR)
@@ -96,15 +99,16 @@ public class character extends entity{
 
     }
     private void deadZone(){
-        OrthographicCamera camera = manager.getCamera();
-        float deadZone =  camera.position.y - (camera.viewportHeight/2);
-        float charPos = body.getPosition().y  * constants.PPM - (this.size.y * constants.PPM);
-
-        if(charPos < deadZone){
-            System.out.println("dead");
-        }
-        if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
-            System.out.println("Dead");
+        if(!isDestroyed) {
+            OrthographicCamera camera = manager.getCamera();
+            float deadZone = camera.position.y - (camera.viewportHeight / 2);
+            float charPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM );
+            if (charPos < deadZone && !isDestroyed)
+                disposeBody();
+            if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed)
+                disposeBody();
+            if( isDestroyed)
+                manager.set(new postState(manager));
         }
     }
     private float maxPosY;
@@ -186,7 +190,7 @@ public class character extends entity{
 
         int  playerState = manager.getCl().getPlayerState();
         if(playerState == constants.JEDISAUR_SPRING_HIT){
-            System.out.println(playerState);
+
 
             body.applyLinearImpulse(new Vector2(0,constants.JEDISAUR_JUMP_BOOST),body.getPosition(),false);
         }
@@ -194,7 +198,7 @@ public class character extends entity{
 
     @Override
     public void render(SpriteBatch sprite) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             sprite.setProjectionMatrix(manager.getCamera().combined);
             sprite.begin();
 ;

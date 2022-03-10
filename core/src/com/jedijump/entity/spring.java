@@ -61,14 +61,15 @@ public class spring extends entity{
 
         shape.dispose();
 
-        TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
+        TextureRegion platformTexture = manager.getItems();
         texture = new animation(platformTexture, 134, 17 ,18,14,1,0.5f,true);
+        isGenerated = true;
 
     }
 
     @Override
     public void update(float delta) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             float minPosY = body.getPosition().y;
             if(minPosY > body.getPosition().y)
                 minPosY = body.getPosition().y;
@@ -102,7 +103,7 @@ public class spring extends entity{
     }
     @Override
     public void render(SpriteBatch sprite) {
-        if(!isDestroyed) {
+        if(!isDestroyed && isGenerated) {
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),

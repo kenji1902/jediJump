@@ -12,6 +12,8 @@ public abstract class entity {
        protected Vector2 size;
        protected SpriteBatch sprite;
        protected boolean isDestroyed = false;
+       protected boolean isGenerated = false;
+
 
        public entity(Manager manager){
            this.manager = manager;
@@ -24,6 +26,13 @@ public abstract class entity {
                      manager.getWorld().destroyBody(body);
                      isDestroyed = true;
               }
+       }
+       public boolean isGenerated(){
+              return isGenerated;
+       }
+
+       public Body getBody(){
+              return body;
        }
 
 }

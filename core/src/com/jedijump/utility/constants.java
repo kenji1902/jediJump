@@ -6,13 +6,13 @@ public class constants {
     public static final float JEDISAUR_VELOCITY_X = 11;
     public static final float JEDISAUR_VELOCITY_Y = 1000;
     public static final float JEDISAUR_FRICTION = 0.5f;
-    public static final float JEDISAUR_JUMP_BOOST = 2f;
+    public static final float JEDISAUR_JUMP_BOOST = 20f;
 
     // WINDOW
     public static final int SCREENWIDTH = 320;
     public static final int SCREENHEIGHT = 480;
     public static final float BOUNDARY = SCREENWIDTH/SCALE/PPM;
-    public static final float FORCEFIELD = 1f;
+    public static final float FORCEFIELD = 0.5f;
     public static final float FORCEPUSH = 20;
 
     // STATES
@@ -41,6 +41,6 @@ public class constants {
     public static final float BIRD_SPEED = 5;
 
     // PLATFORM
-    public static final float PLATFORM_SPEED = 2;
+    public static final float PLATFORM_SPEED = 3;
 
 }
