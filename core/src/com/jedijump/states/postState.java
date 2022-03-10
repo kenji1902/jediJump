@@ -108,14 +108,16 @@ public class postState extends State {
         batch.end();
 
         if(state == 0){
-            camera.setToOrtho(false);
+            //camera.setToOrtho(false);
 
             batch.begin();
-            batch.draw(bgRegion, 0,0,constants.SCREENWIDTH, constants.SCREENHEIGHT);
-            batch.draw(retry, retry_rect.x + 25, retry_rect.y-5);
-            batch.draw(quit, quit_rect.x + 35, quit_rect.y );
+            batch.draw(bgRegion, manager.getCamera().position.x - 160,manager.getCamera().position.y -240,constants.SCREENWIDTH, constants.SCREENHEIGHT);
+
 
             batch.end();
+
+            batch.enableBlending();
+
         }
     }
 

@@ -108,7 +108,7 @@ public class platform extends entity{
             ) {
                 texture.update(delta);
             if(texture.getCurrFrame() == texture.getFrameCount()-1 && !isDestroyed) {
-                //texture.dispose();
+                texture.dispose();
                 disposeBody();
             }
         }
@@ -119,7 +119,7 @@ public class platform extends entity{
         float platformPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
 
         if (platformPos < deadZone && !isDestroyed) {
-            //texture.dispose();
+            texture.dispose();
             disposeBody();
         }
 

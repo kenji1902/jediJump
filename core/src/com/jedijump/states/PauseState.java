@@ -38,8 +38,8 @@ public class PauseState extends State{
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);
         rect = new Rectangle(55, 150 , 64, 64);
-        resume_rect = new Rectangle(65, 250, 192,96/2);
-        quit_rect = new Rectangle(65, 200, 192,96/2);
+        resume_rect = new Rectangle(-97, 0, 192,96/2);
+        quit_rect = new Rectangle(-97, -50, 192,96/2);
         sr = new ShapeRenderer();
         sr2 =new ShapeRenderer();
         coords = new Vector3();
@@ -120,10 +120,10 @@ public class PauseState extends State{
         batch.end();
 
         if(state == 2){
-            camera.setToOrtho(false);
+            //camera.setToOrtho(false);
 
             batch.begin();
-            batch.draw(bgRegion, 0,0,constants.SCREENWIDTH, constants.SCREENHEIGHT);
+            batch.draw(bgRegion, manager.getCamera().position.x - 160,manager.getCamera().position.y -240,constants.SCREENWIDTH, camera.viewportHeight);
             batch.draw(pauseMenu, resume_rect.x, resume_rect.y-50);
 
             batch.end();
