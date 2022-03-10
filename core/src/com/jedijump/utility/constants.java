@@ -38,7 +38,7 @@ public class constants {
     public static final int COIN_SCORE = 10;
 
     // BIRD
-    public static final float BIRD_SPEED = 5;
+    public static final float BIRD_SPEED = 2;
 
     //DEBRI
     public static final float DEBRI_SPEED = 3;
