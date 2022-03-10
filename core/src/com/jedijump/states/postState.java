@@ -54,7 +54,9 @@ public class postState extends State {
 
             case GAME_QUIT:
                 MenuState.menuMusic.stop();
-                manager.set(new MenuState(manager));
+                manager.pop();
+                manager.push(new PlayState(manager));
+                manager.push(new MenuState(manager));
                 break;
         }
     }
