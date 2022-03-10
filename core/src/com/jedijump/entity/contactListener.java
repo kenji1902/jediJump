@@ -8,21 +8,26 @@ import javax.swing.text.html.parser.Entity;
 public class contactListener implements ContactListener {
     private int playerState = 0;
     private int springStick = 0;
+    private int coinState = 0;
     private Body platform;
     private Body springPlatform;
+    private Body coin;
     @Override
     public void beginContact(Contact contact) {
         Fixture entityA = contact.getFixtureA();
         Fixture entityB = contact.getFixtureB();
 
-        playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
         int springHit = compareEntity(entityA,entityB,"springHead","foot",constants.JEDISAUR_SPRING_HIT);
         if(springHit != -1)
             playerState = springHit;
 
-        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_COIN_HIT);
+        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.COIN_HIT);
         if(coinHit != -1)
-            playerState = coinHit;
+            coinState = coinHit;
+
+        Body coinTemp = hitCoin(entityA,entityB,"body");
+        if(coinTemp != null)
+            coin = coinTemp;
 
         int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_PLATFORM);
         if(springFoot != - 1)
@@ -36,10 +41,7 @@ public class contactListener implements ContactListener {
         if(birdState != -1)
             playerState = birdState;
 
-
         playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
-//        System.out.println(entityA.getUserData() + " " + entityB.getUserData());
-
 
     }
 
@@ -49,14 +51,16 @@ public class contactListener implements ContactListener {
         Fixture entityA = contact.getFixtureA();
         Fixture entityB = contact.getFixtureB();
 
-        playerContact(entityA,entityB,constants.JEDISAUR_ON_AIR);
         int springHit = compareEntity(entityA,entityB,"springHead","foot",constants.JEDISAUR_ON_AIR);
         if(springHit != - 1)
             playerState = springHit;
 
-        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.JEDISAUR_COIN_HIT);
+        int coinHit = compareEntity(entityA,entityB,"body","coin",constants.COIN_OUT);
         if(coinHit != -1)
-            playerState = coinHit;
+            coinState = coinHit;
+
+        coin = hitCoin(entityA,entityB,"body");
+
 
         int springFoot = compareEntity(entityA,entityB,"springFoot","platform",constants.SPRING_ON_AIR);
         if(springFoot != - 1)
@@ -69,6 +73,8 @@ public class contactListener implements ContactListener {
         int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_ON_AIR);
         if(birdState != -1)
             playerState = birdState;
+
+        playerContact(entityA,entityB,constants.JEDISAUR_ON_AIR);
 
     }
 
@@ -87,8 +93,6 @@ public class contactListener implements ContactListener {
         Body tempPlatform = hitPlatform(entityA, entityB, "foot");
         if(tempPlatform != null)
             platform = tempPlatform;
-
-
 
         int tempPlayerState = compareEntity(entityA,entityB,"platform","foot",state);
         if(tempPlayerState != -1)
@@ -119,6 +123,21 @@ public class contactListener implements ContactListener {
 
         return  body;
     }
+    private Body hitCoin(Fixture entityA, Fixture entityB, String obj){
+        Body body = null;
+        if((entityA.getUserData() != null && entityB.getUserData() != null) &&
+                (entityA.getUserData().equals( obj) && entityB.getUserData().equals("coin"))
+        ){
+            body = entityB.getBody();
+        }
+        else if((entityA.getUserData() != null && entityB.getUserData() != null) &&
+                (entityB.getUserData().equals( obj) && entityA.getUserData().equals("coin"))
+        ){
+            body = entityA.getBody();
+        }
+
+        return  body;
+    }
 
     public int getPlayerState() {
         return playerState;
@@ -126,6 +145,14 @@ public class contactListener implements ContactListener {
 
     public int getSpringStick() {
         return springStick;
+    }
+
+    public int getCoinState() {
+        return coinState;
+    }
+
+    public Body getCoin() {
+        return coin;
     }
 
     public Body getSpringPlatform() {
