@@ -50,12 +50,12 @@ public class coin extends entity{
 
         TextureRegion platformTexture = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
         texture = new animation(platformTexture, 128, 32 ,96,32,3,0.5f,false);
-
+        isGenerated = true;
     }
 
     @Override
     public void update(float delta) {
-        if(!isDestroyed){
+        if(!isDestroyed && isGenerated){
             texture.update(delta);
             coinAdd();
         }
@@ -72,7 +72,7 @@ public class coin extends entity{
 
     @Override
     public void render(SpriteBatch sprite) {
-        if(!isDestroyed){
+        if(!isDestroyed && isGenerated){
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),

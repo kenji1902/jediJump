@@ -73,8 +73,6 @@ public class PlayState extends State{
         for (platform p: platforms) {
             p.update(delta);
         }
-
-
         bird.update(delta);
         //birdGenerator(delta);
         spr.update(delta);
@@ -94,17 +92,15 @@ public class PlayState extends State{
         sprite.end();
 
         for (platform p: platforms) {
-
-            p.render(sprite);
+                p.render(sprite);
         }
         spr.render(sprite);
 
         drawobject(sprite);
-
         bounds(rect);
+
         ps.render(sprite);
         character.render(sprite);
-
         bird.render(sprite);
 
     }
