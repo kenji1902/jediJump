@@ -40,6 +40,9 @@ public class constants {
     // BIRD
     public static final float BIRD_SPEED = 5;
 
+    //DEBRI
+    public static final float DEBRI_SPEED = 3;
+
     // PLATFORM
     public static final float PLATFORM_SPEED = 3;
 

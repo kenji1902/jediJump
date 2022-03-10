@@ -14,16 +14,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.jedijump.entity.bird;
-import com.jedijump.entity.character;
-import com.jedijump.entity.platform;
-import com.jedijump.entity.spring;
+import com.jedijump.entity.*;
 import com.jedijump.utility.constants;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class PlayState extends State{
+    debri debri;
     character character;
     platform plt, plt1, baseplt;
     bird bird;
@@ -44,14 +42,15 @@ public class PlayState extends State{
         plt = new platform(manager);
         plt1 = new platform(manager);
         baseplt = new platform(manager);
+        debri = new debri(manager);
         bird = new bird(manager);
         spr = new spring(manager);
         character.create(new Vector2(0,0),new Vector2(32,32),1);
         ps = new PauseState(manager);
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
-        //bird.create(new Vector2(30,50),new Vector2(32,32),1);
+//        bird.create(new Vector2(30,50),new Vector2(32,32),1);
         spr.create(new Vector2(-42,89),new Vector2(18,14),1);
-
+        debri.create(new Vector2(30,240),new Vector2(32,32),3);
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);
 
@@ -75,13 +74,12 @@ public class PlayState extends State{
         for (platform p: platforms) {
             p.update(delta);
         }
-
-        birdGenerator(delta);
         for(bird b: birds){
             b.update(delta);
         }
+        //birdGenerator(delta);
 
-
+        debri.update(delta);
         spr.update(delta);
         character.update(delta);
     }
@@ -94,21 +92,26 @@ public class PlayState extends State{
 
 
         sprite.disableBlending();
-//        sprite.begin();
-//            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-//        sprite.end();
+        sprite.begin();
+            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+        sprite.end();
 
         for (platform p: platforms) {
                 p.render(sprite);
         }
-        spr.render(sprite);
 
+        spr.render(sprite);
+        debri.render(sprite);
         drawobject(sprite);
         bounds(rect);
 
         ps.render(sprite);
         character.render(sprite);
 
+
+        if(TimeUtils.nanoTime() - birdSpawnTime > 1000000000) {
+            birdGenerator();
+        }
 
         for(bird b: birds){
             b.render(sprite);
@@ -120,7 +123,9 @@ public class PlayState extends State{
     private float counter = 0;
     public void LevelGenerator(float deltatime){
         counter += deltatime;
+
         if(counter < MAX){
+
             platform plt = new platform(manager);
             plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
 
@@ -132,22 +137,14 @@ public class PlayState extends State{
         }
 
     }
-    private float birdSpawnTime = 5;
+    private long birdSpawnTime;
     private float birdCounter = 0;
-    public void birdGenerator(float deltatime){
-        birdSpawnTime += deltatime;
-
-        if(birdCounter < birdSpawnTime){
-            bird = new bird(manager);
-            bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
-            //birdSpawnTime = TimeUtils.nanoTime();
-            birds.add(bird);
-            birdY+=700;
-        }
-        if(birdCounter >= birdSpawnTime-1){
-            birdCounter = birdSpawnTime;
-        }
-
+    public void birdGenerator(){
+        bird = new bird(manager);
+        bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
+        birdSpawnTime = TimeUtils.nanoTime();
+        birds.add(bird);
+        birdY+=500;
 
     }
 
@@ -176,12 +173,10 @@ public class PlayState extends State{
     public void dispose() {
         character.disposeBody();
         baseplt.disposeBody();
+        bird.disposeBody();
         spr.disposeBody();
         for (platform plt: platforms) {
             plt.disposeBody();
-        }
-        for (bird b: birds){
-            b.disposeBody();
         }
     }
 
