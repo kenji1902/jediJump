@@ -99,17 +99,16 @@ public class character extends entity{
 
     }
     private void deadZone(){
-        OrthographicCamera camera = manager.getCamera();
-        float deadZone =  camera.position.y - (camera.viewportHeight/2);
-        float charPos = body.getPosition().y  * constants.PPM - (this.size.y * constants.PPM);
-
-        if(charPos < deadZone){
-            System.out.println("dead");
-            manager.set(new postState(manager));
-        }
-        if(manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT){
-            System.out.println("Dead");
-           // manager.set(new postState(manager));
+        if(!isDestroyed) {
+            OrthographicCamera camera = manager.getCamera();
+            float deadZone = camera.position.y - (camera.viewportHeight / 2);
+            float charPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM );
+            if (charPos < deadZone && !isDestroyed)
+                disposeBody();
+            if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed)
+                disposeBody();
+            if( isDestroyed)
+                manager.set(new postState(manager));
         }
     }
     private float maxPosY;
