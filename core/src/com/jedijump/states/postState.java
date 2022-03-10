@@ -102,6 +102,7 @@ public class postState extends State {
 
         OrthographicCamera camera = manager.getCamera();
         rect.y = 150 + camera.position.y;
+        batch.enableBlending();
         batch.begin();
         batch.draw(retry,  rect.x, rect.y, rect.width, rect.height);
         batch.draw(quit, rect.x, rect.y, rect.width, rect.height);
@@ -116,7 +117,7 @@ public class postState extends State {
 
             batch.end();
 
-            batch.enableBlending();
+
 
         }
     }
