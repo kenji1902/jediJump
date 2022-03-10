@@ -74,10 +74,12 @@ public class PlayState extends State{
         for (platform p: platforms) {
             p.update(delta);
         }
+
+        birdGenerator(delta);
         for(bird b: birds){
             b.update(delta);
         }
-        //birdGenerator(delta);
+
 
         debri.update(delta);
         spr.update(delta);
@@ -102,17 +104,10 @@ public class PlayState extends State{
 
         spr.render(sprite);
         debri.render(sprite);
-        drawobject(sprite);
-        bounds(rect);
 
         ps.render(sprite);
         character.render(sprite);
-
-
-        if(TimeUtils.nanoTime() - birdSpawnTime > 1000000000) {
-            birdGenerator();
-        }
-
+        
         for(bird b: birds){
             b.render(sprite);
         }
@@ -137,37 +132,23 @@ public class PlayState extends State{
         }
 
     }
-    private long birdSpawnTime;
+    private float birdSpawnTime = 5;
     private float birdCounter = 0;
-    public void birdGenerator(){
-        bird = new bird(manager);
-        bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
-        birdSpawnTime = TimeUtils.nanoTime();
-        birds.add(bird);
-        birdY+=500;
+    public void birdGenerator(float deltatime){
+        birdCounter += deltatime;
 
-    }
-
-    private void bounds(Rectangle rect){
-        if(Gdx.input.isTouched() ){
-            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
-
-            if(rect.contains(coords.x, coords.y)){
-            }
+        if(birdCounter < birdSpawnTime){
+            bird = new bird(manager);
+            bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
+            birds.add(bird);
+            birdY+=500;
         }
+        if(birdCounter>=birdSpawnTime-1){
+            birdCounter = birdSpawnTime;
+        }
+
+
     }
-
-    private void drawobject(SpriteBatch batch){
-
-        OrthographicCamera camera = manager.getCamera();
-        rect.y = 150 + camera.position.y;
-
-        batch.enableBlending();
-        batch.begin();
-            batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
-        batch.end();
-    }
-
 
     @Override
     public void dispose() {
