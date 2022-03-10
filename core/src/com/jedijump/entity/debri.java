@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -31,7 +32,7 @@ public class debri extends entity{
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
         def.position.set(this.position);
-        def.fixedRotation = true;
+        def.fixedRotation = false;
         body = manager.getWorld().createBody(def);
 
         this.size.x = this.size.x / constants.SCALE / constants.PPM;
@@ -43,15 +44,17 @@ public class debri extends entity{
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = density;
         fixtureDef.shape = shape;
-        fixtureDef.isSensor = true;
+        fixtureDef.isSensor = false;
         fixtureDef.friction = constants.JEDISAUR_FRICTION;
         body.createFixture(fixtureDef).setUserData("bird");
 
         shape.dispose();
 
         TextureRegion debriTexture = manager.getItems();
-        texture =  new animation(debriTexture, 0, 160 ,64,32,2,0.5f,false);
+        texture =  new animation(debriTexture, 0, 160 ,32,32,1,1,false);
         isGenerated = true;
+
+        body.setAngularVelocity(0.1f);
     }
 
     @Override
@@ -80,7 +83,14 @@ public class debri extends entity{
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),
-                    body.getPosition().y * constants.PPM - ((float) texture.getFrame().getRegionHeight() / 2)
+                    body.getPosition().y * constants.PPM - ((float) texture.getFrame().getRegionHeight() / 2),
+                    this.size.x,
+                    this.size.y,
+                    this.size.x * constants.SCALE * constants.PPM,
+                    this.size.y * constants.SCALE * constants.PPM,
+                    1,
+                    1,
+                    body.getAngle() * MathUtils.radDeg
             );
             sprite.end();
         }
