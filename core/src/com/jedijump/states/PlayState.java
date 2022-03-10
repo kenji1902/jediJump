@@ -17,6 +17,7 @@ import com.jedijump.entity.bird;
 import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
 import com.jedijump.entity.spring;
+import com.jedijump.entity.coin;
 import com.jedijump.utility.constants;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class PlayState extends State{
     platform plt, plt1, baseplt;
     bird bird;
     spring spr;
+    coin coin;
     Texture item, bg;
     TextureRegion pause, bgRegion;
     Rectangle rect;
@@ -35,6 +37,8 @@ public class PlayState extends State{
     Array<platform> platforms;
     Array<bird> birds;
     int y = -120;
+
+    Array<coin> coins;
 
     public PlayState(Manager manager) {
         super(manager);
@@ -62,6 +66,10 @@ public class PlayState extends State{
         platforms = new Array<>();
         //birds = new Array<>();
 
+        coin = new coin(manager);
+        coin.create(new Vector2(42,89),new Vector2(18,14),1);
+        coins = new Array<>();
+
     }
 
     @Override
@@ -77,6 +85,10 @@ public class PlayState extends State{
         //birdGenerator(delta);
         spr.update(delta);
         character.update(delta);
+        coin.update(delta);
+        for (coin c: coins) {
+            c.update(delta);
+        }
     }
 
     @Override
@@ -103,6 +115,7 @@ public class PlayState extends State{
         character.render(sprite);
         bird.render(sprite);
 
+        coin.render(sprite);
     }
 
     private float MAX = 5;
@@ -124,6 +137,23 @@ public class PlayState extends State{
 
     }
 
+    public void coinGenerator(float deltatime){
+        counter += deltatime;
+
+        if(counter < MAX){
+            coin = new coin(manager);
+            coin.create(new Vector2(MathUtils.random(-manager.getCamera().position.y+constants.SCREENWIDTH/2, manager.getCamera().position.y+constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
+
+            coins.add(coin);
+            coin.update(deltatime);
+            y+=100;
+        }
+        if(counter >= MAX-1){
+            counter = MAX;
+        }
+
+    }
+
     public void birdGenerator(float deltatime){
 //        counter += deltatime;
 //        if(counter < MAX){
@@ -135,7 +165,6 @@ public class PlayState extends State{
 //        if(counter >= MAX-1){
 //            counter = MAX;
 //        }
-
     }
 
     private void bounds(Rectangle rect){
@@ -168,6 +197,11 @@ public class PlayState extends State{
         for (platform plt: platforms) {
             plt.disposeBody();
         }
+
+        for (coin coin: coins){
+            coin.disposeBody();
+        }
+
     }
 
 

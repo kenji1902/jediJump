@@ -67,6 +67,8 @@ public class coin extends entity{
             score += constants.COIN_SCORE;
             if(!isDestroyed)
                 disposeBody();
+            if(isDestroyed)
+                getScore();
         }
     }
 
@@ -82,6 +84,7 @@ public class coin extends entity{
     }
 
     public long getScore() {
+        System.out.println("SCORE: "+score);
         return score;
     }
 }
