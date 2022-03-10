@@ -24,8 +24,8 @@ public class PlayState extends State{
 
     character character;
     platform plt, plt1, baseplt;
-    bird bird;
-    spring spr;
+
+    //spring spr;
     Texture item, bg;
     TextureRegion pause, bgRegion;
     Rectangle rect;
@@ -34,24 +34,24 @@ public class PlayState extends State{
     Array<platform> platforms;
     Array<bird> birds;
     Array<debri> debris;
+    Array<spring> springs;
     int y = -120;
     int birdY = 100;
 
     public PlayState(Manager manager) {
         super(manager);
+        ps = new PauseState(manager);
+
         character = new character(manager);
         plt = new platform(manager);
         plt1 = new platform(manager);
         baseplt = new platform(manager);
-        //debri = new debri(manager);
-        bird = new bird(manager);
-        spr = new spring(manager);
-        character.create(new Vector2(0,0),new Vector2(32,32),1);
-        ps = new PauseState(manager);
+       // spr = new spring(manager);
+
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
-//        bird.create(new Vector2(30,50),new Vector2(32,32),1);
-        spr.create(new Vector2(-42,89),new Vector2(18,14),1);
-       // debri.create(new Vector2(30,240),new Vector2(32,32),3);
+       // spr.create(new Vector2(p.getBody().getPosition().y,89),new Vector2(18,14),1);
+        character.create(new Vector2(0,0),new Vector2(32,32),1);
+
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);
 
@@ -60,10 +60,14 @@ public class PlayState extends State{
         rect = new Rectangle(55,
                  150 ,
                 64, 64);
+
         coords = new Vector3();
+
         platforms = new Array<>();
         birds = new Array<bird>();
         debris = new Array<debri>();
+        springs = new Array<>();
+
 
     }
 
@@ -74,7 +78,12 @@ public class PlayState extends State{
 
         LevelGenerator(delta);
         for (platform p: platforms) {
+
             p.update(delta);
+        }
+       // springGenerator(delta);
+        for(spring s: springs){
+            s.update(delta);
         }
 
         birdGenerator(delta);
@@ -89,7 +98,7 @@ public class PlayState extends State{
 
 
         //debri.update(delta);
-        spr.update(delta);
+       // spr.update(delta);
         character.update(delta);
     }
 
@@ -109,7 +118,10 @@ public class PlayState extends State{
                 p.render(sprite);
         }
 
-        spr.render(sprite);
+        for(spring s: springs){
+            s.render(sprite);
+        }
+       // spr.render(sprite);
 
 
 
@@ -131,18 +143,18 @@ public class PlayState extends State{
     public void LevelGenerator(float deltatime){
         counter += deltatime;
 
-
         if(counter < MAX){
 
             platform plt = new platform(manager);
             plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
-
             platforms.add(plt);
             y+=100;
+
         }
         if(counter >= MAX-1){
             counter = MAX;
         }
+
 
     }
     private float birdSpawnTime = 5;
@@ -151,7 +163,7 @@ public class PlayState extends State{
         birdSpawnTime += deltatime;
 
         if(birdCounter < birdSpawnTime){
-            bird = new bird(manager);
+            bird bird = new bird(manager);
             bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
             //birdSpawnTime = TimeUtils.nanoTime();
             birds.add(bird);
@@ -177,10 +189,23 @@ public class PlayState extends State{
             debrisCounter = 0;
             System.out.println(character.getBody().getPosition().x);
         }
-//        if(debrisCounter >= debrisSpawn -1){
-//            debrisCounter = debrisSpawn;
-//        }
     }
+
+    private float springSpawn = 5;
+    private float springCounter = 0;
+    public void springGenerator(float deltatime){
+        springCounter += deltatime;
+
+
+        if(springSpawn>springCounter){
+            spring spr = new spring(manager);
+            spr.create(new Vector2(plt.getBody().localVector.x, plt.getBody().localVector.y), new Vector2(18,14),1);
+            springs.add(spr);
+            springCounter =0;
+        }
+
+    }
+
 
 
 
@@ -188,7 +213,9 @@ public class PlayState extends State{
     public void dispose() {
         character.disposeBody();
         baseplt.disposeBody();
-        spr.disposeBody();
+        for(spring s: springs){
+            s.disposeBody();
+        }
         for (platform plt: platforms) {
             plt.disposeBody();
         }
