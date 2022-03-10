@@ -84,10 +84,10 @@ public class debri extends entity{
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),
                     body.getPosition().y * constants.PPM - ((float) texture.getFrame().getRegionHeight() / 2),
-                    this.size.x,
-                    this.size.y,
+                    this.size.x * constants.PPM,
+                   this.size.y * constants.PPM,
                     this.size.x * constants.SCALE * constants.PPM,
-                    this.size.y * constants.SCALE * constants.PPM,
+                    this.size.x * constants.SCALE * constants.PPM,
                     1,
                     1,
                     body.getAngle() * MathUtils.radDeg

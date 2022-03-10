@@ -55,7 +55,7 @@ public class PlayState extends State{
         pause = new TextureRegion(item, 64, 64, 64, 64);
 
         bg = new Texture(Gdx.files.internal("background.png"));
-        bgRegion = new TextureRegion(bg, 0, 0, 280, 450);
+        //bgRegion = new TextureRegion(bg, 0, 0, 280, 450);
         rect = new Rectangle(55,
                  150 ,
                 64, 64);
@@ -94,9 +94,9 @@ public class PlayState extends State{
 
 
         sprite.disableBlending();
-        sprite.begin();
-            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-        sprite.end();
+//        sprite.begin();
+//            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+//        sprite.end();
 
         for (platform p: platforms) {
                 p.render(sprite);
@@ -142,7 +142,7 @@ public class PlayState extends State{
 
         if(birdCounter < birdSpawnTime){
             bird = new bird(manager);
-            bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
+            bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
             //birdSpawnTime = TimeUtils.nanoTime();
             birds.add(bird);
             birdY+=700;
@@ -186,6 +186,7 @@ public class PlayState extends State{
         for (bird b: birds){
             b.disposeBody();
         }
+        debri.disposeBody();
     }
 
 
