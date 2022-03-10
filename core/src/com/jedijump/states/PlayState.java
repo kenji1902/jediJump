@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.jedijump.entity.bird;
 import com.jedijump.entity.character;
 import com.jedijump.entity.platform;
@@ -35,6 +36,7 @@ public class PlayState extends State{
     Array<platform> platforms;
     Array<bird> birds;
     int y = -120;
+    int birdY = 100;
 
     public PlayState(Manager manager) {
         super(manager);
@@ -60,7 +62,7 @@ public class PlayState extends State{
                 64, 64);
         coords = new Vector3();
         platforms = new Array<>();
-        //birds = new Array<>();
+        birds = new Array<bird>();
 
     }
 
@@ -73,8 +75,11 @@ public class PlayState extends State{
         for (platform p: platforms) {
             p.update(delta);
         }
-        bird.update(delta);
+        for(bird b: birds){
+            b.update(delta);
+        }
         //birdGenerator(delta);
+
         spr.update(delta);
         character.update(delta);
     }
@@ -101,7 +106,15 @@ public class PlayState extends State{
 
         ps.render(sprite);
         character.render(sprite);
-        bird.render(sprite);
+
+
+        if(TimeUtils.nanoTime() - birdSpawnTime > 1000000000) {
+            birdGenerator();
+        }
+
+        for(bird b: birds){
+            b.render(sprite);
+        }
 
     }
 
@@ -123,18 +136,14 @@ public class PlayState extends State{
         }
 
     }
-
-    public void birdGenerator(float deltatime){
-//        counter += deltatime;
-//        if(counter < MAX){
-//            bird = new bird(manager);
-//            bird.create(new Vector2(0,MathUtils.random(-constants.SCREENHEIGHT/2, constants.SCREENHEIGHT/2)), new Vector2(64,32), 0);
-//            birds.add(bird);
-//            bird.update(deltatime);
-//        }
-//        if(counter >= MAX-1){
-//            counter = MAX;
-//        }
+    private long birdSpawnTime;
+    private float birdCounter = 0;
+    public void birdGenerator(){
+        bird = new bird(manager);
+        bird.create(new Vector2(0, birdY), new Vector2(64,32), 0);
+        birdSpawnTime = TimeUtils.nanoTime();
+        birds.add(bird);
+        birdY+=500;
 
     }
 
