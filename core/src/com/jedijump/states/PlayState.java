@@ -22,18 +22,20 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class PlayState extends State{
+
     character character;
     platform plt, plt1, baseplt;
-    bird bird;
-    spring spr;
-//    coin coin;
+
+    //spring spr;
     Texture item, bg;
-    TextureRegion pause, bgRegion,scoreRegion;
+    TextureRegion pause, bgRegion;
     Rectangle rect;
     Vector3 coords;
     PauseState ps;
     Array<platform> platforms;
     Array<bird> birds;
+    Array<debri> debris;
+    Array<spring> springs;
     int y = -120;
     int birdY = 100;
 
@@ -44,20 +46,19 @@ public class PlayState extends State{
 
     Array<coin> coins;
 
-
     public PlayState(Manager manager) {
         super(manager);
+        ps = new PauseState(manager);
+
         character = new character(manager);
         plt = new platform(manager);
         plt1 = new platform(manager);
         baseplt = new platform(manager);
-        bird = new bird(manager);
-        spr = new spring(manager);
-        character.create(new Vector2(0,0),new Vector2(32,32),1);
-        ps = new PauseState(manager);
+       // spr = new spring(manager);
+
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
-//        bird.create(new Vector2(30,50),new Vector2(32,32),1);
-        spr.create(new Vector2(-42,89),new Vector2(18,14),1);
+       // spr.create(new Vector2(p.getBody().getPosition().y,89),new Vector2(18,14),1);
+        character.create(new Vector2(0,0),new Vector2(32,32),1);
 
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);
@@ -65,14 +66,16 @@ public class PlayState extends State{
         bg = new Texture(Gdx.files.internal("background.png"));
         bgRegion = new TextureRegion(bg, 0, 0, 280, 450);
         rect = new Rectangle(55,
-                150 ,
+                 150 ,
                 64, 64);
+
         coords = new Vector3();
+
         platforms = new Array<>();
         birds = new Array<bird>();
+        debris = new Array<debri>();
+        springs = new Array<>();
 
-//        coin = new coin(manager);
-//        coin.create(new Vector2(42,89),new Vector2(18,14),1);
         coins = new Array<>();
         lastScore = 0;
         scoreString = "SCORE: 0";
@@ -89,12 +92,22 @@ public class PlayState extends State{
 
         LevelGenerator(delta);
         for (platform p: platforms) {
+
             p.update(delta);
+        }
+       // springGenerator(delta);
+        for(spring s: springs){
+            s.update(delta);
         }
 
         birdGenerator(delta);
         for(bird b: birds){
             b.update(delta);
+        }
+
+        debrisGenerator(delta);
+        for(debri d: debris){
+            d.update(delta);
         }
 
         coinGenerator(delta);
@@ -106,10 +119,10 @@ public class PlayState extends State{
             scoreString = "SCORE: "+ lastScore;
         }
 
-        spr.update(delta);
+
+        //debri.update(delta);
+       // spr.update(delta);
         character.update(delta);
-
-
     }
 
     @Override
@@ -121,20 +134,26 @@ public class PlayState extends State{
 
         sprite.disableBlending();
         sprite.begin();
-        sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+            sprite.draw(bgRegion,camera.position.x - 160,camera.position.y - 240, constants.SCREENWIDTH, constants.SCREENHEIGHT);
         sprite.end();
 
         for (platform p: platforms) {
-            p.render(sprite);
+                p.render(sprite);
         }
-        spr.render(sprite);
 
-        drawobject(sprite);
-        bounds(rect);
+        for(spring s: springs){
+            s.render(sprite);
+        }
+       // spr.render(sprite);
+
+
 
         ps.render(sprite);
         character.render(sprite);
 
+        for(debri d: debris){
+            d.render(sprite);
+        }
 
         for(bird b: birds){
             b.render(sprite);
@@ -147,12 +166,10 @@ public class PlayState extends State{
         font.draw(sprite,scoreString,-140,220+camera.position.y);
         sprite.end();
 
-
     }
 
     private float MAX = 5;
     private float counter = 0;
-
     public void LevelGenerator(float deltatime){
         counter += deltatime;
 
@@ -160,13 +177,14 @@ public class PlayState extends State{
 
             platform plt = new platform(manager);
             plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH/2, constants.SCREENWIDTH/2),   y), new Vector2(64,16), 0);
-
             platforms.add(plt);
             y+=100;
+
         }
         if(counter >= MAX-1){
             counter = MAX;
         }
+
 
     }
     private float birdSpawnTime = 10;
@@ -175,9 +193,9 @@ public class PlayState extends State{
         birdSpawnTime += deltatime;
 
         if(birdCounter < birdSpawnTime){
-            bird bird= new bird(manager);
+            bird bird = new bird(manager);
             bird.create(new Vector2(0, birdY), new Vector2(32,32), 0);
-//            birdSpawnTime = TimeUtils.nanoTime();
+            //birdSpawnTime = TimeUtils.nanoTime();
             birds.add(bird);
             birdY+=700;
         }
@@ -185,6 +203,36 @@ public class PlayState extends State{
             birdCounter = birdSpawnTime;
         }
 
+
+    }
+    private float debrisSpawn = 10;
+    private float debrisCounter = 0;
+    public void debrisGenerator(float deltatime){
+
+        debrisCounter += deltatime;
+
+        if(debrisCounter > debrisSpawn){
+            debri debri = new debri(manager);
+            //debri = new debri(manager);
+            debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),3);
+            debris.add(debri);
+            debrisCounter = 0;
+            System.out.println(character.getBody().getPosition().x);
+        }
+    }
+
+    private float springSpawn = 5;
+    private float springCounter = 0;
+    public void springGenerator(float deltatime){
+        springCounter += deltatime;
+
+
+        if(springSpawn>springCounter){
+            spring spr = new spring(manager);
+            spr.create(new Vector2(plt.getBody().localVector.x, plt.getBody().localVector.y), new Vector2(18,14),1);
+            springs.add(spr);
+            springCounter =0;
+        }
 
     }
 
@@ -209,44 +257,26 @@ public class PlayState extends State{
 
 
 
-    private void bounds(Rectangle rect){
-        if(Gdx.input.isTouched() ){
-            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
-
-            if(rect.contains(coords.x, coords.y)){
-            }
-        }
-    }
-
-    private void drawobject(SpriteBatch batch){
-
-        OrthographicCamera camera = manager.getCamera();
-        rect.y = 150 + camera.position.y;
-
-        batch.enableBlending();
-        batch.begin();
-            batch.draw(pause,  rect.x, rect.y, rect.width, rect.height);
-        batch.end();
-    }
-
-
     @Override
     public void dispose() {
         character.disposeBody();
         baseplt.disposeBody();
-        spr.disposeBody();
+        for(spring s: springs){
+            s.disposeBody();
+        }
         for (platform plt: platforms) {
             plt.disposeBody();
         }
         for (bird b: birds){
             b.disposeBody();
         }
-//        debri.disposeBody();
-//        coin.disposeBody();
-        for (coin coin: coins){
-            coin.disposeBody();
+       for(debri d: debris){
+           d.disposeBody();
         }
 
+        for (coin coin: coins) {
+            coin.disposeBody();
+        }
     }
 
 
