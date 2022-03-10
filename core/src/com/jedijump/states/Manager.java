@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jedijump.entity.contactListener;
+import com.jedijump.entity.*;
 import com.jedijump.utility.constants;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 
@@ -23,7 +25,11 @@ public class Manager {
     private Box2DDebugRenderer b2dr;
     private TextureRegion items;
     private int score;
-
+    public Stack<platform> deletedPlatform;
+    public Stack<spring> deletedSprings;
+    public Stack<debri> deletedDebris;
+    public Stack<coin> deletedCoins;
+    public Stack<bird> deletedBird;
 
 
     public Manager(){
@@ -34,11 +40,23 @@ public class Manager {
         world.setContactListener(cl);
 
         camera = new OrthographicCamera();
+
+
         camera.setToOrtho(false, constants.SCREENWIDTH,constants.SCREENHEIGHT);
+        if(constants.DEBUG_MODE)
+            camera.zoom = constants.ZOOM;
 
         items = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
 
         states = new Stack<State>();
+
+        deletedPlatform = new Stack<>();
+        deletedSprings = new Stack<>();
+        deletedDebris = new Stack<>();
+        deletedCoins = new Stack<>();
+        deletedBird = new Stack<>();
+
+
     }
     public void push(State state){
         states.push(state);

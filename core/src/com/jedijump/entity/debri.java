@@ -80,6 +80,7 @@ public class debri extends entity{
     @Override
     public void render(SpriteBatch sprite) {
         if(!isDestroyed && isGenerated) {
+            sprite.enableBlending();
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),

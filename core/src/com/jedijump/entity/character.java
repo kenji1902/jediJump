@@ -178,7 +178,11 @@ public class character extends entity{
         }
 
         // Jump and Double Jump
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND){
+        if(constants.DEBUG_MODE && Gdx.input.isKeyJustPressed(Input.Keys.UP)/* && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND*/){
+            body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y,false);
+            isDoubleJump = true;
+        }
+        if(!constants.DEBUG_MODE && Gdx.input.isKeyJustPressed(Input.Keys.UP) && manager.getCl().getPlayerState() == constants.JEDISAUR_ON_GROUND){
             body.applyForceToCenter(0,constants.JEDISAUR_VELOCITY_Y,false);
             isDoubleJump = true;
         }
@@ -205,6 +209,7 @@ public class character extends entity{
     public void render(SpriteBatch sprite) {
         if(!isDestroyed && isGenerated) {
             sprite.setProjectionMatrix(manager.getCamera().combined);
+            sprite.enableBlending();
             sprite.begin();
 ;
             if(manager.getCl().getPlayerState() != constants.JEDISAUR_ON_AIR && ((Gdx.input.isKeyPressed(Input.Keys.LEFT)) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))))
@@ -224,4 +229,7 @@ public class character extends entity{
         }
     }
 
+    public float getWorldHeight() {
+        return maxPosY + (constants.SCREENHEIGHT/32f);
+    }
 }
