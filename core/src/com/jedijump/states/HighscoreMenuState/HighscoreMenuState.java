@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.jedijump.states.Manager;
-import com.jedijump.states.Settings;
 import com.jedijump.states.State;
 import com.jedijump.utility.constants;
 
@@ -31,7 +30,6 @@ public class HighscoreMenuState extends State{
 
         background = new TextureRegion(new Texture(Gdx.files.internal("plainBG.png")));
         backgroundRegion = new TextureRegion(background, 0, 0, constants.SCREENWIDTH, constants.SCREENHEIGHT);
-
 
         item = manager.getItems();
 
@@ -64,10 +62,7 @@ public class HighscoreMenuState extends State{
 
         sprite.enableBlending();
         sprite.begin();
-        //sprite.draw(logo, -135 , 80);
-        //sprite.draw(highscore_text, shape.x-160, shape.y-50);
         sprite.draw(highscore_text, shape.x - 68, shape.y+130,250,25);
-        //sprite.draw(Settings.soundEnabled ? soundOn :  soundOff,soundBounds.x,soundBounds.y-64,64,64);
         sprite.end();
     }
 
