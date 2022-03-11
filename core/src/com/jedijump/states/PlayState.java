@@ -93,11 +93,10 @@ public class PlayState extends State{
         manager.getWorld().step(1/60f,6,2);
         character.update(delta);
 
-        LevelGenerator(delta);
+        platformGenerator(delta);
 
         for(platform p : platforms)
             p.update(delta);
-       // springGenerator(delta);
         for(spring s: springs){
             s.update(delta);
         }
@@ -106,16 +105,16 @@ public class PlayState extends State{
         for(bird b: birds){
             b.update(delta);
         }
-//
-//        debrisGenerator(delta);
-//        for(debri d: debris){
-//            d.update(delta);
-//        }
-//
-//        coinGenerator(delta);
-//        for (coin c: coins) {
-//            c.update(delta);
-//        }
+
+        debrisGenerator(delta);
+        for(debri d: debris){
+            d.update(delta);
+        }
+
+        coinGenerator(delta);
+        for (coin c: coins) {
+            c.update(delta);
+        }
         if(manager.getScore() != lastScore){
             lastScore = manager.getScore();
             scoreString = "SCORE: "+ lastScore;
@@ -175,15 +174,16 @@ public class PlayState extends State{
 
     private float MAX = 5;
     private float counter = 0;
-    public void LevelGenerator(float deltatime){
+    public void platformGenerator(float deltatime){
 
         if((float) platformY/constants.PPM < character.getWorldHeight() ) {
             counter += deltatime;
             if (counter < MAX) {
-                System.out.println(platforms.size());
-                System.out.println(platformY/constants.PPM+ "<" + character.getWorldHeight());
+//                System.out.println(platforms.size());
+//                System.out.println(platformY/constants.PPM+ "<" + character.getWorldHeight());
                 platform plt = new platform(manager);
                 plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH / 2, constants.SCREENWIDTH / 2), platformY), new Vector2(64, 16), 0);
+                springGenerator(deltatime,plt.getBody().getPosition());
                 platforms.add(plt);
                 platformY += 100;
             }
@@ -196,13 +196,25 @@ public class PlayState extends State{
             platforms.remove(manager.deletedPlatform.peek());
             manager.deletedPlatform.pop();
         }
+        for(int i = 0 ; i < manager.deletedSprings.size(); i++){
+            springs.remove(manager.deletedSprings.peek());
+            manager.deletedSprings.pop();
+        }
 
-//        for (int i = 0; i < platforms.size(); i++) {
-//            if(platforms.get(i).isDestroyed())
-//                platforms.remove(platforms.get(i));
-//
-//        }
-
+    }
+    private float springSpawn = 0.02f;
+    private float springCounter = 0;
+    public void springGenerator(float deltatime,Vector2 postion){
+        springCounter += deltatime;
+        //System.out.println(springCounter + " > " + springSpawn);
+        if(springCounter>springSpawn){
+            spring spr = new spring(manager);
+            postion.x = postion.x * constants.PPM;
+            postion.y = (postion.y * constants.PPM) + ((32/2) );
+            spr.create(postion, new Vector2(18,14),1);
+            springs.add(spr);
+            springCounter =0;
+        }
 
     }
     private float birdSpawnTime = 5;
@@ -241,41 +253,38 @@ public class PlayState extends State{
             debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),3);
             debris.add(debri);
             debrisCounter = 0;
-            System.out.println(character.getBody().getPosition().x);
+//            System.out.println(character.getBody().getPosition().x);
+        }
+        for(int i = 0 ; i < manager.deletedDebris.size(); i++){
+            debris.remove(manager.deletedDebris.peek());
+            manager.deletedDebris.pop();
         }
     }
 
-    private float springSpawn = 5;
-    private float springCounter = 0;
-    public void springGenerator(float deltatime){
-        springCounter += deltatime;
 
-
-        if(springSpawn>springCounter){
-            spring spr = new spring(manager);
-            //spr.create(new Vector2(plt.getBody().localVector.x, plt.getBody().localVector.y), new Vector2(18,14),1);
-            springs.add(spr);
-            springCounter =0;
-        }
-
-    }
 
     private float coinSpawnTime = 5;
     private float coinCounter = 0;
     public void coinGenerator(float deltatime){
-        coinCounter += deltatime;
+        if((float) coinY/constants.PPM < character.getWorldHeight() ) {
 
-        if(coinCounter < coinSpawnTime){
-            coin coin= new coin(manager);
-            coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH/2)+constants.FORCEFIELD, (constants.SCREENWIDTH/2)-constants.FORCEFIELD), coinY), new Vector2(32,32), 0);
-            //coinSpawnTime = TimeUtils.nanoTime();
-            coins.add(coin);
-            coinY+=MathUtils.random(300,700);
-        }
-        if(coinCounter >= coinSpawnTime-1){
-            coinCounter = coinSpawnTime;
-        }
+            coinCounter += deltatime;
 
+            if (coinCounter < coinSpawnTime) {
+                coin coin = new coin(manager);
+                coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH / 2) + constants.FORCEFIELD, (constants.SCREENWIDTH / 2) - constants.FORCEFIELD), -240), new Vector2(32, 32), 0);
+                coins.add(coin);
+                coinY += MathUtils.random(300, 700);
+            }
+            if (coinCounter >= coinSpawnTime - 1) {
+                coinCounter = coinSpawnTime;
+            }
+
+        }
+        for(int i = 0 ; i < manager.deletedCoins.size(); i++){
+            coins.remove(manager.deletedCoins.peek());
+            manager.deletedCoins.pop();
+        }
 
     }
 
