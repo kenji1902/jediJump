@@ -51,6 +51,8 @@ public class character extends entity{
         fixtureDef.density = density;
         fixtureDef.shape = shape;
         fixtureDef.friction = constants.JEDISAUR_FRICTION;
+        if(constants.DEBUG_MODE)
+            fixtureDef.isSensor = true;
         body.createFixture(fixtureDef).setUserData("body");
 
         // Foot of the Character
@@ -104,11 +106,11 @@ public class character extends entity{
             OrthographicCamera camera = manager.getCamera();
             float deadZone = camera.position.y - (camera.viewportHeight / 2);
             float charPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM );
-            if (charPos < deadZone && !isDestroyed){
+            if (charPos < deadZone && !isDestroyed && !constants.DEBUG_MODE){
                 System.out.println("DEAD FROM FALLING");
                 disposeBody();
             }
-            if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed) {
+            if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed && !constants.DEBUG_MODE) {
                 disposeBody();
                 System.out.println("DEAD FROM BIRD");
             }

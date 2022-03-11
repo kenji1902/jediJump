@@ -25,7 +25,6 @@ public class contactListener implements ContactListener {
         int springHit = compareEntity(entityA,entityB,"springHead","foot",constants.JEDISAUR_SPRING_HIT);
         if(springHit != -1)
             playerState = springHit;
-        System.out.println(entityA.getUserData() + " " + entityB.getUserData());
 
         int coinHit = compareEntity(entityA,entityB,"body","coin",constants.COIN_HIT);
         if(coinHit != -1)
