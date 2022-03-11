@@ -1,6 +1,7 @@
 package com.jedijump.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -59,7 +60,21 @@ public class coin extends entity{
         if(!isDestroyed && isGenerated){
             texture.update(delta);
             coinAdd();
+            deadZone();
         }
+    }
+    private void deadZone() {
+        OrthographicCamera camera = manager.getCamera();
+        float deadZone = camera.position.y - (camera.viewportHeight / 2);
+        float coinPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
+
+        if (coinPos < deadZone && !isDestroyed) {
+            disposeBody();
+            texture.dispose();
+
+            System.out.println("Deleted Coin");
+        }
+
     }
 
     private void coinAdd(){

@@ -60,7 +60,7 @@ public class PlayState extends State{
 
         baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
        // spr.create(new Vector2(p.getBody().getPosition().y,89),new Vector2(18,14),1);
-        character.create(new Vector2(0,0),new Vector2(32,32),1);
+        character.create(new Vector2(0,0),new Vector2(20,32),1.6f);
 
         item = new Texture(Gdx.files.internal("items.png"));
         pause = new TextureRegion(item, 64, 64, 64, 64);
@@ -184,7 +184,7 @@ public class PlayState extends State{
                 plt.create(new Vector2(MathUtils.random(-constants.SCREENWIDTH / 2, constants.SCREENWIDTH / 2), platformY), new Vector2(64, 16), 0);
                 springGenerator(deltatime,plt.getBody().getPosition());
                 platforms.add(plt);
-                platformY += 100;
+                platformY += MathUtils.random(80,150);
             }
             if (counter >= constants.MAX_LEVEL_HEIGHT - 1) {
                 counter = constants.MAX_LEVEL_HEIGHT;
@@ -226,7 +226,7 @@ public class PlayState extends State{
                 bird.create(new Vector2(0, birdY), new Vector2(32, 32), 0);
                 //birdSpawnTime = TimeUtils.nanoTime();
                 birds.add(bird);
-                birdY += 700;
+                birdY += MathUtils.random(200,710);
             }
             if (birdCounter >= constants.MAX_LEVEL_HEIGHT - 1) {
                 birdCounter = constants.MAX_LEVEL_HEIGHT;
@@ -272,7 +272,7 @@ public class PlayState extends State{
                 coin coin = new coin(manager);
                 coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH / 2) + constants.FORCEFIELD, (constants.SCREENWIDTH / 2) - constants.FORCEFIELD), coinY), new Vector2(32, 32), 0);
                 coins.add(coin);
-                coinY += MathUtils.random(300, 700);
+                coinY += MathUtils.random(100, 450);
             }
             if (coinCounter >= constants.MAX_LEVEL_HEIGHT - 1) {
                 coinCounter = constants.MAX_LEVEL_HEIGHT;

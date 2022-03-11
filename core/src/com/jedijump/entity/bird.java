@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -59,6 +60,7 @@ public class bird extends entity{
         texture =  new animation(birdTexture, 0, 160 ,64,32,2,0.5f,false);
         //birdPosx = body.getPosition().x;
         isGenerated = true;
+        birdSpeed = MathUtils.random(constants.BIRD_MIN_SPEED, constants.BIRD_MAX_SPEED);
     }
 
     @Override
@@ -71,15 +73,18 @@ public class bird extends entity{
     }
 
     private int direction = 1;
+    private float birdSpeed;
     private void birdMovement(float delta){
         if(!isDestroyed) {
-            body.setLinearVelocity(constants.BIRD_SPEED * direction, 0);
+            body.setLinearVelocity(birdSpeed * direction, 0);
 
             if (body.getPosition().x + size.x > constants.BOUNDARY) {
-                texture.flip();
+                if(!texture.isFlipped())
+                    texture.flip();
                 direction = -1;
             } else if (body.getPosition().x - size.x < -constants.BOUNDARY) {
-                texture.flip();
+                if(texture.isFlipped())
+                    texture.flip();
                 direction = 1;
             }
         }

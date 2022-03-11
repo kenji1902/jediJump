@@ -46,7 +46,8 @@ public class constants {
     public static final int COIN_SCORE = 10;
 
     // BIRD
-    public static final float BIRD_SPEED = 2;
+    public static final float BIRD_MIN_SPEED = 2;
+    public static final float BIRD_MAX_SPEED = 7;
 
     //DEBRI
     public static final float DEBRI_SPEED = 3;
@@ -58,7 +59,6 @@ public class constants {
     public static final float MAX_LEVEL_HEIGHT = Float.MAX_VALUE;
     public static final float SPRING_SPAWN_TIME = 0.2f;
     public static final float DEBRIS_SPAWN_TIME = 10;
-    public static final float COIN_SPAWN_TIME = 5;
 
 
 }

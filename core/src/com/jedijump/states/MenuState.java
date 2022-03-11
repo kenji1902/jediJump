@@ -79,8 +79,8 @@ public class MenuState extends State{
             //Play Menu
             if (rect.contains(touchPoint.x, touchPoint.y)) {
                 clickSound.play();
-                manager.pop();
-                //manager.set(new PlayState(manager));
+                //manager.pop();
+                manager.set(new PlayState(manager));
             }
 
             //Help menu
