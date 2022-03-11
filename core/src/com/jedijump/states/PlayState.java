@@ -268,14 +268,14 @@ public class PlayState extends State{
 
             coinCounter += deltatime;
 
-            if (coinCounter < constants.COIN_SPAWN_TIME) {
+            if (coinCounter < constants.MAX_LEVEL_HEIGHT) {
                 coin coin = new coin(manager);
                 coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH / 2) + constants.FORCEFIELD, (constants.SCREENWIDTH / 2) - constants.FORCEFIELD), coinY), new Vector2(32, 32), 0);
                 coins.add(coin);
                 coinY += MathUtils.random(300, 700);
             }
-            if (coinCounter >= constants.COIN_SPAWN_TIME - 1) {
-                coinCounter = constants.COIN_SPAWN_TIME;
+            if (coinCounter >= constants.MAX_LEVEL_HEIGHT - 1) {
+                coinCounter = constants.MAX_LEVEL_HEIGHT;
             }
 
         }

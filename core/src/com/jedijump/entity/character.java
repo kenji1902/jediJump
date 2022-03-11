@@ -85,9 +85,10 @@ public class character extends entity{
 
             cameraUpdate();
             Input(delta);
-            deadZone();
             characterPlatform();
             springBoost(delta);
+            deadZone();
+
         }
     }
     private void characterPlatform(){
@@ -107,12 +108,13 @@ public class character extends entity{
                 System.out.println("DEAD FROM FALLING");
                 disposeBody();
             }
-            if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed)
+            if (manager.getCl().getPlayerState() == constants.JEDISAUR_BIRD_HIT && !isDestroyed) {
                 disposeBody();
-            if(isDestroyed){
                 System.out.println("DEAD FROM BIRD");
-                manager.set(new postState(manager));
             }
+            if(isDestroyed)
+                manager.set(new postState(manager));
+
 
         }
     }
@@ -199,9 +201,10 @@ public class character extends entity{
 
         int  playerState = manager.getCl().getPlayerState();
         if(playerState == constants.JEDISAUR_SPRING_HIT){
-
-
             body.applyLinearImpulse(new Vector2(0,constants.JEDISAUR_JUMP_BOOST),body.getPosition(),false);
+        }
+        if(playerState == constants.JEDISAUR_BIRD_HEAD_HIT){
+            body.applyLinearImpulse(new Vector2(0,constants.JEDISAUR_JUMP_BOOST*constants.JEDISAUR_ENTITY_JUMP_BOOST),body.getPosition(),false);
         }
     }
 
