@@ -272,7 +272,7 @@ public class PlayState extends State{
 
             if (coinCounter < coinSpawnTime) {
                 coin coin = new coin(manager);
-                coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH / 2) + constants.FORCEFIELD, (constants.SCREENWIDTH / 2) - constants.FORCEFIELD), -240), new Vector2(32, 32), 0);
+                coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH / 2) + constants.FORCEFIELD, (constants.SCREENWIDTH / 2) - constants.FORCEFIELD), coinY), new Vector2(32, 32), 0);
                 coins.add(coin);
                 coinY += MathUtils.random(300, 700);
             }
