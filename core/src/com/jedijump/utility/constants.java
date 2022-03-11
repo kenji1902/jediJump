@@ -52,4 +52,11 @@ public class constants {
     // PLATFORM
     public static final float PLATFORM_SPEED = 3;
 
+    // SPAWN RATE AND TIME
+    public static final float MAX_LEVEL_HEIGHT = 5;
+    public static final float SPRING_SPAWN_TIME = 0.2f;
+    public static final float DEBRIS_SPAWN_TIME = 10;
+    public static final float COIN_SPAWN_TIME = 5;
+
+
 }

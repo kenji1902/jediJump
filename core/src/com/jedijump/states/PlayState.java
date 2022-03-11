@@ -172,13 +172,12 @@ public class PlayState extends State{
         character.render(sprite);
     }
 
-    private float MAX = 5;
     private float counter = 0;
     public void platformGenerator(float deltatime){
 
         if((float) platformY/constants.PPM < character.getWorldHeight() ) {
             counter += deltatime;
-            if (counter < MAX) {
+            if (counter < constants.MAX_LEVEL_HEIGHT) {
 //                System.out.println(platforms.size());
 //                System.out.println(platformY/constants.PPM+ "<" + character.getWorldHeight());
                 platform plt = new platform(manager);
@@ -187,8 +186,8 @@ public class PlayState extends State{
                 platforms.add(plt);
                 platformY += 100;
             }
-            if (counter >= MAX - 1) {
-                counter = MAX;
+            if (counter >= constants.MAX_LEVEL_HEIGHT - 1) {
+                counter = constants.MAX_LEVEL_HEIGHT;
             }
         }
         // Delete destroyed bodies
@@ -202,12 +201,12 @@ public class PlayState extends State{
         }
 
     }
-    private float springSpawn = 0.02f;
+
     private float springCounter = 0;
     public void springGenerator(float deltatime,Vector2 postion){
         springCounter += deltatime;
         //System.out.println(springCounter + " > " + springSpawn);
-        if(springCounter>springSpawn){
+        if(springCounter>constants.SPRING_SPAWN_TIME){
             spring spr = new spring(manager);
             postion.x = postion.x * constants.PPM;
             postion.y = (postion.y * constants.PPM) + ((32/2) );
@@ -217,20 +216,20 @@ public class PlayState extends State{
         }
 
     }
-    private float birdSpawnTime = 5;
+
     private float birdCounter = 0;
     public void birdGenerator(float deltatime){
         if((float) birdY/constants.PPM < character.getWorldHeight() ) {
             birdCounter += deltatime;
-            if (birdCounter < birdSpawnTime) {
+            if (birdCounter < constants.MAX_LEVEL_HEIGHT) {
                 bird bird = new bird(manager);
                 bird.create(new Vector2(0, birdY), new Vector2(32, 32), 0);
                 //birdSpawnTime = TimeUtils.nanoTime();
                 birds.add(bird);
                 birdY += 700;
             }
-            if (birdCounter >= birdSpawnTime - 1) {
-                birdCounter = birdSpawnTime;
+            if (birdCounter >= constants.MAX_LEVEL_HEIGHT - 1) {
+                birdCounter = constants.MAX_LEVEL_HEIGHT;
             }
         }
         // Delete destroyed bodies
@@ -241,16 +240,15 @@ public class PlayState extends State{
 
 
     }
-    private float debrisSpawn = 10;
     private float debrisCounter = 0;
     public void debrisGenerator(float deltatime){
 
         debrisCounter += deltatime;
 
-        if(debrisCounter > debrisSpawn){
+        if(debrisCounter > constants.DEBRIS_SPAWN_TIME){
             debri debri = new debri(manager);
             //debri = new debri(manager);
-            debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),3);
+            debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),constants.DEBRI_SPEED);
             debris.add(debri);
             debrisCounter = 0;
 //            System.out.println(character.getBody().getPosition().x);
@@ -263,21 +261,21 @@ public class PlayState extends State{
 
 
 
-    private float coinSpawnTime = 5;
+
     private float coinCounter = 0;
     public void coinGenerator(float deltatime){
         if((float) coinY/constants.PPM < character.getWorldHeight() ) {
 
             coinCounter += deltatime;
 
-            if (coinCounter < coinSpawnTime) {
+            if (coinCounter < constants.COIN_SPAWN_TIME) {
                 coin coin = new coin(manager);
                 coin.create(new Vector2(MathUtils.random((-constants.SCREENWIDTH / 2) + constants.FORCEFIELD, (constants.SCREENWIDTH / 2) - constants.FORCEFIELD), coinY), new Vector2(32, 32), 0);
                 coins.add(coin);
                 coinY += MathUtils.random(300, 700);
             }
-            if (coinCounter >= coinSpawnTime - 1) {
-                coinCounter = coinSpawnTime;
+            if (coinCounter >= constants.COIN_SPAWN_TIME - 1) {
+                coinCounter = constants.COIN_SPAWN_TIME;
             }
 
         }
