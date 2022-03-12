@@ -93,7 +93,7 @@ public class platform extends entity{
     private int direction = 1;
     private void platformMovement(float delta){
         if(!isDestroyed) {
-            body.setLinearVelocity(constants.PLATFORM_SPEED * direction, 0);
+            body.setLinearVelocity(constants.PLATFORM_SPEED * direction *(manager.getDifficultyMultiplier()/2), 0);
 
             if (body.getPosition().x + size.x > constants.BOUNDARY - constants.FORCEFIELD) {
                 direction = -1;

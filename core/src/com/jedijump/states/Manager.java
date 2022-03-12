@@ -33,6 +33,7 @@ public class Manager {
     public Stack<debri> deletedDebris;
     public Stack<coin> deletedCoins;
     public Stack<bird> deletedBird;
+    private int difficultyMultiplier = 1;
 
 
     public Manager(){
@@ -58,6 +59,8 @@ public class Manager {
         deletedDebris = new Stack<>();
         deletedCoins = new Stack<>();
         deletedBird = new Stack<>();
+
+
 
 
 
@@ -121,5 +124,13 @@ public class Manager {
     public void setScore(int score) {
 
         this.score = score;
+    }
+
+    public int getDifficultyMultiplier() {
+        return difficultyMultiplier;
+    }
+
+    public void setDifficultyMultiplier(int difficultyMultiplier) {
+        this.difficultyMultiplier = difficultyMultiplier;
     }
 }

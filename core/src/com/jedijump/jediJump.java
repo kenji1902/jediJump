@@ -22,7 +22,7 @@ public class jediJump extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		manage = new Manager();
-		manage.push(new PlayState(manage));
+		//manage.push(new PlayState(manage));
 		manage.push(new MenuState(manage));
 
 		db = new database("Highscore.db");

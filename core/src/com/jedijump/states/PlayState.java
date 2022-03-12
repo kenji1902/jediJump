@@ -248,7 +248,7 @@ public class PlayState extends State{
         if(debrisCounter > constants.DEBRIS_SPAWN_TIME){
             debri debri = new debri(manager);
             //debri = new debri(manager);
-            debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),constants.DEBRI_SPEED);
+            debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),constants.DEBRI_SPEED* manager.getDifficultyMultiplier());
             debris.add(debri);
             debrisCounter = 0;
 //            System.out.println(character.getBody().getPosition().x);
