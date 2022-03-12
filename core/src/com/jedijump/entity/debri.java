@@ -48,6 +48,11 @@ public class debri extends entity{
         fixtureDef.friction = constants.JEDISAUR_FRICTION;
         body.createFixture(fixtureDef).setUserData("bird");
 
+        shape.setAsBox(this.size.x,this.size.y / 4,new Vector2( 0,this.size.y + 0.1f),0);
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = false;
+        fixtureDef.friction = 0;
+        body.createFixture(fixtureDef).setUserData("jumpHead");
         shape.dispose();
 
         TextureRegion debriTexture = manager.getItems();
@@ -80,6 +85,7 @@ public class debri extends entity{
     @Override
     public void render(SpriteBatch sprite) {
         if(!isDestroyed && isGenerated) {
+            sprite.enableBlending();
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),

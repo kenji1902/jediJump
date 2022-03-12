@@ -4,13 +4,18 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.jedijump.utility.constants;
 
 import javax.swing.text.html.parser.Entity;
+import java.util.HashMap;
 
 public class contactListener implements ContactListener {
     private int playerState = 0;
     private int springStick = 0;
     private int coinState = 0;
     private Body platform;
-    private Body springPlatform;
+    private HashMap<Body, Body> springPlatform;
+    public contactListener(){
+        springPlatform = new HashMap<>();
+    }
+
     private Body coin;
     @Override
     public void beginContact(Contact contact) {
@@ -33,14 +38,19 @@ public class contactListener implements ContactListener {
         if(springFoot != - 1)
             springStick = springFoot;
 
+
         Body tempSpringPlatform = hitPlatform(entityA,entityB,"springFoot");
-        if(tempSpringPlatform != null)
-            springPlatform = tempSpringPlatform;
+        Body tempSpring = Spring(entityA,entityB);
+        if(tempSpringPlatform != null && tempSpring != null)
+            springPlatform.put(tempSpring,tempSpringPlatform);
 
         int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_BIRD_HIT);
         if(birdState != -1)
             playerState = birdState;
 
+        int birdHead = compareEntity(entityA,entityB,"jumpHead","foot",constants.JEDISAUR_BIRD_HEAD_HIT);
+        if(birdHead != -1)
+            playerState = birdHead;
         playerContact(entityA,entityB,constants.JEDISAUR_ON_GROUND);
 
     }
@@ -66,13 +76,19 @@ public class contactListener implements ContactListener {
         if(springFoot != - 1)
             springStick = springFoot;
 
-        Body tempSpringPlatform = hitPlatform(entityA,entityB,"springFoot");
-        if(tempSpringPlatform != null)
-            springPlatform = tempSpringPlatform;
+        //springPlatform = hitPlatform(entityA,entityB,"springFoot");
+//        Body tempSpringPlatform = hitPlatform(entityA,entityB,"springFoot");
+//        Body tempSpring = Spring(entityA,entityB);
+//        if(tempSpringPlatform == null && tempSpring == null)
+//            springPlatform.put(tempSpring,tempSpringPlatform);
 
         int birdState = compareEntity(entityA,entityB,"body","bird",constants.JEDISAUR_ON_AIR);
         if(birdState != -1)
             playerState = birdState;
+
+        int birdHead = compareEntity(entityA,entityB,"jumpHead","foot",constants.JEDISAUR_ON_AIR);
+        if(birdHead != -1)
+            playerState = birdHead;
 
         playerContact(entityA,entityB,constants.JEDISAUR_ON_AIR);
 
@@ -123,6 +139,22 @@ public class contactListener implements ContactListener {
 
         return  body;
     }
+    private Body Spring(Fixture entityA, Fixture entityB){
+        Body body = null;
+        if((entityA.getUserData() != null && entityB.getUserData() != null) &&
+                (entityA.getUserData().equals( "springFoot") && entityB.getUserData().equals("platform"))
+        ){
+            body = entityA.getBody();
+        }
+        else if((entityA.getUserData() != null && entityB.getUserData() != null) &&
+                (entityB.getUserData().equals( "springFoot") && entityA.getUserData().equals("platform"))
+        ){
+            body = entityB.getBody();
+        }
+
+        return  body;
+    }
+
     private Body hitCoin(Fixture entityA, Fixture entityB, String obj){
         Body body = null;
         if((entityA.getUserData() != null && entityB.getUserData() != null) &&
@@ -155,7 +187,7 @@ public class contactListener implements ContactListener {
         return coin;
     }
 
-    public Body getSpringPlatform() {
+    public HashMap<Body, Body> getSpringPlatform() {
         return springPlatform;
     }
 

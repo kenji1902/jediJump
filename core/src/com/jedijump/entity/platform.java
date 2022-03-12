@@ -74,6 +74,7 @@ public class platform extends entity{
             if(isMoving)
                 platformMovement(delta);
         }
+
     }
 
     @Override

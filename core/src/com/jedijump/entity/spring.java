@@ -15,6 +15,8 @@ import com.jedijump.states.MenuState;
 import com.jedijump.utility.animation;
 import com.jedijump.utility.constants;
 
+import java.util.HashMap;
+
 public class spring extends entity{
     animation texture;
     public spring(Manager manager) {
@@ -92,18 +94,19 @@ public class spring extends entity{
     }
     private void springPlatform(){
         int springState = manager.getCl().getSpringStick();
-        if(springState == constants.SPRING_ON_PLATFORM){
-            Body springPlatform = manager.getCl().getSpringPlatform();
-            body.setLinearVelocity(springPlatform.getLinearVelocity().x,body.getLinearVelocity().y);
+        HashMap<Body,Body> springPlatform = manager.getCl().getSpringPlatform();
+        if(springState == constants.SPRING_ON_PLATFORM && springPlatform.get(body) != null){
+            body.setLinearVelocity(springPlatform.get(body).getLinearVelocity().x,body.getLinearVelocity().y);
         }
         else if(springState == constants.SPRING_ON_AIR){
             //body.setTransform(body.getPosition().x,body.getPosition().y,0);
-            body.setLinearVelocity(0,body.getLinearVelocity().y);
+            body.setLinearVelocity(body.getLinearVelocity().x,body.getLinearVelocity().y);
         }
     }
     @Override
     public void render(SpriteBatch sprite) {
         if(!isDestroyed && isGenerated) {
+            sprite.enableBlending();
             sprite.begin();
             sprite.draw(texture.getFrame(),
                     body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),
