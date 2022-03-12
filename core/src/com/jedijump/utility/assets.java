@@ -40,6 +40,7 @@ public class assets {
     public static Sound hitSound;
     public static Sound coinSound;
     public static Sound clickSound;
+    public static Sound deathSound;
 
     public static Texture loadTexture (String file) {
         return new Texture(Gdx.files.internal(file));
@@ -84,6 +85,7 @@ public class assets {
         hitSound = Gdx.audio.newSound(Gdx.files.internal("data/hit.wav"));
         coinSound = Gdx.audio.newSound(Gdx.files.internal("data/coin.wav"));
         clickSound = Gdx.audio.newSound(Gdx.files.internal("data/click.wav"));
+        deathSound = Gdx.audio.newSound(Gdx.files.internal("data/deathSound.wav"));
     }
 
     //public static void playSound (Sound sound) {

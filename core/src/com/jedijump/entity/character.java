@@ -114,8 +114,10 @@ public class character extends entity{
                 disposeBody();
                 System.out.println("DEAD FROM BIRD");
             }
-            if(isDestroyed)
+            if(isDestroyed) {
+                manager.setDistance(body.getPosition().y *  constants.PPM);
                 manager.set(new postState(manager));
+            }
 
 
         }

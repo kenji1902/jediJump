@@ -59,13 +59,25 @@ public class MenuState extends State{
         touchPoint = new Vector3();
         sr = new ShapeRenderer();
 
-        menuMusic.loop(0.2f);
+        musicSetting();
     }
 
     @Override
     public void update(float delta) {
         cameraUpdate();
         Input(shape);
+
+    }
+
+    private void musicSetting(){
+        MenuState.menuMusic.stop();
+        if(Settings.soundEnabled) {
+            MenuState.menuMusic.loop(0.2f);
+        }
+        else {
+            MenuState.menuMusic.stop();
+        }
+
     }
 
     private void cameraUpdate(){
@@ -98,12 +110,14 @@ public class MenuState extends State{
             //Help menu
             if (easyBounds.contains(touchPoint.x + 65, touchPoint.y + 66)) {
                 System.out.println("you clicked at: easy");
+                clickSound.play();
                // constants.DEBRI_SPEED*2;
                 manager.setDifficultyMultiplier(1);
             }
 
             if (hardBounds.contains(touchPoint.x - 65, touchPoint.y + 66)) {
                 System.out.println("you clicked at: hard");
+                clickSound.play();
                 manager.setDifficultyMultiplier(3);
             }
 
@@ -125,7 +139,7 @@ public class MenuState extends State{
                     menuMusic.loop(0.2f);
                 }
                 else {
-                    menuMusic.pause();
+                    menuMusic.stop();
                 }
             }
         }

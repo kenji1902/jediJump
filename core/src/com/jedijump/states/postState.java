@@ -1,6 +1,8 @@
 package com.jedijump.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,7 +24,7 @@ public class postState extends State {
     ShapeRenderer sr, sr2;
     Vector3 coords, retry_coords, quit_coords;
 
-
+    Sound deathSound;
     public postState(Manager manager) {
         super(manager);
 
@@ -39,10 +41,15 @@ public class postState extends State {
         sr2 = new ShapeRenderer();
         bg = new Texture(Gdx.files.internal("postGameBG.png"));
         bgRegion = new TextureRegion(bg, 0, 0, constants.SCREENWIDTH, constants.SCREENHEIGHT);
+        deathSound = Gdx.audio.newSound(Gdx.files.internal("deathSound.wav"));
+        deathSound.play(0.2f);
     }
 
     @Override
     public void update(float delta) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+            state = GAME_RETRY;
+
         switch (state) {
             case GAME_GAMEOVER:
                 break;
@@ -79,7 +86,6 @@ public class postState extends State {
 //        sr2.setColor(Color.RED);
 //        sr2.end();
     }
-
 
     private void gameOver(){
         if (Gdx.input.justTouched()) {

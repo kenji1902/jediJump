@@ -18,11 +18,12 @@ import com.jedijump.utility.constants;
 import java.util.Random;
 
 public class platform extends entity{
-    private animation texture;
+    private animation texture, pebbles;
     private Random rand;
     private int platformState;
     private boolean isFixed = false;
     private boolean isMoving = false;
+    private boolean isFloor = false;
     public platform(Manager manager) {
         super(manager);
         rand = new Random();
@@ -52,17 +53,30 @@ public class platform extends entity{
         fixtureDef.density = density;
         fixtureDef.shape = shape;
         fixtureDef.friction = 0;
-
         body.createFixture(fixtureDef).setUserData("platform");
+
         shape.dispose();
+        TextureRegion floorTexture = manager.getItems2();
 
-        platformState = isFixed? 0 : MathUtils.random(0,1);
-        TextureRegion platformTexture = manager.getItems();
-        if(platformState == constants.PLATFORM_STATIC)
-            texture = new animation(platformTexture, 64, 160 ,64,16,1,0.5f,true);
-        else
-            texture = new animation(platformTexture, 64, 160 ,64,64,4,0.5f,true);
+        if(!isFloor) {
+            int probability = MathUtils.random(0,20);
+            if(probability < constants.PLATFORM_BREAK_PROBABILITY - (manager.getDifficultyMultiplier() * 1.4f))
+                probability = 0;
+            else
+                probability = 1;
+            platformState = isFixed? 0 : probability;
+            TextureRegion platformTexture = manager.getItems();
 
+            if (platformState == constants.PLATFORM_STATIC)
+                texture = new animation(platformTexture, 64, 160, 64, 16, 1, 0.5f, true);
+            else
+                texture = new animation(platformTexture, 64, 160, 64, 64, 4, 0.5f, true);
+
+            pebbles = new animation(floorTexture,337,409,45,105,3,0.5f,true);
+        }
+        else {
+            texture = new animation(floorTexture, 0,430,320,82,1,1,false);
+        }
         isMoving =  MathUtils.randomBoolean();
         isGenerated = true;
     }
@@ -86,6 +100,11 @@ public class platform extends entity{
                 sprite.draw(texture.getFrame(),
                         body.getPosition().x * constants.PPM - ((float) texture.getFrame().getRegionWidth() / 2),
                         body.getPosition().y * constants.PPM - ((float) texture.getFrame().getRegionHeight() / 2));
+                if(!isFloor)
+                    sprite.draw(pebbles.getFrame(),
+                            body.getPosition().x * constants.PPM - ((float) pebbles.getFrame().getRegionWidth() / 2),
+                            (body.getPosition().y - (this.size.y + 0.5f) ) * constants.PPM - ((float) pebbles.getFrame().getRegionHeight() / 2));
+
             sprite.end();
         }
     }
@@ -113,12 +132,13 @@ public class platform extends entity{
             texture.update(delta);
             if(texture.getCurrFrame() == texture.getFrameCount()-1 && !isDestroyed){
                 texture.dispose();
+                pebbles.dispose();
                 disposeBody();
             }
         }
         if(platformState == constants.PLATFORM_STATIC)
             texture.update(delta);
-
+        pebbles.update(delta);
         OrthographicCamera camera = manager.getCamera();
         float deadZone = camera.position.y - (camera.viewportHeight / 2);
         float platformPos = body.getPosition().y * constants.PPM - (this.size.y * constants.PPM);
@@ -136,5 +156,9 @@ public class platform extends entity{
 
     public void setFixed(boolean fixed) {
         isFixed = fixed;
+    }
+
+    public void setFloor(boolean isFloor){
+        this.isFloor = isFloor;
     }
 }
