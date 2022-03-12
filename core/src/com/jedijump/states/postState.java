@@ -1,6 +1,7 @@
 package com.jedijump.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,6 +47,9 @@ public class postState extends State {
 
     @Override
     public void update(float delta) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+            state = GAME_RETRY;
+
         switch (state) {
             case GAME_GAMEOVER:
                 break;

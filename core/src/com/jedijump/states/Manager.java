@@ -27,13 +27,14 @@ public class Manager {
     private contactListener cl;
     private Box2DDebugRenderer b2dr;
     private TextureRegion items;
-    private int score;
+    private int score = 0;
+    private float distance = 0;
     public Stack<platform> deletedPlatform;
     public Stack<spring> deletedSprings;
     public Stack<debri> deletedDebris;
     public Stack<coin> deletedCoins;
     public Stack<bird> deletedBird;
-    private int difficultyMultiplier = 1;
+    private float difficultyMultiplier = 1;
 
 
     public Manager(){
@@ -126,7 +127,15 @@ public class Manager {
         this.score = score;
     }
 
-    public int getDifficultyMultiplier() {
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+    public float getDifficultyMultiplier() {
         return difficultyMultiplier;
     }
 
