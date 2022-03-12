@@ -1,8 +1,6 @@
 package com.jedijump.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -49,7 +47,7 @@ public class PlayState extends State{
     String scoreString;
     BitmapFont font;
 
-    Sound coinSound, deathSound;
+
 
 
     public PlayState(Manager manager) {
@@ -86,8 +84,6 @@ public class PlayState extends State{
         font = new BitmapFont(Gdx.files.internal("font.fnt"));
         manager.setScore(0);
 
-        coinSound = Gdx.audio.newSound(Gdx.files.internal("coin.wav"));
-
 
     }
 
@@ -122,8 +118,6 @@ public class PlayState extends State{
         if(manager.getScore() != lastScore){
             lastScore = manager.getScore();
             scoreString = "SCORE: "+ lastScore;
-            coinSound.play();
-
         }
 
         //debri.update(delta);
@@ -254,7 +248,7 @@ public class PlayState extends State{
         if(debrisCounter > constants.DEBRIS_SPAWN_TIME){
             debri debri = new debri(manager);
             //debri = new debri(manager);
-            debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),constants.DEBRI_SPEED);
+            debri.create(new Vector2(character.getBody().getPosition().x * constants.PPM, manager.getCamera().position.y + 200), new Vector2(32,32),constants.DEBRI_SPEED* manager.getDifficultyMultiplier());
             debris.add(debri);
             debrisCounter = 0;
 //            System.out.println(character.getBody().getPosition().x);

@@ -17,8 +17,8 @@ import com.badlogic.gdx.audio.Sound;
 import java.awt.*;
 
 public class MenuState extends State{
-    Rectangle shape, soundBounds;
-    TextureRegion background, item;
+    Rectangle shape, soundBounds, easyBounds, hardBounds, highscoreBounds;
+    TextureRegion background, item, mainmenutext;
     TextureRegion backgroundRegion, logo, mainMenu, soundOn,soundOff;
     OrthographicCamera camera;
     Box2DDebugRenderer b2dr;
@@ -38,11 +38,15 @@ public class MenuState extends State{
         backgroundRegion = new TextureRegion(background, 0, 0, 280, 450);
 
         item = manager.getItems();
+        mainmenutext = new TextureRegion(new Texture(Gdx.files.internal("mainmenu.png")));
 
-        mainMenu = new TextureRegion(item, 0, 224, 300, 110);
+        mainMenu = new TextureRegion(mainmenutext, 0, 217, 336, 179);
         logo = new TextureRegion(item, 0, 352, 274, 142);
 
         shape = new Rectangle(0 - 117/2,-10,117,33);
+        easyBounds = new Rectangle(0 - 117/2,-10,117,33);
+        hardBounds = new Rectangle(0 - 117/2,-10,117,33);
+        highscoreBounds = new Rectangle(-90,-10,117*2,33);
 
         menuMusic = Gdx.audio.newSound(Gdx.files.internal("music.mp3"));
 
@@ -86,7 +90,7 @@ public class MenuState extends State{
     public void Input(Rectangle rect){
         if(Gdx.input.justTouched()) {
             manager.getCamera().unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            System.out.println("you clicked here at: " + Gdx.input.getX() + ", " + Gdx.input.getY());
+            //System.out.println("you clicked here at: " + Gdx.input.getX() + ", " + Gdx.input.getY());
 
             //Play Menu
             if (rect.contains(touchPoint.x, touchPoint.y)) {
@@ -95,10 +99,33 @@ public class MenuState extends State{
                 manager.set(new PlayState(manager));
             }
 
-            //Help menu
-            if (rect.contains(touchPoint.x, touchPoint.y+76)) {
+            if (highscoreBounds.contains(touchPoint.x, touchPoint.y+37)) {
+                System.out.println("you clicked at: highscores");
                 clickSound.play();
                 manager.set(new HelpState(manager));
+            }
+
+
+            //Help menu
+            if (easyBounds.contains(touchPoint.x + 65, touchPoint.y + 66)) {
+                System.out.println("you clicked at: easy");
+               // constants.DEBRI_SPEED*2;
+                manager.setDifficultyMultiplier(1);
+            }
+
+            if (hardBounds.contains(touchPoint.x - 65, touchPoint.y + 66)) {
+                System.out.println("you clicked at: hard");
+                manager.setDifficultyMultiplier(3);
+            }
+
+            if (rect.contains(touchPoint.x, touchPoint.y+100)) {
+                clickSound.play();
+                manager.set(new HelpState(manager));
+            }
+
+            if (rect.contains(touchPoint.x, touchPoint.y+133)) {
+                System.out.println("you clicked at: quit");
+                Gdx.app.exit();
             }
 
             //sound menu
@@ -128,9 +155,14 @@ public class MenuState extends State{
         sprite.begin();
 
         sprite.draw(logo, -135 , 80);
-        sprite.draw(mainMenu, shape.x - 90, shape.y - 74);
+        sprite.draw(mainMenu, shape.x - 100, shape.y - 140);
         sprite.draw(Settings.soundEnabled ? soundOn :  soundOff,soundBounds.x,soundBounds.y-64,64,64);
         sprite.end();
+
+//        sr.begin(ShapeRenderer.ShapeType.Filled);
+//        sr.rect(easyBounds.x, easyBounds.y, easyBounds.width, easyBounds.height);
+//        sr.setColor(Color.GREEN);
+//        sr.end();
 
     }
 
