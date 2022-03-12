@@ -76,7 +76,7 @@ public class bird extends entity{
     private float birdSpeed;
     private void birdMovement(float delta){
         if(!isDestroyed) {
-            body.setLinearVelocity(birdSpeed * direction, 0);
+            body.setLinearVelocity((birdSpeed + manager.getDifficultyMultiplier()) * direction, 0);
 
             if (body.getPosition().x + size.x > constants.BOUNDARY) {
                 if(!texture.isFlipped())

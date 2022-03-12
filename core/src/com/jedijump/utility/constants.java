@@ -54,6 +54,7 @@ public class constants {
 
     // PLATFORM
     public static final float PLATFORM_SPEED = 3;
+    public static final int PLATFORM_BREAK_PROBABILITY = 10;
 
     // SPAWN RATE AND TIME
     public static final float MAX_LEVEL_HEIGHT = Float.MAX_VALUE;

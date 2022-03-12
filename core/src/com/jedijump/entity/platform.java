@@ -55,8 +55,12 @@ public class platform extends entity{
 
         body.createFixture(fixtureDef).setUserData("platform");
         shape.dispose();
-
-        platformState = isFixed? 0 : MathUtils.random(0,1);
+        int probability = MathUtils.random(0,20);
+        if(probability < constants.PLATFORM_BREAK_PROBABILITY - (manager.getDifficultyMultiplier() * 1.4f))
+            probability = 0;
+        else
+            probability = 1;
+        platformState = isFixed? 0 : probability;
         TextureRegion platformTexture = manager.getItems();
         if(platformState == constants.PLATFORM_STATIC)
             texture = new animation(platformTexture, 64, 160 ,64,16,1,0.5f,true);
@@ -93,7 +97,7 @@ public class platform extends entity{
     private int direction = 1;
     private void platformMovement(float delta){
         if(!isDestroyed) {
-            body.setLinearVelocity(constants.PLATFORM_SPEED * direction, 0);
+            body.setLinearVelocity(constants.PLATFORM_SPEED * direction *(manager.getDifficultyMultiplier()/2), 0);
 
             if (body.getPosition().x + size.x > constants.BOUNDARY - constants.FORCEFIELD) {
                 direction = -1;
