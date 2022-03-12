@@ -19,7 +19,7 @@ import java.awt.*;
 
 public class MenuState extends State{
     Rectangle shape, soundBounds, easyBounds, hardBounds, highscoreBounds;
-    TextureRegion background, item, mainmenutext;
+    TextureRegion background, item, mainmenutext, highlightmenu;
     TextureRegion backgroundRegion, logo, mainMenu, soundOn,soundOff;
     OrthographicCamera camera;
     Box2DDebugRenderer b2dr;
@@ -41,8 +41,10 @@ public class MenuState extends State{
         item = manager.getItems();
         mainmenutext = new TextureRegion(new Texture(Gdx.files.internal("mainmenu.png")));
 
+
         mainMenu = new TextureRegion(mainmenutext, 0, 217, 336, 179);
         logo = new TextureRegion(item, 0, 352, 274, 142);
+
 
         shape = new Rectangle(0 - 117/2,-10,117,33);
         easyBounds = new Rectangle(0 - 117/2,-10,117,33);
