@@ -109,12 +109,14 @@ public class MenuState extends State{
             //Help menu
             if (easyBounds.contains(touchPoint.x + 65, touchPoint.y + 66)) {
                 System.out.println("you clicked at: easy");
+                clickSound.play();
                // constants.DEBRI_SPEED*2;
                 manager.setDifficultyMultiplier(1);
             }
 
             if (hardBounds.contains(touchPoint.x - 65, touchPoint.y + 66)) {
                 System.out.println("you clicked at: hard");
+                clickSound.play();
                 manager.setDifficultyMultiplier(3);
             }
 

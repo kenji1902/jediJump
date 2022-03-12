@@ -1,6 +1,7 @@
 package com.jedijump.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -47,7 +48,7 @@ public class PlayState extends State{
     String scoreString;
     BitmapFont font;
 
-
+    Sound coinSound;
 
 
     public PlayState(Manager manager) {
@@ -84,7 +85,7 @@ public class PlayState extends State{
         font = new BitmapFont(Gdx.files.internal("font.fnt"));
         manager.setScore(0);
 
-
+        coinSound = Gdx.audio.newSound(Gdx.files.internal("coin.wav"));
     }
 
     @Override
@@ -118,6 +119,7 @@ public class PlayState extends State{
         if(manager.getScore() != lastScore){
             lastScore = manager.getScore();
             scoreString = "SCORE: "+ lastScore;
+            coinSound.play();
         }
 
         //debri.update(delta);
