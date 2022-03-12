@@ -26,7 +26,7 @@ public class Manager {
     private final Stack<State> states;
     private contactListener cl;
     private Box2DDebugRenderer b2dr;
-    private TextureRegion items;
+    private TextureRegion items, items2;
     private int score = 0;
     private float distance = 0;
     public Stack<platform> deletedPlatform;
@@ -52,7 +52,7 @@ public class Manager {
             camera.zoom = constants.ZOOM;
 
         items = new TextureRegion(new Texture(Gdx.files.internal("items.png")));
-
+        items2 = new TextureRegion(new Texture(Gdx.files.internal("bgpixel.png")));
         states = new Stack<State>();
 
         deletedPlatform = new Stack<>();
@@ -103,6 +103,9 @@ public class Manager {
 
     public TextureRegion getItems() {
         return items;
+    }
+    public TextureRegion getItems2() {
+        return items2;
     }
 
     public World getWorld() {

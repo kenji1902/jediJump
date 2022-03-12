@@ -58,8 +58,9 @@ public class PlayState extends State{
         baseplt = new platform(manager);
        // spr = new spring(manager);
 
-
-        baseplt.create(new Vector2(0, -240), new Vector2(constants.SCREENWIDTH, 1),0);
+        baseplt.setFloor(true);
+        baseplt.setFixed(true);
+        baseplt.create(new Vector2(0, -206), new Vector2(constants.SCREENWIDTH, 1),0);
        // spr.create(new Vector2(p.getBody().getPosition().y,89),new Vector2(18,14),1);
         character.create(new Vector2(0,0),new Vector2(20,32),1.6f);
 
@@ -171,6 +172,7 @@ public class PlayState extends State{
         sprite.begin();
         font.draw(sprite,scoreString,-140,220+camera.position.y);
         sprite.end();
+        baseplt.render(sprite);
         character.render(sprite);
     }
 
