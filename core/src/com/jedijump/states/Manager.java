@@ -13,6 +13,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jedijump.entity.*;
 import com.jedijump.utility.constants;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -55,6 +58,9 @@ public class Manager {
         deletedDebris = new Stack<>();
         deletedCoins = new Stack<>();
         deletedBird = new Stack<>();
+
+
+
 
 
     }
