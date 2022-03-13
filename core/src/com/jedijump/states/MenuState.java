@@ -28,7 +28,7 @@ public class MenuState extends State{
     Sound clickSound;
     Vector3 touchPoint;
     ShapeRenderer sr;
-    int flag = 1;
+
 
 
     public MenuState(Manager manager) {
@@ -178,7 +178,7 @@ public class MenuState extends State{
             //Help menu
             if (easyBounds.contains(touchPoint.x + 65, touchPoint.y + 66)) {
                 if(Gdx.input.justTouched()){
-                    flag = 1;
+                    manager.setDifficultyHighlight(1);
 
                 }
                 System.out.println("you clicked at: easy");
@@ -189,7 +189,7 @@ public class MenuState extends State{
             if (hardBounds.contains(touchPoint.x - 65, touchPoint.y + 66)) {
                 System.out.println("you clicked at: hard");
                 if(Gdx.input.justTouched())
-                    flag = 2;
+                    manager.setDifficultyHighlight(2);
                 sprite.draw(highlightHard, easyBounds.x + 66, easyBounds.y - 68);
 
             }
@@ -224,10 +224,10 @@ public class MenuState extends State{
         sprite.draw(mainMenu, shape.x - 100, shape.y - 140);
         sprite.draw(Settings.soundEnabled ? soundOn :  soundOff,soundBounds.x,soundBounds.y-64,64,64);
         drawObject(shape,sprite);
-        if(flag == 1){
+        if(manager.getDifficultyHighlight() == 1){
             sprite.draw(highlightEasy, easyBounds.x - 65, easyBounds.y - 68 );
         }
-        else if(flag == 2){
+        else if(manager.getDifficultyHighlight() == 2){
             sprite.draw(highlightHard, easyBounds.x + 66, easyBounds.y - 68);
         }
         sprite.end();

@@ -35,6 +35,7 @@ public class Manager {
     public Stack<coin> deletedCoins;
     public Stack<bird> deletedBird;
     private float difficultyMultiplier = 1;
+    private int difficultyHighlight = 1;
 
 
     public Manager(){
@@ -144,5 +145,13 @@ public class Manager {
 
     public void setDifficultyMultiplier(int difficultyMultiplier) {
         this.difficultyMultiplier = difficultyMultiplier;
+    }
+
+    public int getDifficultyHighlight() {
+        return difficultyHighlight;
+    }
+
+    public void setDifficultyHighlight(int difficultyHighlight) {
+        this.difficultyHighlight = difficultyHighlight;
     }
 }
