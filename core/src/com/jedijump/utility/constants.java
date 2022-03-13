@@ -47,7 +47,7 @@ public class constants {
 
     // BIRD
     public static final float BIRD_MIN_SPEED = 2;
-    public static final float BIRD_MAX_SPEED = 7;
+    public static final float BIRD_MAX_SPEED = 5;
 
     //DEBRI
     public static final float DEBRI_SPEED = 3;
@@ -59,7 +59,7 @@ public class constants {
     // SPAWN RATE AND TIME
     public static final float MAX_LEVEL_HEIGHT = Float.MAX_VALUE;
     public static final float SPRING_SPAWN_TIME = 0.2f;
-    public static final float DEBRIS_SPAWN_TIME = 10;
+    public static final float DEBRIS_SPAWN_TIME = 30;
 
 
 }

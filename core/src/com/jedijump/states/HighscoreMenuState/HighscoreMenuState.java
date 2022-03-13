@@ -1,5 +1,6 @@
 package com.jedijump.states.HighscoreMenuState;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.jedijump.states.Manager;
+import com.jedijump.states.MenuState;
 import com.jedijump.states.State;
 import com.jedijump.utility.constants;
 
@@ -64,6 +66,10 @@ public class HighscoreMenuState extends State{
         sprite.begin();
         sprite.draw(highscore_text, shape.x - 68, shape.y+130,250,25);
         sprite.end();
+
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
+            manager.set(new MenuState(manager));
+        }
     }
 
     @Override
