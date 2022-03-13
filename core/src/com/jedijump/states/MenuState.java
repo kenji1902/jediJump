@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.jedijump.states.HighscoreMenuState.HighscoreMenuState;
 import com.jedijump.utility.*;
 import com.badlogic.gdx.audio.Sound;
 
@@ -100,10 +101,16 @@ public class MenuState extends State{
             }
 
             if (highscoreBounds.contains(touchPoint.x, touchPoint.y+37)) {
-                System.out.println("you clicked at: highscores");
+                //System.out.println("you clicked at: highscores");
                 clickSound.play();
-                manager.set(new HelpState(manager));
+                manager.set(new HighscoreMenuState(manager));
             }
+
+            //if (highscoreBounds.contains(touchPoint.x, touchPoint.y+37)) {
+            //    //System.out.println("you clicked at: highscores");
+            //    clickSound.play();
+            //    manager.set(new HelpState(manager));
+            //}
 
 
             //Help menu

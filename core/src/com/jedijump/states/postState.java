@@ -12,12 +12,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.jedijump.utility.constants;
+import com.jedijump.utility.database;
 
 public class postState extends State {
     static final int GAME_GAMEOVER = 0;
     static final int GAME_RETRY = 1;
     static final int GAME_QUIT = 2;
     private int state;
+    private database db;
     Texture item, bg;
     TextureRegion retry, quit, bgRegion;
     Rectangle rect, retry_rect, quit_rect;
@@ -43,6 +45,10 @@ public class postState extends State {
         bgRegion = new TextureRegion(bg, 0, 0, constants.SCREENWIDTH, constants.SCREENHEIGHT);
         deathSound = Gdx.audio.newSound(Gdx.files.internal("deathSound.wav"));
         deathSound.play(0.2f);
+        db = manager.getDatabase();
+        float distance = manager.getDistance();
+        int score = manager.getScore();
+        insert_query(score, distance);
     }
 
     @Override
@@ -127,6 +133,10 @@ public class postState extends State {
 
 
         }
+    }
+
+    public void insert_query(int score, float distance){
+        db.queryUpdate(String.format("INSERT INTO HIGHSCORE(COOKIE, DISTANCE) VALUES(%d, %f)", score, distance));
     }
 
     @Override
