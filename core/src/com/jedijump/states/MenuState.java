@@ -41,7 +41,7 @@ public class MenuState extends State{
         backgroundRegion = new TextureRegion(background, 0, 0, 280, 450);
 
         item = manager.getItems();
-        mainmenutext = new TextureRegion(new Texture(Gdx.files.internal("mainmenu.png")));
+        mainmenutext = new TextureRegion(new Texture(Gdx.files.internal("bgpixel.png")));
 
 
         mainMenu = new TextureRegion(mainmenutext, 0, 217, 336, 179);
