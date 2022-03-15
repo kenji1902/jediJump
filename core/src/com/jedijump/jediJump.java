@@ -25,19 +25,19 @@ public class jediJump extends ApplicationAdapter {
 		//manage.push(new PlayState(manage));
 		manage.push(new MenuState(manage));
 
-		db = new database("Highscore.db");
-		db.query("CREATE TABLE HIGHSCORE" +
-				"(ID INT PRIMARY KEY NOT NULL," +
-				"COOKIE INT NOT NULL," +
-				"DISTANCE INT NOT NULL);");
-		db.queryUpdate("INSERT INTO HIGHSCORE(ID,COOKIE,DISTANCE) VALUES(1,'2','89');");
-		ResultSet result =  db.queryResult(" SELECT * FROM HIGHSCORE;");
+		//db = new database("Highscore.db");
+		//db.query("CREATE TABLE HIGHSCORE" +
+		//		"(ID INT PRIMARY KEY NOT NULL," +
+		//		"COOKIE INT NOT NULL," +
+		//		"DISTANCE INT NOT NULL);");
+		//db.queryUpdate("INSERT INTO HIGHSCORE(ID,COOKIE,DISTANCE) VALUES(1,'2','89');");
+		//ResultSet result =  db.queryResult(" SELECT * FROM HIGHSCORE;");
 
-		try {
-			System.out.println(result.getInt("DISTANCE"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		//try {
+		//	System.out.println(result.getInt("DISTANCE"));
+		//} catch (SQLException e) {
+		//	e.printStackTrace();
+		//}
 
 	}
 

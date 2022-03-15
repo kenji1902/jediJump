@@ -111,10 +111,16 @@ public class MenuState extends State{
             }
 
             if (highscoreBounds.contains(touchPoint.x, touchPoint.y+37)) {
-                System.out.println("you clicked at: highscores");
+                //System.out.println("you clicked at: highscores");
                 clickSound.play();
                 manager.set(new HighscoreMenuState(manager));
             }
+
+            //if (highscoreBounds.contains(touchPoint.x, touchPoint.y+37)) {
+            //    //System.out.println("you clicked at: highscores");
+            //    clickSound.play();
+            //    manager.set(new HelpState(manager));
+            //}
 
 
             //Help menu
