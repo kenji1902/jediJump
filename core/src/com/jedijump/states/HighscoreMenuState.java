@@ -1,4 +1,4 @@
-package com.jedijump.states.HighscoreMenuState;
+package com.jedijump.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -61,10 +61,12 @@ public class HighscoreMenuState extends State{
     @Override
     public void update(float delta) {
         cameraUpdate();
-        if (Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched() || Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            MenuState.menuMusic.stop();
             manager.set(new MenuState(manager));
         }
+
     }
 
     private void cameraUpdate(){
@@ -81,33 +83,32 @@ public class HighscoreMenuState extends State{
         sprite.disableBlending();
         sprite.begin();
 
-        sprite.draw(backgroundRegion,manager.getCamera().position.x - 160, manager.getCamera().position.y - 240, 320, 480);
+        sprite.draw(backgroundRegion, manager.getCamera().position.x - 160, manager.getCamera().position.y - 240, 320, 480);
         sprite.end();
 
         sprite.enableBlending();
         sprite.begin();
-        sprite.draw(highscore_text, shape.x - 68, shape.y+170,250,25);
+        sprite.draw(highscore_text, shape.x - 68, shape.y + 170, 250, 25);
         sprite.end();
 
         sprite.begin();
-        font.draw(sprite, "C = coin", -122,camera.position.y+160);
+        font.draw(sprite, "C = coin", -122, camera.position.y + 160);
         sprite.end();
 
         sprite.begin();
-        font.draw(sprite, "D = distance", -122,camera.position.y+140);
+        font.draw(sprite, "D = distance", -122, camera.position.y + 140);
         sprite.end();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-            manager.set(new MenuState(manager));
         sprite.begin();
-        sprite.draw(arrow, nextBounds.x - 350 , nextBounds.y+190,-64,64);
+        sprite.draw(arrow, nextBounds.x - 350, nextBounds.y + 190, -64, 64);
         sprite.end();
 
-        try{
+        try {
             display_highscore(sprite);
-        } catch(SQLException ignored){
+        } catch (SQLException ignored) {
 
         }
+
     }
 
     private void display_highscore(SpriteBatch sprite) throws SQLException {

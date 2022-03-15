@@ -85,7 +85,7 @@ public class Manager {
     public void update(float delta){
         b2dr.render(world,camera.combined.scl(constants.PPM));
         states.peek().update(delta);
-        //System.out.println(states);
+        System.out.println(states);
     }
 
     public void render(SpriteBatch sprite){
@@ -154,6 +154,7 @@ public class Manager {
 
     public void setDifficultyHighlight(int difficultyHighlight) {
         this.difficultyHighlight = difficultyHighlight;
+    }
     public database getDatabase(){
         return db;
     }
