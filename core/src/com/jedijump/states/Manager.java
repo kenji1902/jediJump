@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jedijump.entity.*;
 import com.jedijump.utility.constants;
+import com.jedijump.utility.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,9 +37,11 @@ public class Manager {
     public Stack<bird> deletedBird;
     private float difficultyMultiplier = 1;
     private int difficultyHighlight = 1;
+    private database db;
 
 
     public Manager(){
+        db = new database("highscore.db");
         cl = new contactListener();
         b2dr = new Box2DDebugRenderer();
 
@@ -62,12 +65,10 @@ public class Manager {
         deletedCoins = new Stack<>();
         deletedBird = new Stack<>();
 
-
-
-
-
-
-
+        db.query("CREATE TABLE HIGHSCORE" +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "COOKIE INT NOT NULL," +
+                "DISTANCE FLOAT NOT NULL);");
     }
     public void push(State state){
         states.push(state);
@@ -84,7 +85,7 @@ public class Manager {
     public void update(float delta){
         b2dr.render(world,camera.combined.scl(constants.PPM));
         states.peek().update(delta);
-        //System.out.println(states);
+        System.out.println(states);
     }
 
     public void render(SpriteBatch sprite){
@@ -153,5 +154,8 @@ public class Manager {
 
     public void setDifficultyHighlight(int difficultyHighlight) {
         this.difficultyHighlight = difficultyHighlight;
+    }
+    public database getDatabase(){
+        return db;
     }
 }

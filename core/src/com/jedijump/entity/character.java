@@ -115,7 +115,7 @@ public class character extends entity{
                 System.out.println("DEAD FROM BIRD");
             }
             if(isDestroyed) {
-                manager.setDistance(body.getPosition().y *  constants.PPM);
+                manager.setDistance(manager.getCamera().position.y);
                 manager.set(new postState(manager));
             }
 

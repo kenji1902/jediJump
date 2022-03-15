@@ -1,5 +1,6 @@
 package com.jedijump.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.jedijump.jediJump;
@@ -15,6 +16,7 @@ public class DesktopLauncher {
 		config.height = 480;
 		config.foregroundFPS = 60;
 		config.backgroundFPS = 60;
+		config.addIcon("jedisaurlogo.png", Files.FileType.Local);
 		new LwjglApplication(new jediJump(), config);
 
 

@@ -230,7 +230,7 @@ public class PlayState extends State{
                 bird.create(new Vector2(0, birdY), new Vector2(32, 32), 0);
                 //birdSpawnTime = TimeUtils.nanoTime();
                 birds.add(bird);
-                birdY += MathUtils.random(200,710);
+                birdY += MathUtils.random(500,810);
             }
             if (birdCounter >= constants.MAX_LEVEL_HEIGHT - 1) {
                 birdCounter = constants.MAX_LEVEL_HEIGHT;
