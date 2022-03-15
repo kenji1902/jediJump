@@ -97,6 +97,13 @@ public class PauseState extends State{
                 return;
             }
         }
+        if( Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)&& state != 2){
+            manager.getCamera().unproject(coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
+            manager.push(this);
+            // System.out.println("paused");
+            state = 2;
+            return;
+        }
         if(Gdx.input.justTouched()){
             manager.getCamera().unproject(resume_coords.set(Gdx.input.getX(), Gdx.input.getY(),0));
             if(resume_rect.contains(resume_coords.x, resume_coords.y)){
