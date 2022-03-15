@@ -16,7 +16,10 @@ public class DesktopLauncher {
 		config.height = 480;
 		config.foregroundFPS = 60;
 		config.backgroundFPS = 60;
-		config.addIcon("jedisaurlogo.png", Files.FileType.Local);
+		config.addIcon("jedisaurlogo_128.png", Files.FileType.Internal);
+		config.addIcon("jedisaurlogo_64.png", Files.FileType.Internal);
+		config.addIcon("jedisaurlogo_32.png", Files.FileType.Internal);
+
 		new LwjglApplication(new jediJump(), config);
 
 
