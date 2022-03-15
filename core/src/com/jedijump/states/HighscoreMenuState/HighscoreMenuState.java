@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.jedijump.states.Manager;
 import com.jedijump.states.MenuState;
+import com.jedijump.states.Settings;
 import com.jedijump.states.State;
 import com.jedijump.utility.constants;
 import com.jedijump.utility.database;
@@ -40,6 +41,7 @@ public class HighscoreMenuState extends State{
         db = manager.getDatabase();
         item_2 = new Texture(Gdx.files.internal("items.png"));
         arrow = new TextureRegion(item_2, 0, 64, 64, 64);
+        arrow.flip(true,false);
         touchPoint = new Vector3();
         nextBounds = new Rectangle(320 - 64, 0, 64, 64);
 
@@ -61,10 +63,6 @@ public class HighscoreMenuState extends State{
         if (Gdx.input.justTouched()) {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             manager.set(new MenuState(manager));
-            //if (nextBounds.contains(touchPoint.x, touchPoint.y)) {
-                //MenuState.menuMusic.stop();
-
-            //}
         }
     }
 
@@ -99,7 +97,7 @@ public class HighscoreMenuState extends State{
         sprite.end();
 
         sprite.begin();
-        sprite.draw(arrow, nextBounds.x - 95 , nextBounds.y - 240,-64,64);
+        sprite.draw(arrow, nextBounds.x - 350 , nextBounds.y+190,-64,64);
         sprite.end();
 
         try{
