@@ -45,7 +45,8 @@ public class PlayState extends State{
     int coinY = 50;
 
     long lastScore;
-    String scoreString;
+    float lastDistance;
+    String scoreString, distanceString;
     BitmapFont font;
 
     Sound coinSound;
@@ -83,15 +84,17 @@ public class PlayState extends State{
         coins = new ArrayList<>();
         lastScore = 0;
         scoreString = "SCORE: 0";
+        lastDistance = 0;
+        distanceString = "DISTANCE: 0";
         font = new BitmapFont(Gdx.files.internal("font.fnt"));
         manager.setScore(0);
-
+        manager.setDistance(0);
         coinSound = Gdx.audio.newSound(Gdx.files.internal("coin.wav"));
     }
 
     @Override
     public void update(float delta) {
-
+        OrthographicCamera camera = manager.getCamera();
         manager.getWorld().step(1/60f,6,2);
         character.update(delta);
 
@@ -122,15 +125,18 @@ public class PlayState extends State{
             scoreString = "SCORE: "+ lastScore;
             coinSound.play();
         }
+        manager.setDistance(camera.position.y);
+        distanceString = "DISTANCE: " + (manager.getDistance());
+
 
         //debri.update(delta);
        // spr.update(delta);
-        System.out.println(
-                "Platform: "+platforms.size()+
-                " Springs: "+springs.size()+
-                " Debris: "+debris.size()+
-                " Coins: "+coins.size()+
-                " Bird: "+birds.size());
+//        System.out.println(
+//                "Platform: "+platforms.size()+
+//                " Springs: "+springs.size()+
+//                " Debris: "+debris.size()+
+//                " Coins: "+coins.size()+
+//                " Bird: "+birds.size());
 
     }
 
@@ -171,6 +177,8 @@ public class PlayState extends State{
         }
         sprite.begin();
         font.draw(sprite,scoreString,-140,220+camera.position.y);
+
+        font.draw(sprite,distanceString,-140,190+camera.position.y);
         sprite.end();
         baseplt.render(sprite);
         character.render(sprite);
