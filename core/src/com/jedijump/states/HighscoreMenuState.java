@@ -49,7 +49,7 @@ public class HighscoreMenuState extends State{
         font = new BitmapFont(Gdx.files.internal("font.fnt"));
         font.getData().scale(0.01f);
 
-        background = new TextureRegion(new Texture(Gdx.files.internal("plainBG.png")));
+        background = new TextureRegion(new Texture(Gdx.files.internal("highscorebg.png")));
         backgroundRegion = new TextureRegion(background, 0, 0, constants.SCREENWIDTH, constants.SCREENHEIGHT);
 
         item = manager.getItems();
@@ -92,15 +92,19 @@ public class HighscoreMenuState extends State{
         sprite.end();
 
         sprite.begin();
-        font.draw(sprite, "C = coin", -122, camera.position.y + 160);
+        font.draw(sprite, "ID", -144, camera.position.y + 140);
         sprite.end();
 
         sprite.begin();
-        font.draw(sprite, "D = distance", -122, camera.position.y + 140);
+        font.draw(sprite, "Coin", -80, camera.position.y + 140);
         sprite.end();
 
         sprite.begin();
-        sprite.draw(arrow, nextBounds.x - 350, nextBounds.y + 190, -64, 64);
+        font.draw(sprite, "Distance", 5, camera.position.y + 140);
+        sprite.end();
+
+        sprite.begin();
+        sprite.draw(arrow, nextBounds.x - 350, nextBounds.y + 180, -64, 64);
         sprite.end();
 
         try {
@@ -121,7 +125,8 @@ public class HighscoreMenuState extends State{
             String distance = String.format("%.2f",result.getFloat("DISTANCE"));
             System.out.println(distance);
             sprite.begin();
-            font.draw(sprite, id + ". C: " + cookie + "\n     D: " + distance,-122,(camera.position.y+105)-y_offset);
+            font.draw(sprite, id + "   " + cookie,-144,(camera.position.y+90)-y_offset);
+            font.draw(sprite, distance, 7, (camera.position.y+90)-y_offset);
             sprite.end();
             y_offset += 60;
         }
