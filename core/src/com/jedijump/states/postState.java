@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,17 +15,21 @@ import com.badlogic.gdx.math.Vector3;
 import com.jedijump.utility.constants;
 import com.jedijump.utility.database;
 
+import java.text.DecimalFormat;
+
 public class postState extends State {
     static final int GAME_GAMEOVER = 0;
     static final int GAME_RETRY = 1;
     static final int GAME_QUIT = 2;
     private int state;
     private database db;
+    private BitmapFont font;
     Texture item, bg;
     TextureRegion retry, quit, bgRegion;
     Rectangle rect, retry_rect, quit_rect;
     ShapeRenderer sr, sr2;
     Vector3 coords, retry_coords, quit_coords;
+    DecimalFormat df = new DecimalFormat();
 
     Sound deathSound;
     public postState(Manager manager) {
@@ -46,6 +51,10 @@ public class postState extends State {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("deathSound.wav"));
         deathSound.play(0.2f);
         db = manager.getDatabase();
+        font = new BitmapFont(Gdx.files.internal("font.fnt"));
+        font.getData().scale(0.01f);
+
+        df.setMaximumFractionDigits(2);
         float distance = manager.getDistance();
         int score = manager.getScore();
         insert_query(score, distance);
@@ -124,6 +133,11 @@ public class postState extends State {
 
             //batch.enableBlending();
             batch.begin();
+
+            font.draw(batch, "Coins ", 40, manager.getCamera().position.y + 190);
+            font.draw(batch, ""+manager.getScore(), 40, manager.getCamera().position.y + 150);
+            font.draw(batch, "Distance ", -130, manager.getCamera().position.y + 190);
+            font.draw(batch, ""+df.format(manager.getDistance()), -130, manager.getCamera().position.y + 150);
             retry_rect.y = 10 + manager.getCamera().position.y;
             quit_rect.y = -40 + manager.getCamera().position.y;
             batch.draw(retry,  retry_rect.x, retry_rect.y, retry_rect.width, retry_rect.height);
